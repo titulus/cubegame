@@ -15,6 +15,13 @@ function Cube (element_id) {
 	}
 	this.fill = fill;
 
+	function rotate(x,y,z,degree) {
+		var matrix = new WebKitCSSMatrix(DOM.style.webkitTransform);
+		matrix = matrix.rotateAxisAngle(x,y,z,degree);
+		DOM.style.webkitTransform = matrix.toString();
+	}
+	this.rotate = rotate;
+
 	return this;
 }
 
