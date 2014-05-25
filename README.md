@@ -1,0 +1,4 @@
+cubegame
+========
+
+simple math game
