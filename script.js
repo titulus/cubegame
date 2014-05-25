@@ -1,0 +1,1 @@
+var cube3d = document.getElementById('cube3d');
