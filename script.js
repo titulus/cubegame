@@ -24,16 +24,15 @@ function Cube (element_id) {
 	this.rotate = rotate;
 	rotate(-1,-1,0,30); // initial rotation
 
-
-	function get_random_color (value) {
-		Math.seedrandom(value);
-        var color = 'rgba('+(Math.round(Math.random()*150)+55)+','+(Math.round(Math.random()*250)+5)+','+(Math.round(Math.random()*250)+5)+','+'.5)';
-        Math.seedrandom();
-        return color;
-	}
-
 	return this;
 }
 
 var cube = new Cube('cube3d') // main cube object	
 cube.fill();
+
+function get_random_color (value) {
+	Math.seedrandom(value);
+    var color = 'rgba('+(Math.round(Math.random()*150)+55)+','+(Math.round(Math.random()*250)+5)+','+(Math.round(Math.random()*250)+5)+','+'.5)';
+    Math.seedrandom();
+    return color;
+}
