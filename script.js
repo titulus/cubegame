@@ -24,6 +24,32 @@ function Cube (element_id) {
 	this.rotate = rotate;
 	rotate(-1,-1,0,30); // initial rotation
 
+	function make (direction) {
+		var t_angles = [0,0,0];
+		switch (direction) {
+	        case "top" : {
+	            t_angles = [1,0,0];
+	            //x,-z
+	        }; break;
+	        case "bottom" : {
+	            t_angles = [-1,0,0];
+	            // x,z
+	        }; break;
+	        case "left" : {
+	            t_angles = [0,-1,0];
+	            // -z,y
+	        }; break;
+	        case "right" : {
+	            t_angles = [0,1,0];
+	            // z,y
+	        }; break;
+	        default: throw new TypeError('direction must be "top", "bottom", "left" or "right", but not: "'+direction+'"');
+	    };
+
+	    rotate(t_angles[0],t_angles[1],t_angles[2],90);
+	}
+	this.make = make;
+
 	return this;
 }
 
