@@ -1,0 +1,32 @@
+#cube3d {
+  font-size: 70px;
+  font-weight: 700;
+  margin: auto;
+  padding: 1em;
+  width: 2em;
+  height: 2em;
+  opacity: .7;
+  transform-style: preserve-3d;
+  transition: transform .1s linear;
+}
+
+.side {
+  position: absolute;
+  width: 2em;
+  height: 2em;
+  border: 1px solid cornflowerblue;
+  line-height: 2em;
+  border-radius:.2em;
+  text-align: center;
+  background: rgba(0,200,200,.4);
+  color: rgb(30, 59, 144);
+  /*text-shadow: 0px 0px 1px black;*/
+  box-shadow: 0 0 .2em rgba(100,149,237,.5); 
+  }
+
+#back {transform: translateZ(-1.05em) rotateX(180deg) rotateY(0deg);}
+#front {transform: translateZ(1.05em) rotateX(0deg) rotateY(0deg);}
+#top {transform: translateY(-1.05em) rotateX(90deg) rotateY(0deg);}
+#bottom {transform: translateY(1.05em) rotateX(-90deg) rotateY(0deg);}
+#left {transform: translateX(-1.05em) rotateX(0deg) rotateY(-90deg);}
+#right {transform: translateX(1.05em) rotateX(0deg) rotateY(90deg);}
