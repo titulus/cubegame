@@ -47,6 +47,7 @@ function Cube (element_id) {
 	function convert_angles (x,y) {
 		var new_angles = [x,y,0];
 		var tX = 0,tY=0,tZ=0;
+		
 		return new_angles;
 	}
 
