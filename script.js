@@ -108,8 +108,13 @@ function Cube (element_id) {
 	rotate3d(-1,-1,0,30); // initial rotation
 
 	function rotate_sides () {
-		// for (i in)
+		var els = [];
+		for (i in axis) {
+			els.push(document.getElementsByClassName('side_'+axis[i])[0]);
+		}
+		
 	}
+	rotate_sides(); // initial sides rotation
 
 	return this;
 }
