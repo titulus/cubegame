@@ -46,54 +46,45 @@ function Cube (element_id) {
 	var Ox = 'x',Oy='y'; // initial default ords
 
 	function convert_angles (x,y) {
-		var new_angles = [x,y,0];
+		var new_angles = [0,0,0];
 		
 		console.log(x,y);
 			console.log('coords before',coords);
 
-			switch (coords.join(',')) {
-				case "x,y,z" : { //defalut
-					new_angles = [x,y,0];
-				}; break;
-				case "x,-z,y" : { //up
-					new_angles = [x,0,-y];
-				}; break;
-				case "x,z,-y" : { //down
-					new_angles = [x,0,y];
-				}; break;
-				case "z,y,-x" : { //right
-					new_angles = [0,y,x];
-				}; break;
-				case "-z,y,x" : { //left
-					new_angles = [0,y,-x];
-				}; break;
-				case "-y,-z,x" : { // up-left
-					new_angles = [0,-x,-y];
-				}; break;
-				default : throw new RangeError('coordinate system "'+coords+'" is unknown');
+			switch (coords[0]) {
+				case "x" : new_angles[0]=x;break;
+				case "-x" : new_angles[0]=-x;break;
+				case "y" : new_angles[1]=x;break;
+				case "-y" : new_angles[1]=-x;break;
+				case "z" : new_angles[2]=x;break;
+				case "-z" : new_angles[2]=-x;break;
+			}
+			switch (coords[1]) {
+				case "x" : new_angles[0]=y;break;
+				case "-x" : new_angles[0]=-y;break;
+				case "y" : new_angles[1]=y;break;
+				case "-y" : new_angles[1]=-y;break;
+				case "z" : new_angles[2]=y;break;
+				case "-z" : new_angles[2]=-y;break;
 			}
 
 			switch ([x,y].join(',')) {
 				case "1,0": { //up
-					// coords = ['x','-z','y']
 					var temp = coords[2];
 					coords[2] = coords[1];
 					coords[1] = (temp.length==1)?'-'+temp:temp[1];
 				}; break;
 				case "-1,0": { //down
-					// coords = ['x','z','-y']
 					var temp = coords[1];
 					coords[1] = coords[2];
 					coords[2] = (temp.length==1)?'-'+temp:temp[1];
 				}; break;
 				case "0,1": { //right
-					// coords = ['z','y','-x']
 					var temp = coords[0];
 					coords[0] = coords[2];
 					coords[2] = (temp.length==1)?'-'+temp:temp[1];
 				}; break;
 				case "0,-1": { //left
-					// coords = ['-z','y','x']
 					var temp = coords[2];
 					coords[2] = coords[0];
 					coords[0] = (temp.length==1)?'-'+temp:temp[1];
