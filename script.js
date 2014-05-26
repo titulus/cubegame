@@ -22,9 +22,14 @@ function Cube (element_id) {
 		DOM.style.webkitTransform = matrix.toString();
 	}
 	this.rotate = rotate;
-	rotate(-1,-1,0,30); // initial rotation
+	rotate3d(-1,-1,0,30); // initial rotation
 
 	function make (direction) {
+	    rotate(direction)
+	}
+	this.make = make;
+
+	function rotate (direction) {
 		var t_angles = [0,0,0];
 		switch (direction) {
 	        case "top" : {
@@ -45,10 +50,8 @@ function Cube (element_id) {
 	        }; break;
 	        default: throw new TypeError('direction must be "top", "bottom", "left" or "right", but not: "'+direction+'"');
 	    };
-
-	    rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
+		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
 	}
-	this.make = make;
 
 	return this;
 }
