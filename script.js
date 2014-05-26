@@ -44,7 +44,9 @@ function Cube (element_id) {
 	var coords = ['x','y','z']; // initial coord system
 
 	function convert_angles (x,y) {
-		return [x,y,0];
+		var new_angles = [x,y,0];
+		
+		return new_angles;
 	}
 
 	function rotate3d(x,y,z,degree) {
