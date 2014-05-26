@@ -23,6 +23,7 @@ function Cube (element_id) {
 
 	function rotate (direction) {
 		var t_angles = [0,0,0];
+		console.group(direction);
 		switch (direction) {
 	        case "top" : {
 	            t_angles = convert_angles(1,0);
@@ -45,7 +46,13 @@ function Cube (element_id) {
 
 	function convert_angles (x,y) {
 		var new_angles = [x,y,0];
-		
+		console.log(x,y);
+			console.log('coords before',coords);
+
+			
+
+			console.log('coords after',coords);
+		console.groupEnd();
 		return new_angles;
 	}
 
