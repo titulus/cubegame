@@ -26,19 +26,15 @@ function Cube (element_id) {
 		switch (direction) {
 	        case "top" : {
 	            t_angles = convert_angles(1,0);
-	            //x,-z
 	        }; break;
 	        case "bottom" : {
 	            t_angles = convert_angles(-1,0);
-	            // x,z
 	        }; break;
 	        case "left" : {
 	            t_angles = convert_angles(0,-1);
-	            // -z,y
 	        }; break;
 	        case "right" : {
 	            t_angles = convert_angles(0,1);
-	            // z,y
 	        }; break;
 	        default: throw new TypeError('direction must be "top", "bottom", "left" or "right", but not: "'+direction+'"');
 	    };
