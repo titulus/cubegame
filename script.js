@@ -16,14 +16,6 @@ function Cube (element_id) {
 	}
 	this.fill = fill;
 
-	function rotate3d(x,y,z,degree) {
-		var matrix = new WebKitCSSMatrix(DOM.style.webkitTransform);
-		matrix = matrix.rotateAxisAngle(x,y,z,degree);
-		DOM.style.webkitTransform = matrix.toString();
-	}
-	this.rotate = rotate;
-	rotate3d(-1,-1,0,30); // initial rotation
-
 	function make (direction) {
 	    rotate(direction)
 	}
@@ -52,6 +44,13 @@ function Cube (element_id) {
 	    };
 		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
 	}
+
+	function rotate3d(x,y,z,degree) {
+		var matrix = new WebKitCSSMatrix(DOM.style.webkitTransform);
+		matrix = matrix.rotateAxisAngle(x,y,z,degree);
+		DOM.style.webkitTransform = matrix.toString();
+	}
+	rotate3d(-1,-1,0,30); // initial rotation
 
 	return this;
 }
