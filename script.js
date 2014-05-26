@@ -42,9 +42,12 @@ function Cube (element_id) {
 	}
 
 	var coords = ['x','y','z']; // initial coord system
+	var Ox = 'x',Oy='y'; // initial default ords
 
 	function convert_angles (x,y) {
-		return [x,y,0];
+		var new_angles = [x,y,0];
+		var tX = 0,tY=0,tZ=0;
+		return new_angles;
 	}
 
 	function rotate3d(x,y,z,degree) {
