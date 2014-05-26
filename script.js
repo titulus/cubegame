@@ -56,6 +56,12 @@ function Cube (element_id) {
 var cube = new Cube('cube3d') // main cube object	
 cube.fill();
 
+shortcut.add('up',function () {cube.make('top')});
+shortcut.add('down',function () {cube.make('bottom')});
+shortcut.add('left',function () {cube.make('left')});
+shortcut.add('Right',function () {cube.make('right')});
+
+
 function get_random_color (value) {
 	Math.seedrandom(value);
     var color = 'rgba('+(Math.round(Math.random()*150)+55)+','+(Math.round(Math.random()*250)+5)+','+(Math.round(Math.random()*250)+5)+','+'.5)';
