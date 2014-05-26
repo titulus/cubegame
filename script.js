@@ -57,25 +57,22 @@ function Cube (element_id) {
 				}; break;
 				case "x,-z,y" : { //up
 					new_angles = [x,0,-y];
-					/*switch ([x,y].join(',')) {
-						case "1,0": coords = ['x','-y','z']; break; //up
-						case "-1,0": coords = ['x','y','z']; break; //down
-						case "0,1": coords = ['y','-z','-x']; break; //right
-						case "0,-1": coords = ['-y','-z','x']; break; //left
-					}*/
+				}; break;
+				case "x,z,-y" : { //down
+					new_angles = [x,0,y];
+				}; break;
+				case "z,y,-x" : { //right
+					new_angles = [0,y,x];
+				}; break;
+				case "-z,y,x" : { //left
+					new_angles = [0,y,-x];
 				}; break;
 				case "-y,-z,x" : { // up-left
 					new_angles = [0,-x,-y];
-					/*switch ([x,y].join(',')) {
-						case "1,0": coords = ['-y','-x','-z']; break; //up
-						case "-1,0": coords = ['-y','x','z']; break; //down
-						case "0,1": coords = ['x','-z','y']; break; //right
-						case "0,-1": coords = ['-x','-z','-y']; break; //left
-					}*/
 				}; break;
 				default : throw new RangeError('coordinate system "'+coords+'" is unknown');
 			}
-			
+
 			switch ([x,y].join(',')) {
 				case "1,0": { //up
 					// coords = ['x','-z','y']
