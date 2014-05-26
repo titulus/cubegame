@@ -3,8 +3,9 @@ function Cube (element_id) {
 	this.DOM = DOM;
 
 	var sides = ['front','top','bottom','back','left','right'];
+	var axis = ['z','-y','y','-z','-x','x'];
 
-	for (i in sides) {this[sides[i]]=['z','-y','y','-z','-x','x'][i]}
+	for (i in sides) {this[sides[i]]=axis[i]}
 
 	function fill () { // fill DOM cube sides with appropriate values
 		for (i in sides) {
@@ -105,6 +106,10 @@ function Cube (element_id) {
 		DOM.style.webkitTransform = matrix.toString();
 	}
 	rotate3d(-1,-1,0,30); // initial rotation
+
+	function rotate_sides () {
+		// for (i in)
+	}
 
 	return this;
 }
