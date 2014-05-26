@@ -43,9 +43,11 @@ function Cube (element_id) {
 	}
 
 	var coords = ['x','y','z']; // initial coord system
+	var Ox = 'x',Oy='y'; // initial default ords
 
 	function convert_angles (x,y) {
 		var new_angles = [x,y,0];
+		
 		console.log(x,y);
 			console.log('coords before',coords);
 
@@ -82,6 +84,9 @@ function Cube (element_id) {
 
 			console.log('coords after',coords);
 		console.groupEnd();
+		
+		var tX = 0,tY=0,tZ=0;
+		
 		return new_angles;
 	}
 
