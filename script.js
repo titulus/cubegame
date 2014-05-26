@@ -41,6 +41,8 @@ function Cube (element_id) {
 		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
 	}
 
+	var coords = ['x','y','z']; // initial coord system
+
 	function convert_angles (x,y) {
 		return [x,y,0];
 	}
