@@ -25,24 +25,28 @@ function Cube (element_id) {
 		var t_angles = [0,0,0];
 		switch (direction) {
 	        case "top" : {
-	            t_angles = [1,0,0];
+	            t_angles = convert_angles(1,0);
 	            //x,-z
 	        }; break;
 	        case "bottom" : {
-	            t_angles = [-1,0,0];
+	            t_angles = convert_angles(-1,0);
 	            // x,z
 	        }; break;
 	        case "left" : {
-	            t_angles = [0,-1,0];
+	            t_angles = convert_angles(0,-1);
 	            // -z,y
 	        }; break;
 	        case "right" : {
-	            t_angles = [0,1,0];
+	            t_angles = convert_angles(0,1);
 	            // z,y
 	        }; break;
 	        default: throw new TypeError('direction must be "top", "bottom", "left" or "right", but not: "'+direction+'"');
 	    };
 		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
+	}
+
+	function convert_angles (x,y) {
+		return [x,y,0];
 	}
 
 	function rotate3d(x,y,z,degree) {
