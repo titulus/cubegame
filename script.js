@@ -11,7 +11,7 @@ function Cube (element_id) {
 		for (i in sides) {
 			var element = document.getElementById(sides[i]);
 			var value = this[sides[i]];
-			element.innerHTML=value;
+			element.childNodes[0].innerHTML=value;
 			element.style.backgroundColor = get_random_color(value);
 		}
 	}
@@ -108,7 +108,7 @@ function Cube (element_id) {
 	rotate3d(-1,-1,0,30); // initial rotation
 
 	function rotate_sides () {
-		// for (i in)
+		
 	}
 
 	return this;
