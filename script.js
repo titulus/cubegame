@@ -16,7 +16,7 @@ function Cube (element_id) {
 	}
 	this.fill = fill;
 
-	function rotate(x,y,z,degree) {
+	function rotate3d(x,y,z,degree) {
 		var matrix = new WebKitCSSMatrix(DOM.style.webkitTransform);
 		matrix = matrix.rotateAxisAngle(x,y,z,degree);
 		DOM.style.webkitTransform = matrix.toString();
@@ -46,7 +46,7 @@ function Cube (element_id) {
 	        default: throw new TypeError('direction must be "top", "bottom", "left" or "right", but not: "'+direction+'"');
 	    };
 
-	    rotate(t_angles[0],t_angles[1],t_angles[2],90);
+	    rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
 	}
 	this.make = make;
 
