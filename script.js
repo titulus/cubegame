@@ -54,33 +54,54 @@ function Cube (element_id) {
 			switch (coords.join(',')) {
 				case "x,y,z" : { //defalut
 					new_angles = [x,y,0];
-					switch ([x,y].join(',')) {
-						case "1,0": coords = ['x','-z','y']; break; //up
-						case "-1,0": coords = ['x','z','-y']; break; //down
-						case "0,1": coords = ['z','y','-x']; break; //right
-						case "0,-1": coords = ['-z','y','x']; break; //left
-					}
 				}; break;
 				case "x,-z,y" : { //up
 					new_angles = [x,0,-y];
-					switch ([x,y].join(',')) {
+					/*switch ([x,y].join(',')) {
 						case "1,0": coords = ['x','-y','z']; break; //up
 						case "-1,0": coords = ['x','y','z']; break; //down
 						case "0,1": coords = ['y','-z','-x']; break; //right
 						case "0,-1": coords = ['-y','-z','x']; break; //left
-					}
+					}*/
 				}; break;
 				case "-y,-z,x" : { // up-left
 					new_angles = [0,-x,-y];
-					switch ([x,y].join(',')) {
+					/*switch ([x,y].join(',')) {
 						case "1,0": coords = ['-y','-x','-z']; break; //up
 						case "-1,0": coords = ['-y','x','z']; break; //down
 						case "0,1": coords = ['x','-z','y']; break; //right
 						case "0,-1": coords = ['-x','-z','-y']; break; //left
-					}
+					}*/
 				}; break;
 				default : throw new RangeError('coordinate system "'+coords+'" is unknown');
 			}
+			
+			switch ([x,y].join(',')) {
+				case "1,0": { //up
+					// coords = ['x','-z','y']
+					var temp = coords[2];
+					coords[2] = coords[1];
+					coords[1] = (temp.length==1)?'-'+temp:temp[1];
+				}; break;
+				case "-1,0": { //down
+					// coords = ['x','z','-y']
+					var temp = coords[1];
+					coords[1] = coords[2];
+					coords[2] = (temp.length==1)?'-'+temp:temp[1];
+				}; break;
+				case "0,1": { //right
+					// coords = ['z','y','-x']
+					var temp = coords[0];
+					coords[0] = coords[2];
+					coords[2] = (temp.length==1)?'-'+temp:temp[1];
+				}; break;
+				case "0,-1": { //left
+					// coords = ['-z','y','x']
+					var temp = coords[2];
+					coords[2] = coords[0];
+					coords[0] = (temp.length==1)?'-'+temp:temp[1];
+				}; break;
+			};
 
 			console.log('coords after',coords);
 		console.groupEnd();
