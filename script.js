@@ -153,3 +153,19 @@ function get_random_color (value) {
     Math.seedrandom();
     return color;
 }
+
+function unique(arr) {
+  var obj = {};
+  var result = [];
+ 
+  nextInput:
+  for(var i=0; i<arr.length; i++) {
+    var str = arr[i];
+    for(var j=0; j<result.length; j++) {
+      if (result[j] == str) continue nextInput;
+    }
+    result.push(str);
+  }
+  
+  return result;
+}
