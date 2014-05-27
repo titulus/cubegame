@@ -22,8 +22,26 @@ function Cube (element_id) {
 	}
 
 	function make (direction) {
-	    rotate(direction)
-	}
+		var current_sides = {};
+		current_sides.front = coords[2];
+		current_sides.down = coords[1];
+		current_sides.right = coords[0]
+		current_sides.back = (current_sides.front.length==1)?'-'+current_sides.front:current_sides.front[1];
+		current_sides.up = (current_sides.down.length==1)?'-'+current_sides.down:current_sides.down[1];
+		current_sides.left = (current_sides.right.length==1)?'-'+current_sides.right:current_sides.right[1];
+		// console.log(current_sides);
+	    var front_value = side[current_sides.front];
+	    // console.log(front_value)
+	    var compare_value = side[current_sides[direction]];
+	    // console.log(compare_value);
+
+	   	if (front_value!=compare_value) {
+	   		rotate(direction);
+	   	} else {
+	   		
+	   	}
+	    
+	};
 	this.make = make;
 
 	function rotate (direction) {
