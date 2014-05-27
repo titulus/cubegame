@@ -110,13 +110,16 @@ function Cube (element_id) {
 	}
 
 	function rotate_sides() {
-		switch (coords[0]) {
-			case 'x' : break;
-			case '-x' : {
-				var element = document.getElementById('side_y').childNodes[0];
-				console.log(element);
-				element.style.transform = 'rotateY(180deg)';
+		switch (coords.join(',')) {
+			case 'x,y,z' : {
+				DOM.value['y'].style.webkitTransform='';
+				DOM.value['-y'].style.webkitTransform='';
 			}; break;
+			case 'x,-z,y' : { //up
+				DOM.value['y'].style.webkitTransform='rotateX(180deg)';
+				DOM.value['-y'].style.webkitTransform='rotateX(180deg)';
+			}; break;
+			default : throw new RangeError('unknown coordinates: '+coords);
 		};
 	};
 
