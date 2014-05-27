@@ -41,6 +41,7 @@ function Cube (element_id) {
 	   		side[current_sides[direction]]++;
 	   		side[current_sides.front] = get_new_value();
 	   		fill();
+	   		if (check_fail()) alert('ФУ ЛАХ! АЗАЗАЗА!11!!');
 	   	}
 	};
 	this.make = make;
@@ -57,6 +58,23 @@ function Cube (element_id) {
         }
 
 		return values[rand];
+	}
+
+	function check_fail () {
+		var fail = false;
+		if (   side['z']!=side['-y']
+	        && side['z']!=side['-x']
+	        && side['z']!=side['x']
+	        && side['z']!=side['y']
+	        && side['-z']!=side['-y']
+	        && side['-z']!=side['-x']
+	        && side['-z']!=side['x']
+	        && side['-z']!=side['y']
+	        && side['-y']!=side['-x']
+	        && side['-y']!=side['x']
+	        && side['y']!=side['-x']
+	        && side['y']!=side['x']) fail = true;
+		return fail;
 	}
 
 	function rotate (direction) {
