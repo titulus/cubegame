@@ -159,7 +159,7 @@ function Cube (element_id) {
 				DOM.value['z'].style.webkitTransform='rotateX(180deg)';
 				DOM.value['-z'].style.webkitTransform='rotateX(180deg)';
 			}; break;
-			case '-x,y,-z' : {
+			case '-x,y,-z' : { //right-right
 				DOM.value['x'].style.webkitTransform='rotateY(180deg)';
 				DOM.value['-x'].style.webkitTransform='rotateY(180deg)';
 				DOM.value['y'].style.webkitTransform='rotateZ(180deg)';
