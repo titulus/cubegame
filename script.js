@@ -4,6 +4,7 @@ function Cube (element_id) {
 
 	var axis = ['z','-y','y','-z','-x','x'];
 	var side = {};
+	var coords = ['x','y','z']; // initial coord system
 
 	for (i in axis) {side[axis[i]]=axis[i]}
 
@@ -15,7 +16,6 @@ function Cube (element_id) {
 			element.style.backgroundColor = get_random_color(value);
 		}
 	}
-	this.fill = fill;
 
 	function make (direction) {
 	    rotate(direction)
@@ -43,7 +43,6 @@ function Cube (element_id) {
 		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
 	}
 
-	var coords = ['x','y','z']; // initial coord system
 
 	function convert_angles (x,y) {
 		var new_angles = [0,0,0];
@@ -104,17 +103,19 @@ function Cube (element_id) {
 		matrix = matrix.rotateAxisAngle(x,y,z,degree);
 		DOM.style.webkitTransform = matrix.toString();
 	}
-	rotate3d(-1,-1,0,30); // initial rotation
 
 	function rotate_sides () {
 
 	};
 
+	rotate3d(-1,-1,0,30); // initial rotation
+	fill(); // initial filling
+
 	return this;
 }
 
 var cube = new Cube('cube3d') // main cube object	
-cube.fill();
+
 
 shortcut.add('up',function () {cube.make('up')});
 shortcut.add('down',function () {cube.make('down')});
