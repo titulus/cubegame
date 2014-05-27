@@ -21,6 +21,17 @@ function Cube (element_id) {
 		}
 	}
 
+	function animate_sides(reseted,increased) {
+		DOM.value[reseted].style.fontSize='50%';
+		DOM.value[increased].style.fontSize='150%';
+		function return_state () {
+			DOM.value[reseted].style.fontSize='100%'
+			DOM.value[increased].style.fontSize='100%';
+		}
+		setTimeout(return_state,100);
+		// DOM.value[reseted].style.fontSize='100%';
+	}
+
 	function make (direction) {
 		var current_sides = {};
 		current_sides.front = coords[2];
@@ -40,6 +51,7 @@ function Cube (element_id) {
 	   	} else {
 	   		side[current_sides[direction]]++;
 	   		side[current_sides.front] = get_new_value();
+	   		animate_sides(current_sides.front,current_sides[direction]);
 	   		fill();
 	   		if (check_fail()) alert('ФУ ЛАХ! АЗАЗАЗА!11!!');
 	   	}
