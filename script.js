@@ -15,7 +15,7 @@ function Cube (element_id) {
 		coords = ['x','y','z'];
 		score = 0;
 		DOM.score.innerHTML = score;
-		
+
 
 		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span></div><div id="side_z" class="side"><span></span></div><div id="side_x" class="side"><span></span></div><div id="side_y" class="side"><span></span></div><div id="side_-z" class="side"><span></span></div><div id="side_-x" class="side"><span></span></div>';
 		DOM.cube.style.webkitTransform = new WebKitCSSMatrix();
@@ -34,7 +34,8 @@ function Cube (element_id) {
 			var element = DOM.side[axis[i]];
 			var value = side[axis[i]];
 			element.childNodes[0].innerHTML=value;
-			element.style.backgroundColor = get_random_color(value);
+			var color = get_color(value);
+			element.style.backgroundColor = 'rgba('+color.join(',')+',.5)';
 		}
 	}
 
@@ -204,9 +205,9 @@ shortcut.add('left',function () {cube.make('left')});
 shortcut.add('Right',function () {cube.make('right')});
 
 
-function get_random_color (value) {
+function get_color (value) {
 	Math.seedrandom(value);
-    var color = 'rgba('+(Math.round(Math.random()*150)+55)+','+(Math.round(Math.random()*250)+5)+','+(Math.round(Math.random()*250)+5)+',.5)';
+    var color = [(Math.round(Math.random()*150)+55),(Math.round(Math.random()*250)+5),(Math.round(Math.random()*250)+5)];
     Math.seedrandom();
     return color;
 }
