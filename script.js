@@ -41,6 +41,7 @@ function Cube (element_id) {
 	        default: throw new TypeError('direction must be "up", "down", "left" or "right", but not: "'+direction+'"');
 	    };
 		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
+		rotate_sides();
 	}
 
 
@@ -104,8 +105,15 @@ function Cube (element_id) {
 		DOM.style.webkitTransform = matrix.toString();
 	}
 
-	function rotate_sides () {
-
+	function rotate_sides() {
+		switch (coords[0]) {
+			case 'x' : break;
+			case '-x' : {
+				var element = document.getElementById('side_y').childNodes[0];
+				console.log(element);
+				element.style.transform = 'rotateY(180deg)';
+			}; break;
+		};
 	};
 
 	rotate3d(-1,-1,0,30); // initial rotation
