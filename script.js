@@ -203,7 +203,7 @@ shortcut.add('Right',function () {cube.make('right')});
 
 function get_random_color (value) {
 	Math.seedrandom(value);
-    var color = 'rgba('+(Math.round(Math.random()*150)+55)+','+(Math.round(Math.random()*250)+5)+','+(Math.round(Math.random()*250)+5)+','+'.5)';
+    var color = 'rgba('+(Math.round(Math.random()*150)+55)+','+(Math.round(Math.random()*250)+5)+','+(Math.round(Math.random()*250)+5)+',.5)';
     Math.seedrandom();
     return color;
 }
