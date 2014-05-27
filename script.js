@@ -112,12 +112,45 @@ function Cube (element_id) {
 	function rotate_sides() {
 		switch (coords.join(',')) {
 			case 'x,y,z' : {
+				DOM.value['x'].style.webkitTransform='';
+				DOM.value['-x'].style.webkitTransform='';
 				DOM.value['y'].style.webkitTransform='';
 				DOM.value['-y'].style.webkitTransform='';
+				DOM.value['z'].style.webkitTransform='';
+				DOM.value['-z'].style.webkitTransform='';
+
 			}; break;
 			case 'x,-z,y' : { //up
+				DOM.value['x'].style.webkitTransform='rotateZ(-90deg)';
+				DOM.value['-x'].style.webkitTransform='rotateZ(-90deg)';
 				DOM.value['y'].style.webkitTransform='rotateX(180deg)';
 				DOM.value['-y'].style.webkitTransform='rotateX(180deg)';
+				DOM.value['z'].style.webkitTransform='';
+				DOM.value['-z'].style.webkitTransform='';
+			}; break;
+			case 'x,z,-y' : { //down
+				DOM.value['x'].style.webkitTransform='rotateZ(90deg)';
+				DOM.value['-x'].style.webkitTransform='rotateZ(90deg)';
+				DOM.value['y'].style.webkitTransform='';
+				DOM.value['-y'].style.webkitTransform='';
+				DOM.value['z'].style.webkitTransform='';
+				DOM.value['-z'].style.webkitTransform='';
+			}; break;
+			case 'z,y,-x' : { //right
+				DOM.value['x'].style.webkitTransform='rotateY(180deg)';
+				DOM.value['-x'].style.webkitTransform='rotateY(180deg)';
+				DOM.value['y'].style.webkitTransform='rotateZ(90deg)';
+				DOM.value['-y'].style.webkitTransform='rotateZ(90deg)';
+				DOM.value['z'].style.webkitTransform='';
+				DOM.value['-z'].style.webkitTransform='';
+			}; break;
+			case '-z,y,x' : { //left
+				DOM.value['x'].style.webkitTransform='';
+				DOM.value['-x'].style.webkitTransform='';
+				DOM.value['y'].style.webkitTransform='rotateZ(-90deg)';
+				DOM.value['-y'].style.webkitTransform='rotateZ(-90deg)';
+				DOM.value['z'].style.webkitTransform='rotateY(180deg)';
+				DOM.value['-z'].style.webkitTransform='rotateY(180deg)';
 			}; break;
 			default : throw new RangeError('unknown coordinates: '+coords);
 		};
