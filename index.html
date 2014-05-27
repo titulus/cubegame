@@ -3,13 +3,29 @@
         <meta charset='UTF-8' />
         <title>cube game</title>
         <style>
+/* CLEAR CSS */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline; background: transparent;}
+body {line-height: 1;}
+ol, ul {list-style: none;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after, q:before, q:after {content: ''; content: none;}
+/* remember to define focus styles! */
+:focus {outline: 0;}
+/* remember to highlight inserts somehow! */
+ins {text-decoration: none;}
+del {text-decoration: line-through;}
+/* tables still need 'cellspacing="0"' in the markup */
+table {border-collapse: collapse; border-spacing: 0;}
+body {
+  font-size: 40px;
+  font-family: Arial;
+}
 #cube3d {
-  font-size: 70px;
   font-weight: 700;
   margin: auto;
-  padding: 1em;
-  width: 2em;
-  height: 2em;
+  padding: 50px;
+  width: 100px;
+  height: 100px;
   opacity: .7;
   transform-style: preserve-3d;
   transition: transform .1s linear;
@@ -17,23 +33,24 @@
 
 .side {
   position: absolute;
-  width: 2em;
-  height: 2em;
+  font-size: 50px;
+  width: 100px;
+  height: 100px;
   border: 1px solid cornflowerblue;
-  line-height: 2em;
-  border-radius:.2em;
+  line-height: 100px;
+  border-radius:5px;
   color: #014;
-  text-shadow: 0px 0px 1px white;
-  box-shadow: 0 0 .2em rgba(100,149,237,.5); 
+  text-shadow: 0px 0px 5px white;
+  box-shadow: 0 0 25px rgba(100,149,237,.5); 
   transition: all .1s linear;
   }
 
-#side_-z {transform: translateZ(-1.05em) rotateY(180deg);}
-#side_z {transform: translateZ(1.05em);}
-#side_-y {transform: translateY(-1.05em) rotateX(90deg);}
-#side_y {transform: translateY(1.05em) rotateX(-90deg);}
-#side_-x {transform: translateX(-1.05em) rotateY(-90deg);}
-#side_x {transform: translateX(1.05em) rotateY(90deg);}
+#side_-z {transform: translateZ(-55px) rotateY(180deg);}
+#side_z {transform: translateZ(55px);}
+#side_-y {transform: translateY(-55px) rotateX(90deg);}
+#side_y {transform: translateY(55px) rotateX(-90deg);}
+#side_-x {transform: translateX(-55px) rotateY(-90deg);}
+#side_x {transform: translateX(55px) rotateY(90deg);}
 .side > span {
   position: absolute;
   width: 100%;
@@ -46,23 +63,49 @@
 #panel {
   width: 240px;
   margin: auto;
-  text-align: left;
+  text-align: center;
 }
-  #score > *{
-    vertical-align: middle;
+  #score {
+    font-size: 20px;
   }
   #score > .description {
-    font-size: 14px;
-    margin-right: 7px;
+    text-transform: uppercase;
+    margin-right: .2em;
   }
   #score > .value {
-    font-size: 20px;
+    font-weight: 700;
+  }
+#info {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  color: #014;
+  text-shadow: 0px 0px 1px white;
+  font-size: 25px;
+  display: none;
+  opacity: 0;
+  transition: all .1s linear;
+}
+  #info > .content {
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+    transition: all .1s linear;
+  }
+  #info h1 {
+    margin: 5px 0;
+    font-size: 100px;
   }
         </style>
     </head>
     <body>
       <div id="panel"><div id="score"><span class="description">score:</span><span id="score_value" class="value">0</span></div></div>
       <div id="cube3d"></div>
+      <div id="info"><div class="content"><h1 id="info_h1"></h1><p id="info_p"></p></div></div>
       <script src='prefixfree.min.js'></script>
       <script src='shortcut.js'></script>
       <script src='seedrandom.min.js'></script>

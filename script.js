@@ -73,7 +73,8 @@ function Cube (element_id) {
 	   		animate_sides(current_sides.front,current_sides[direction]);
 	   		fill();
 	   		DOM.score.innerHTML = score;
-	   		if (check_fail()) alert('ФУ ЛАХ! АЗАЗАЗА!11!!');
+	   		if (side[current_sides[direction]]%3==0) show_info(side[current_sides[direction]],'touch or press <i>space</i> to continue');
+	   		if (check_fail()) show_info('FAIL','touch or press <i>space</i> to restart',true);
 	   	}
 	};
 	this.make = make;
@@ -199,11 +200,19 @@ function Cube (element_id) {
 var cube = new Cube('cube3d') // main cube object	
 
 
-shortcut.add('up',function () {cube.make('up')});
-shortcut.add('down',function () {cube.make('down')});
-shortcut.add('left',function () {cube.make('left')});
-shortcut.add('Right',function () {cube.make('right')});
-
+function set_shortcut () {
+	shortcut.add('up',function () {cube.make('up')});
+	shortcut.add('down',function () {cube.make('down')});
+	shortcut.add('left',function () {cube.make('left')});
+	shortcut.add('Right',function () {cube.make('right')});
+}
+set_shortcut();
+function remove_shortcut () {
+	shortcut.remove('up');
+	shortcut.remove('down');
+	shortcut.remove('left');
+	shortcut.remove('Right');
+}
 
 function get_color (value) {
 	Math.seedrandom(value);
@@ -226,4 +235,33 @@ function unique(arr) {
   }
   
   return result;
+}
+
+function show_info (h1,p,reset) {
+	var DOM_info = document.getElementById('info');
+	var DOM_h1 = document.getElementById('info_h1');
+	var DOM_p = document.getElementById('info_p');
+	DOM_h1.innerHTML = h1;
+	DOM_p.innerHTML = p;
+	DOM_info.style.backgroundColor = 'rgba('+get_color(h1).join(',')+',.5)';
+	DOM_info.style.display = 'block';
+	DOM_info.childNodes[0].style.paddingTop = '100px';
+	
+	setTimeout(function(){
+		DOM_info.style.opacity = 1;
+	},0);
+
+	shortcut.add('space',function () {hide_info(reset)});
+	remove_shortcut();
+}
+
+function hide_info (reset) {
+	var DOM_info = document.getElementById('info');
+	DOM_info.style.backgroundColor = '';
+	DOM_info.style.opacity = 0;
+	DOM_info.childNodes[0].style.paddingTop = 0;
+	setTimeout(function(){DOM_info.style.display = 'none';},100);
+	shortcut.remove('space');
+	set_shortcut();
+	if (reset) cube.init();
 }
