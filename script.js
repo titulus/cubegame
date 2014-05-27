@@ -10,7 +10,7 @@ function Cube (element_id) {
 
 	for (i in axis) DOM.side[axis[i]]=document.getElementById('side_'+axis[i]);
 	for (i in axis) DOM.value[axis[i]]=document.getElementById('side_'+axis[i]).childNodes[0];
-	for (i in axis) {side[axis[i]]=axis[i]}
+	for (i in axis) {side[axis[i]]=Math.round(Math.random()*2);}
 
 	function fill () { // fill DOM.cube cube sides with appropriate values
 		for (i in axis) {
