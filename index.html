@@ -42,10 +42,27 @@
   transform-style: preserve-3d;
   transition: all .1s linear;
 }
+
+#panel {
+  width: 240px;
+  margin: auto;
+  text-align: left;
+}
+  #score > *{
+    vertical-align: middle;
+  }
+  #score > .description {
+    font-size: 14px;
+    margin-right: 7px;
+  }
+  #score > .value {
+    font-size: 20px;
+  }
         </style>
     </head>
     <body>
-        <div id="cube3d"></div>
+      <div id="panel"><div id="score"><span class="description">score:</span><span id="score_value" class="value">0</span></div></div>
+      <div id="cube3d"></div>
       <script src='prefixfree.min.js'></script>
       <script src='shortcut.js'></script>
       <script src='seedrandom.min.js'></script>

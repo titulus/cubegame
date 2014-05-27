@@ -3,6 +3,7 @@ function Cube (element_id) {
 	DOM.cube = document.getElementById(element_id);
 	DOM.side = {}
 	DOM.value = {}
+	DOM.score = document.getElementById('score_value');
 
 	var axis = ['z','-y','y','-z','-x','x'];
 	var side = {};
@@ -13,6 +14,8 @@ function Cube (element_id) {
 	function init () {
 		coords = ['x','y','z'];
 		score = 0;
+		DOM.score.innerHTML = score;
+		
 
 		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span></div><div id="side_z" class="side"><span></span></div><div id="side_x" class="side"><span></span></div><div id="side_y" class="side"><span></span></div><div id="side_-z" class="side"><span></span></div><div id="side_-x" class="side"><span></span></div>';
 		DOM.cube.style.webkitTransform = new WebKitCSSMatrix();
@@ -68,7 +71,7 @@ function Cube (element_id) {
 	   		side[current_sides.front] = get_new_value();
 	   		animate_sides(current_sides.front,current_sides[direction]);
 	   		fill();
-	   		console.log('score:',score);
+	   		DOM.score.innerHTML = score;
 	   		if (check_fail()) alert('ФУ ЛАХ! АЗАЗАЗА!11!!');
 	   	}
 	};
