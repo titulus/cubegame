@@ -124,7 +124,6 @@ function Cube (element_id) {
 	        default: throw new TypeError('direction must be "up", "down", "left" or "right", but not: "'+direction+'"');
 	    };
 		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
-		rotate_sides();
 	}
 
 
