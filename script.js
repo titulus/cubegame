@@ -39,11 +39,15 @@ function Cube (element_id) {
 	   		rotate(direction);
 	   	} else {
 	   		side[current_sides[direction]]++;
+	   		side[current_sides.front] = get_new_value();
 	   		fill();
 	   	}
-	    
 	};
 	this.make = make;
+
+	function get_new_value () {
+		return Math.round(Math.random()*2);
+	}
 
 	function rotate (direction) {
 		var t_angles = [0,0,0];
