@@ -109,68 +109,6 @@ function Cube (element_id) {
 		DOM.cube.style.webkitTransform = matrix.toString();
 	}
 
-	function rotate_sides() {
-		switch (coords.join(',')) {
-			case 'x,y,z' : {
-				DOM.value['x'].style.webkitTransform='';
-				DOM.value['-x'].style.webkitTransform='';
-				DOM.value['y'].style.webkitTransform='';
-				DOM.value['-y'].style.webkitTransform='';
-				DOM.value['z'].style.webkitTransform='';
-				DOM.value['-z'].style.webkitTransform='';
-			}; break;
-			case 'x,-z,y' : { //up
-				DOM.value['x'].style.webkitTransform='rotateZ(-90deg)';
-				DOM.value['-x'].style.webkitTransform='rotateZ(-90deg)';
-				DOM.value['y'].style.webkitTransform='rotateX(180deg)';
-				DOM.value['-y'].style.webkitTransform='rotateX(180deg)';
-				DOM.value['z'].style.webkitTransform='';
-				DOM.value['-z'].style.webkitTransform='';
-			}; break;
-			case 'x,z,-y' : { //down
-				DOM.value['x'].style.webkitTransform='rotateZ(90deg)';
-				DOM.value['-x'].style.webkitTransform='rotateZ(90deg)';
-				DOM.value['y'].style.webkitTransform='';
-				DOM.value['-y'].style.webkitTransform='';
-				DOM.value['z'].style.webkitTransform='rotateX(180deg)';
-				DOM.value['-z'].style.webkitTransform='rotateX(180deg)';
-			}; break;
-			case 'z,y,-x' : { //right
-				DOM.value['x'].style.webkitTransform='rotateY(180deg)';
-				DOM.value['-x'].style.webkitTransform='rotateY(180deg)';
-				DOM.value['y'].style.webkitTransform='rotateZ(90deg)';
-				DOM.value['-y'].style.webkitTransform='rotateZ(90deg)';
-				DOM.value['z'].style.webkitTransform='';
-				DOM.value['-z'].style.webkitTransform='';
-			}; break;
-			case '-z,y,x' : { //left
-				DOM.value['x'].style.webkitTransform='';
-				DOM.value['-x'].style.webkitTransform='';
-				DOM.value['y'].style.webkitTransform='rotateZ(-90deg)';
-				DOM.value['-y'].style.webkitTransform='rotateZ(-90deg)';
-				DOM.value['z'].style.webkitTransform='rotateY(180deg)';
-				DOM.value['-z'].style.webkitTransform='rotateY(180deg)';
-			}; break;
-			case 'x,-y,-z' : { //up-up
-				DOM.value['x'].style.webkitTransform='rotateZ(180deg)';
-				DOM.value['-x'].style.webkitTransform='rotateZ(180deg)';
-				DOM.value['y'].style.webkitTransform='rotateX(180deg)';
-				DOM.value['-y'].style.webkitTransform='rotateX(180deg)';
-				DOM.value['z'].style.webkitTransform='rotateX(180deg)';
-				DOM.value['-z'].style.webkitTransform='rotateX(180deg)';
-			}; break;
-			case '-x,y,-z' : { //right-right
-				DOM.value['x'].style.webkitTransform='rotateY(180deg)';
-				DOM.value['-x'].style.webkitTransform='rotateY(180deg)';
-				DOM.value['y'].style.webkitTransform='rotateZ(180deg)';
-				DOM.value['-y'].style.webkitTransform='rotateZ(180deg)';
-				DOM.value['z'].style.webkitTransform='rotateY(180deg)';
-				DOM.value['-z'].style.webkitTransform='rotateY(180deg)';
-			}; break;
-			default : throw new RangeError('unknown coordinates: '+coords);
-		};
-	};
-
 	rotate3d(-1,-1,0,30); // initial rotation
 	fill(); // initial filling
 
