@@ -38,7 +38,8 @@ function Cube (element_id) {
 	   	if (front_value!=compare_value) {
 	   		rotate(direction);
 	   	} else {
-	   		
+	   		side[current_sides[direction]]++;
+	   		fill();
 	   	}
 	    
 	};
