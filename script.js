@@ -1,16 +1,20 @@
 function Cube (element_id) {
-	var DOM = document.getElementById(element_id);
-	this.DOM = DOM;
+	var DOM = {};
+	DOM.cube = document.getElementById(element_id);
+	DOM.side = {}
+	DOM.value = {}
 
 	var axis = ['z','-y','y','-z','-x','x'];
 	var side = {};
 	var coords = ['x','y','z']; // initial coord system
 
+	for (i in axis) DOM.side[axis[i]]=document.getElementById('side_'+axis[i]);
+	for (i in axis) DOM.value[axis[i]]=document.getElementById('side_'+axis[i]).childNodes[0];
 	for (i in axis) {side[axis[i]]=axis[i]}
 
-	function fill () { // fill DOM cube sides with appropriate values
+	function fill () { // fill DOM.cube cube sides with appropriate values
 		for (i in axis) {
-			var element = document.getElementById('side_'+axis[i]);
+			var element = DOM.side[axis[i]];
 			var value = side[axis[i]];
 			element.childNodes[0].innerHTML=value;
 			element.style.backgroundColor = get_random_color(value);
@@ -100,9 +104,9 @@ function Cube (element_id) {
 	}
 
 	function rotate3d(x,y,z,degree) {
-		var matrix = new WebKitCSSMatrix(DOM.style.webkitTransform);
+		var matrix = new WebKitCSSMatrix(DOM.cube.style.webkitTransform);
 		matrix = matrix.rotateAxisAngle(x,y,z,degree);
-		DOM.style.webkitTransform = matrix.toString();
+		DOM.cube.style.webkitTransform = matrix.toString();
 	}
 
 	function rotate_sides() {
