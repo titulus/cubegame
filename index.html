@@ -29,22 +29,22 @@
   box-shadow: 0 0 .2em rgba(100,149,237,.5); 
   }
 
-#back {transform: translateZ(-1.05em) rotateX(0deg) rotateY(0deg);}
-#front {transform: translateZ(1.05em) rotateX(0deg) rotateY(0deg);}
-#top {transform: translateY(-1.05em) rotateX(90deg) rotateY(0deg);}
-#bottom {transform: translateY(1.05em) rotateX(90deg) rotateY(0deg);}
-#left {transform: translateX(-1.05em) rotateX(0deg) rotateY(90deg);}
-#right {transform: translateX(1.05em) rotateX(0deg) rotateY(90deg);}
+#side_-z {transform: translateZ(-1.05em) rotateX(0deg) rotateY(0deg);}
+#side_z {transform: translateZ(1.05em) rotateX(0deg) rotateY(0deg);}
+#side_-y {transform: translateY(-1.05em) rotateX(90deg) rotateY(0deg);}
+#side_y {transform: translateY(1.05em) rotateX(90deg) rotateY(0deg);}
+#side_-x {transform: translateX(-1.05em) rotateX(0deg) rotateY(90deg);}
+#side_x {transform: translateX(1.05em) rotateX(0deg) rotateY(90deg);}
         </style>
     </head>
     <body>
         <div id="cube3d">
-            <div id="top" class="side_-y side"><span id="side_-y"></span></div>
-            <div id="front" class="side_z side"><span id="side_z"></span></div>
-            <div id="right" class="side_x side"><span id="side_x"></span></div>
-            <div id="bottom" class="side_y side"><span id="side_y"></span></div>
-            <div id="back" class="side_-z side"><span id="side_-z"></span></div>
-            <div id="left" class="side_-x side"><span id="side_-x"></span></div>
+            <div id="side_-y" class="side"><span></span></div>
+            <div id="side_z" class="side"><span></span></div>
+            <div id="side_x" class="side"><span></span></div>
+            <div id="side_y" class="side"><span></span></div>
+            <div id="side_-z" class="side"><span></span></div>
+            <div id="side_-x" class="side"><span></span></div>
         </div>
       <script src='prefixfree.min.js'></script>
       <script src='shortcut.js'></script>

@@ -2,15 +2,15 @@ function Cube (element_id) {
 	var DOM = document.getElementById(element_id);
 	this.DOM = DOM;
 
-	var sides = ['front','top','bottom','back','left','right'];
 	var axis = ['z','-y','y','-z','-x','x'];
+	var side = {};
 
-	for (i in sides) {this[sides[i]]=axis[i]}
+	for (i in axis) {side[axis[i]]=axis[i]}
 
 	function fill () { // fill DOM cube sides with appropriate values
-		for (i in sides) {
-			var element = document.getElementById(sides[i]);
-			var value = this[sides[i]];
+		for (i in axis) {
+			var element = document.getElementById('side_'+axis[i]);
+			var value = side[axis[i]];
 			element.childNodes[0].innerHTML=value;
 			element.style.backgroundColor = get_random_color(value);
 		}
@@ -26,10 +26,10 @@ function Cube (element_id) {
 		var t_angles = [0,0,0];
 		console.group(direction);
 		switch (direction) {
-	        case "top" : {
+	        case "up" : {
 	            t_angles = convert_angles(1,0);
 	        }; break;
-	        case "bottom" : {
+	        case "down" : {
 	            t_angles = convert_angles(-1,0);
 	        }; break;
 	        case "left" : {
@@ -38,13 +38,12 @@ function Cube (element_id) {
 	        case "right" : {
 	            t_angles = convert_angles(0,1);
 	        }; break;
-	        default: throw new TypeError('direction must be "top", "bottom", "left" or "right", but not: "'+direction+'"');
+	        default: throw new TypeError('direction must be "up", "down", "left" or "right", but not: "'+direction+'"');
 	    };
 		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
 	}
 
 	var coords = ['x','y','z']; // initial coord system
-	var Ox = 'x',Oy='y'; // initial default ords
 
 	function convert_angles (x,y) {
 		var new_angles = [0,0,0];
@@ -108,8 +107,8 @@ function Cube (element_id) {
 	rotate3d(-1,-1,0,30); // initial rotation
 
 	function rotate_sides () {
-		
-	}
+
+	};
 
 	return this;
 }
@@ -117,8 +116,8 @@ function Cube (element_id) {
 var cube = new Cube('cube3d') // main cube object	
 cube.fill();
 
-shortcut.add('up',function () {cube.make('top')});
-shortcut.add('down',function () {cube.make('bottom')});
+shortcut.add('up',function () {cube.make('up')});
+shortcut.add('down',function () {cube.make('down')});
 shortcut.add('left',function () {cube.make('left')});
 shortcut.add('Right',function () {cube.make('right')});
 
