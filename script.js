@@ -46,7 +46,17 @@ function Cube (element_id) {
 	this.make = make;
 
 	function get_new_value () {
-		return Math.round(Math.random()*2);
+		var values = unique([side['x'],side['-x'],side['y'],side['-y'],side['-z']]).sort();
+		if (values[0]!=0) values.unshift(values[0]-1);
+		var rand = 0;
+        if (values.length==2) {
+            rand = Math.round(Math.random());
+        } else if (values.length>2) {
+            rand = Math.round(Math.random()*9);
+            rand = (rand < 4)?0:(rand < 9)?1:2;
+        }
+
+		return values[rand];
 	}
 
 	function rotate (direction) {
