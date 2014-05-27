@@ -105,7 +105,6 @@ function Cube (element_id) {
 		DOM.style.webkitTransform = matrix.toString();
 	}
 
-<<<<<<< HEAD
 	function rotate_sides() {
 		switch (coords[0]) {
 			case 'x' : break;
@@ -119,30 +118,6 @@ function Cube (element_id) {
 
 	rotate3d(-1,-1,0,30); // initial rotation
 	fill(); // initial filling
-=======
-	function rotate_sides () {
-		var els = {};
-		for (i in axis) {
-			els[axis[i]] = document.getElementsByClassName('side_'+axis[i])[0];
-		}
-		console.log(els);
-		for (i in axis) {
-			var transform = '';
-			var current_axis = axis[i];
-			if (current_axis=='x') transform = 'translateX(1.05em)';
-			if (current_axis=='-x') transform = 'translateX(-1.05em)';
-			if (current_axis=='x' || current_axis=='-x') {transform+=' rotateY(90deg)';console.log(els[current_axis])};
-			if (current_axis=='y') transform = 'translateY(1.05em)';
-			if (current_axis=='-y') transform = 'translateY(-1.05em)';
-			if (current_axis=='y' || current_axis=='-y') {transform+=' rotateX(90deg)';console.log(els[current_axis])};
-			els[current_axis].style.webkitTransform = els[current_axis].style.webkitTransform+transform;
-			console.log(els[current_axis].style.webkitTransform)
-
-		}
-
-	}
-	rotate_sides(); // initial sides rotation
->>>>>>> f8735d027d1e5329c83cfd24b46811000ef15530
 
 	return this;
 }
