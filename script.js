@@ -10,6 +10,7 @@ function Cube (element_id) {
 	var coords = ['x','y','z'];
 
 	var score = 0;
+	var max_value = 0;
 
 	function init () {
 		coords = ['x','y','z'];
@@ -73,7 +74,10 @@ function Cube (element_id) {
 	   		animate_sides(current_sides.front,current_sides[direction]);
 	   		fill();
 	   		DOM.score.innerHTML = score;
-	   		if (side[current_sides[direction]]%3==0) show_info(side[current_sides[direction]],'touch or press <i>space</i> to continue');
+	   		if (side[current_sides[direction]]>max_value) {
+	   			max_value=side[current_sides[direction]];
+	   			if (max_value%3==0) show_info(side[current_sides[direction]],'touch or press <i>space</i> to continue');
+	   		}
 	   		if (check_fail()) show_info('FAIL','touch or press <i>space</i> to restart',true);
 	   	}
 	};
@@ -238,6 +242,7 @@ function unique(arr) {
 }
 
 function show_info (h1,p,reset) {
+	console.log('info=',arguments);
 	var DOM_info = document.getElementById('info');
 	var DOM_h1 = document.getElementById('info_h1');
 	var DOM_p = document.getElementById('info_p');
@@ -256,6 +261,7 @@ function show_info (h1,p,reset) {
 }
 
 function hide_info (reset) {
+	console.log('reset=',reset)
 	var DOM_info = document.getElementById('info');
 	DOM_info.style.backgroundColor = '';
 	DOM_info.style.opacity = 0;
