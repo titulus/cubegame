@@ -16,7 +16,8 @@ function Cube (element_id) {
 	function init () {
 		coords = ['x','y','z'];
 		score = 0;
-		DOM.score.innerHTML = score;
+		max_value = 0;
+
 
 
 		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_z" class="side front"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-z" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div>';
@@ -88,7 +89,7 @@ function Cube (element_id) {
 
 	   		}
 	   		if (check_fail()) show_info('FAIL','touch or press <i>space</i> to restart',true);
-	   	};
+	   	};	
 	   	var prev_front = document.getElementsByClassName('front')[0];
 	   	prev_front.className='side';
 	   	DOM.side[coords[2]].className='side front';
