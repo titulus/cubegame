@@ -112,7 +112,7 @@ function Cube (element_id) {
 
 	function rotate (direction) {
 		var t_angles = [0,0,0];
-		console.group(direction);
+		// console.group(direction);
 		switch (direction) {
 	        case "up" : {
 	            t_angles = convert_angles(1,0);
@@ -135,8 +135,8 @@ function Cube (element_id) {
 	function convert_angles (x,y) {
 		var new_angles = [0,0,0];
 		
-		console.log(x,y);
-			console.log('coords before',coords);
+		// console.log(x,y);
+		// 	console.log('coords before',coords);
 
 			switch (coords[0]) {
 				case "x" : new_angles[0]=x;break;
@@ -178,8 +178,8 @@ function Cube (element_id) {
 				}; break;
 			};
 
-			console.log('coords after',coords);
-		console.groupEnd();
+		// 	console.log('coords after',coords);
+		// console.groupEnd();
 		
 		var tX = 0,tY=0,tZ=0;
 		
@@ -260,7 +260,7 @@ function hide_info (reset) {
 	DOM_info.style.backgroundColor = '';
 	DOM_info.style.opacity = 0;
 	DOM_info.childNodes[0].style.paddingTop = 0;
-	setTimeout(function(){DOM_info.style.display = 'none';},100);
+	setTimeout(function(){DOM_info.style.display = 'none';},0);
 	shortcut.remove('space');
 	set_shortcut();
 	if (reset) cube.init();
