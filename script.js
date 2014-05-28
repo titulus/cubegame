@@ -88,7 +88,7 @@ function Cube (element_id) {
 	   			if (max_value==10 || max_value==15 || max_value>=20) show_info(side[current_sides[direction]],'touch or press <i>space</i> to continue');
 
 	   		}
-	   		if (check_fail()) show_info('FAIL','touch or press <i>space</i> to restart',true);
+	   		if (check_fail()) show_info('FAIL',"score:<b>"+score+"</b>, max:<b>"+max_value+"</b><br/>touch or press <i>space</i> to restart",true);
 	   	};	
 	   	var prev_front = document.getElementsByClassName('front')[0];
 	   	prev_front.className='side';
