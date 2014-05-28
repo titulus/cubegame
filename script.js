@@ -3,7 +3,8 @@ function Cube (element_id) {
 	DOM.cube = document.getElementById(element_id);
 	DOM.side = {}
 	DOM.value = {}
-	DOM.score = document.getElementById('score_value');
+	DOM.score = document.getElementsByClassName('score');
+	DOM.max = document.getElementsByClassName('max');
 
 	var axis = ['z','-y','y','-z','-x','x'];
 	var side = {};
@@ -18,7 +19,7 @@ function Cube (element_id) {
 		DOM.score.innerHTML = score;
 
 
-		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span></div><div id="side_z" class="side"><span></span></div><div id="side_x" class="side"><span></span></div><div id="side_y" class="side"><span></span></div><div id="side_-z" class="side"><span></span></div><div id="side_-x" class="side"><span></span></div>';
+		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_z" class="side front"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-z" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div>';
 		DOM.cube.style.webkitTransform = new WebKitCSSMatrix();
 
 		for (i in axis) DOM.side[axis[i]]=document.getElementById('side_'+axis[i]);
@@ -73,13 +74,25 @@ function Cube (element_id) {
 	   		side[current_sides.front] = get_new_value();
 	   		animate_sides(current_sides.front,current_sides[direction]);
 	   		fill();
-	   		DOM.score.innerHTML = score;
+	   		for (i in DOM.score) {
+	   			DOM.score[i].innerHTML = score;
+	   		}
+	   		// DOM.score.innerHTML = score;
 	   		if (side[current_sides[direction]]>max_value) {
 	   			max_value=side[current_sides[direction]];
-	   			if (max_value%3==0) show_info(side[current_sides[direction]],'touch or press <i>space</i> to continue');
+
+		   		for (i in DOM.max) {
+		   			DOM.max[i].innerHTML = max_value;
+		   		}
+	   			if (max_value==10 || max_value==15 || max_value>=20) show_info(side[current_sides[direction]],'touch or press <i>space</i> to continue');
+
 	   		}
 	   		if (check_fail()) show_info('FAIL','touch or press <i>space</i> to restart',true);
-	   	}
+	   	};
+	   	var prev_front = document.getElementsByClassName('front')[0];
+	   	prev_front.className='side';
+	   	DOM.side[coords[2]].className='side front';
+	   	console.log(prev_front,DOM.side[coords[2]])
 	};
 	this.make = make;
 

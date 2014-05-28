@@ -60,21 +60,26 @@ body {
   transition: all .1s linear;
 }
 
-#panel {
-  width: 240px;
-  margin: auto;
-  text-align: center;
+
+.status {
+  font-size: 20px;
+  opacity: 0;
 }
-  #score {
-    font-size: 20px;
+  .front .status {opacity: 1;}
+  .status > * {
+    position: absolute;
+    margin: 5px;
+    bottom: 0;
+    height: 1em;
+    line-height: 1em;
   }
-  #score > .description {
-    text-transform: uppercase;
-    margin-right: .2em;
+  .status > .score {
+    left: 0;
   }
-  #score > .value {
-    font-weight: 700;
+  .status > .max {
+    right: 0;
   }
+
 #info {
   position: absolute;
   width: 100%;
@@ -103,7 +108,6 @@ body {
         </style>
     </head>
     <body>
-      <div id="panel"><div id="score"><span class="description">score:</span><span id="score_value" class="value">0</span></div></div>
       <div id="cube3d"></div>
       <div id="info"><div class="content"><h1 id="info_h1"></h1><p id="info_p"></p></div></div>
       <script src='prefixfree.min.js'></script>
