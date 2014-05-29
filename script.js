@@ -85,10 +85,10 @@ function Cube (element_id) {
 		   		for (i in DOM.max) {
 		   			DOM.max[i].innerHTML = max_value;
 		   		}
-	   			if (max_value==10 || max_value==15 || max_value>=20) show_info(side[current_sides[direction]],'touch or press <i>space</i> to continue');
+	   			if (max_value==10 || max_value==15 || max_value>=20) show_info(side[current_sides[direction]],'<span class="touch">tap</span> or press <i>space</i> to continue');
 
 	   		}
-	   		if (check_fail()) show_info('FAIL',"score:<b>"+score+"</b>, max:<b>"+max_value+"</b><br/>touch or press <i>space</i> to restart",true);
+	   		if (check_fail()) show_info('FAIL',"score:<b>"+score+"</b>, max:<b>"+max_value+"</b><br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart",true);
 	   	};	
 	   	var prev_front = document.getElementsByClassName('front')[0];
 	   	prev_front.className='side';
@@ -264,7 +264,6 @@ function show_info (h1,p,reset) {
 	DOM_p.innerHTML = p;
 	DOM_info.style.backgroundColor = 'rgba('+get_color(h1).join(',')+',.5)';
 	DOM_info.style.display = 'block';
-	DOM_info.childNodes[0].style.paddingTop = '100px';
 	
 	setTimeout(function(){
 		DOM_info.style.opacity = 1;
@@ -273,13 +272,13 @@ function show_info (h1,p,reset) {
 	shortcut.add('space',function () {hide_info(reset)});
 	remove_shortcut();
 }
+show_info('hello','press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span> to move. <br/>Chosen side will increased, if it equal to front, cube will rotate otherwise. <br/> Press <span class="key">space</span> or <span class="touch">tap</span> to close info.')
 
 function hide_info (reset) {
 	console.log('reset=',reset)
 	var DOM_info = document.getElementById('info');
 	DOM_info.style.backgroundColor = '';
 	DOM_info.style.opacity = 0;
-	DOM_info.childNodes[0].style.paddingTop = 0;
 	setTimeout(function(){DOM_info.style.display = 'none';},0);
 	shortcut.remove('space');
 	set_shortcut();
