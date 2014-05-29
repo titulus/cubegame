@@ -5,6 +5,7 @@ function Cube (element_id) {
 	DOM.value = {}
 	DOM.score = document.getElementsByClassName('score');
 	DOM.max = document.getElementsByClassName('max');
+	this.DOM = DOM;
 
 	var axis = ['z','-y','y','-z','-x','x'];
 	var side = {};
@@ -225,12 +226,19 @@ function Cube (element_id) {
 
 var cube = new Cube('cube3d') // main cube object	
 
+var cube_touch_handler = Hammer(cube.DOM.cube);
+var info_touch_handler = Hammer(document.getElementById('info'));
 
 function set_shortcut () {
 	shortcut.add('up',function () {cube.make('up')});
 	shortcut.add('down',function () {cube.make('down')});
 	shortcut.add('left',function () {cube.make('left')});
 	shortcut.add('Right',function () {cube.make('right')});
+
+	cube_touch_handler.on("swipeup", function(event) {cube.make('up');});
+	cube_touch_handler.on("swipedown", function(event) {cube.make('down');});
+	cube_touch_handler.on("swipeleft", function(event) {cube.make('left');});
+	cube_touch_handler.on("swiperight", function(event) {cube.make('right');});
 }
 set_shortcut();
 function remove_shortcut () {
@@ -238,6 +246,11 @@ function remove_shortcut () {
 	shortcut.remove('down');
 	shortcut.remove('left');
 	shortcut.remove('Right');
+
+	cube_touch_handler.off("swipeup");
+	cube_touch_handler.off("swipedown");
+	cube_touch_handler.off("swipeleft");
+	cube_touch_handler.off("swiperight");
 }
 
 function get_color (value) {
@@ -278,7 +291,9 @@ function show_info (params) {
 		DOM_info.style.opacity = 1;
 	},0);
 
-	shortcut.add('space',function () {hide_info(params.reset)});
+		shortcut.add('space',function () {hide_info(params.reset)});
+		info_touch_handler.on('tap',function(event) {hide_info(params.reset)});
+
 	remove_shortcut();
 }
 show_info({top:'',header:'hello'
@@ -290,6 +305,7 @@ function hide_info (reset) {
 	DOM_info.style.opacity = 0;
 	setTimeout(function(){DOM_info.style.display = 'none';},0);
 	shortcut.remove('space');
+	info_touch_handler.off('tap');
 	set_shortcut();
 	if (reset) cube.init();
 }
