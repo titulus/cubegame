@@ -85,10 +85,18 @@ function Cube (element_id) {
 		   		for (i in DOM.max) {
 		   			DOM.max[i].innerHTML = max_value;
 		   		}
-	   			if (max_value==10 || max_value==15 || max_value>=20) show_info(side[current_sides[direction]],'<span class="touch">tap</span> or press <i>space</i> to continue');
+	   			if (max_value==5) show_info({top:'CONGRATULATIONS!',header:side[current_sides[direction]],text:'If you get 10 - you will <b>win</b>'});
+	   			if (max_value==10) show_info({top:'YOU <b>WON</b>!',header:side[current_sides[direction]],text:'So... can you get 15?'});
+	   			if (max_value==15) show_info({top:'AMAZING!',header:side[current_sides[direction]],text:"I'll bet - you will do 20!"});
+	   			if (max_value>=20) {
+	   				var graz = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
+	   				graz = graz[Math.floor(Math.random()*graz.length)];
+
+	   				show_info({top:graz,header:side[current_sides[direction]],text:'Try to get '+(side[current_sides[direction]]+1)});
+	   			};
 
 	   		}
-	   		if (check_fail()) show_info('FAIL',"score:<b>"+score+"</b>, max:<b>"+max_value+"</b><br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart",true);
+	   		if (check_fail()) show_info({top:'So sorry ):',header:max_value,text:"... and <b>"+score+"</b> points - that's all what you've got.<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart",reset:true});
 	   	};	
 	   	var prev_front = document.getElementsByClassName('front')[0];
 	   	prev_front.className='side';
@@ -255,27 +263,28 @@ function unique(arr) {
   return result;
 }
 
-function show_info (h1,p,reset) {
-	console.log('info=',arguments);
+function show_info (params) {
 	var DOM_info = document.getElementById('info');
+	var DOM_top = document.getElementById('info_top'); 
 	var DOM_h1 = document.getElementById('info_h1');
 	var DOM_p = document.getElementById('info_p');
-	DOM_h1.innerHTML = h1;
-	DOM_p.innerHTML = p;
-	DOM_info.style.backgroundColor = 'rgba('+get_color(h1).join(',')+',.5)';
+	DOM_top.innerHTML = params.top;
+	DOM_h1.innerHTML = params.header;
+	DOM_p.innerHTML = params.text;
+	DOM_info.style.backgroundColor = 'rgba('+get_color(params.header).join(',')+',.5)';
 	DOM_info.style.display = 'block';
 	
 	setTimeout(function(){
 		DOM_info.style.opacity = 1;
 	},0);
 
-	shortcut.add('space',function () {hide_info(reset)});
+	shortcut.add('space',function () {hide_info(params.reset)});
 	remove_shortcut();
 }
-show_info('hello','press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span> to move. <br/>Chosen side will increased, if it equal to front, cube will rotate otherwise. <br/> Press <span class="key">space</span> or <span class="touch">tap</span> to close info.')
+show_info({top:'',header:'hello'
+		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span> to move. <br/>Chosen side will increased, if it equal to front, cube will rotate otherwise. <br/> Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
 
 function hide_info (reset) {
-	console.log('reset=',reset)
 	var DOM_info = document.getElementById('info');
 	DOM_info.style.backgroundColor = '';
 	DOM_info.style.opacity = 0;
