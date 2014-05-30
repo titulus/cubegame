@@ -283,6 +283,7 @@ function show_info (params) {
 	DOM_h1.innerHTML = params.header;
 	DOM_p.innerHTML = params.text;
 	DOM_info.style.backgroundColor = 'rgba('+get_color(params.header).join(',')+',.5)';
+	DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb('+get_color(params.header).join(',')+')';
 	DOM_info.style.display = 'block';
 	
 	setTimeout(function(){
