@@ -63,11 +63,8 @@ function Cube (element_id) {
 		current_sides.back = (current_sides.front.length==1)?'-'+current_sides.front:current_sides.front[1];
 		current_sides.up = (current_sides.down.length==1)?'-'+current_sides.down:current_sides.down[1];
 		current_sides.left = (current_sides.right.length==1)?'-'+current_sides.right:current_sides.right[1];
-		// console.log(current_sides);
 	    var front_value = side[current_sides.front];
-	    // console.log(front_value)
 	    var compare_value = side[current_sides[direction]];
-	    // console.log(compare_value);
 
 	   	if (front_value!=compare_value) {
 	   		rotate(direction);
@@ -107,7 +104,6 @@ function Cube (element_id) {
 	   	var prev_front = document.getElementsByClassName('front')[0];
 	   	prev_front.className='side';
 	   	DOM.side[coords[2]].className='side front';
-	   	console.log(prev_front,DOM.side[coords[2]])
 	};
 	this.make = make;
 
@@ -144,7 +140,6 @@ function Cube (element_id) {
 
 	function rotate (direction) {
 		var t_angles = [0,0,0];
-		// console.group(direction);
 		switch (direction) {
 	        case "up" : {
 	            t_angles = convert_angles(1,0);
@@ -167,8 +162,6 @@ function Cube (element_id) {
 	function convert_angles (x,y) {
 		var new_angles = [0,0,0];
 		
-		// console.log(x,y);
-		// 	console.log('coords before',coords);
 
 			switch (coords[0]) {
 				case "x" : new_angles[0]=x;break;
@@ -210,8 +203,6 @@ function Cube (element_id) {
 				}; break;
 			};
 
-		// 	console.log('coords after',coords);
-		// console.groupEnd();
 		
 		var tX = 0,tY=0,tZ=0;
 		
@@ -289,7 +280,6 @@ function hide_info () {
 
 function touchStart (e) {
 	e.preventDefault();
-	// console.log(e.changedTouches[0]);
 	touch.start.x = e.changedTouches[0].clientX;
 	touch.start.y = e.changedTouches[0].clientY;
 };
@@ -300,7 +290,6 @@ function touchEnd (e) {
 		e.preventDefault();
 		touch.end.x = e.changedTouches[0].clientX;
 		touch.end.y = e.changedTouches[0].clientY;
-		console.log(touch.start,touch.end)
 		touch_handler();
 	}
 }
@@ -311,7 +300,6 @@ function touch_handler() {
 	var dY = touch.end.y - touch.start.y;
 	if (Math.abs(dX)==Math.abs(dY)) {
 		evnt = 'tap';
-		console.info('is it tap?',touch,dX,dY)
 	} else {
 		var d = 0;
 		if (Math.abs(dX)>Math.abs(dY)) {
@@ -323,12 +311,10 @@ function touch_handler() {
 		}
 		if (d<20) evnt = 'tap';
 	}
-	console.log(evnt);
 	event_handler(evnt);
 }
 
-function keyup (ev) {
-	console.log(ev.which)
+function keyup(ev) {
 	var table = {
 		 32:'space'
 		,37:'left'
@@ -340,7 +326,6 @@ function keyup (ev) {
 }
 
 function event_handler(ev) {
-	console.log(ev,'infobox=',infobox);
 	if (infobox) {
 		if (ev=='tap' || ev=='space') hide_info();
 	} else {
