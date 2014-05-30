@@ -333,7 +333,7 @@ function keyup (ev) {
 		,39:'right'
 		,40:'down'
 	}
-	event_handler(table[ev.which])
+	if (table[ev.which]) event_handler(table[ev.which])
 }
 
 function event_handler(ev) {
