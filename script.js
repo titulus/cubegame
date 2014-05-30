@@ -9,6 +9,7 @@ function Cube (element_id) {
 
 	var axis = ['z','-y','y','-z','-x','x'];
 	var side = {};
+	this.side = side;
 	var coords = ['x','y','z'];
 
 	var score = 0;
@@ -79,27 +80,28 @@ function Cube (element_id) {
 	   		for (i in DOM.score) {
 	   			DOM.score[i].innerHTML = score;
 	   		}
-	   		// DOM.score.innerHTML = score;
+	   		if (check_fail()) {this.end = true} else this.end = false;
+	   		var fail_text = "<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart";
 	   		if (side[current_sides[direction]]>max_value) {
 	   			max_value=side[current_sides[direction]];
 
 		   		for (i in DOM.max) {
 		   			DOM.max[i].innerHTML = max_value;
 		   		}
-	   			if (max_value==5) show_info({top:'CONGRATULATIONS!',header:side[current_sides[direction]],text:'If you get 10 - you will <b>win</b>'});
-	   			if (max_value==10) show_info({top:'YOU <b>WON</b>!',header:side[current_sides[direction]],text:'So... can you get 15?'});
-	   			if (max_value==15) show_info({top:'AMAZING!',header:side[current_sides[direction]],text:"I'll bet - you will do 20!"});
+	   			if (max_value==5) show_info({top:'CONGRATULATIONS!',header:side[current_sides[direction]],text:'If you get 10 - you will <b>win</b>'+((check_fail())?fail_text:'')});
+	   			if (max_value==10) show_info({top:'YOU <b>WON</b>!',header:side[current_sides[direction]],text:'So... can you get 15?'+(check_fail())?fail_text:''});
+	   			if (max_value==15) show_info({top:'AMAZING!',header:side[current_sides[direction]],text:"I'll bet - you will do 20!"+(check_fail())?fail_text:''});
 	   			if (max_value>=20) {
 	   				var graz = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
 	   				graz = graz[Math.floor(Math.random()*graz.length)];
 
-	   				show_info({top:graz,header:side[current_sides[direction]],text:'Try to get '+(side[current_sides[direction]]+1)});
+	   				show_info({top:graz,header:side[current_sides[direction]],text:'Try to get '+(side[current_sides[direction]]+1)+(check_fail())?fail_text:''});
 	   			};
 
 	   		}
-	   		if (check_fail()) {
-	   			this.end = true;
-	   			show_info({top:'So sorry ):',header:max_value,text:"... and <b>"+score+"</b> points - that's all what you've got.<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart"});
+	   		if (check_fail() && !infobox) {
+	   			
+	   			show_info({top:'So sorry ):',header:max_value,text:"... and <b>"+score+"</b> points - that's all what you've got."+fail_text});
 	   		}
 	   	};	
 	   	var prev_front = document.getElementsByClassName('front')[0];
