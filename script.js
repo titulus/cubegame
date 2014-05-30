@@ -77,7 +77,10 @@ function Cube (element_id) {
 	   		for (i in DOM.score) {
 	   			DOM.score[i].innerHTML = score;
 	   		}
-	   		if (check_fail()) {this.end = true} else this.end = false;
+	   		if (check_fail()) {
+	   			this.end = true;
+	   			ga('send', 'event', 'game', 'end',side[current_sides[direction]]);
+	   		} else this.end = false;
 	   		var fail_text = "<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart<br/>See source on <a href='//github.com/titulus/cubegame' target=_blank>github</a>";
 	   		if (side[current_sides[direction]]>max_value) {
 	   			max_value=side[current_sides[direction]];
