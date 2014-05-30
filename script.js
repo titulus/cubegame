@@ -81,7 +81,7 @@ function Cube (element_id) {
 	   			DOM.score[i].innerHTML = score;
 	   		}
 	   		if (check_fail()) {this.end = true} else this.end = false;
-	   		var fail_text = "<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart";
+	   		var fail_text = "<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart<br/>See source on <a href='//github.com/titulus/cubegame' target=_blank>github</a>";
 	   		if (side[current_sides[direction]]>max_value) {
 	   			max_value=side[current_sides[direction]];
 
@@ -296,12 +296,13 @@ function touchStart (e) {
 function touchMove (e) {};
 function touchCansel (e) {};
 function touchEnd (e) {
-	e.preventDefault();
-	// console.log(e.changedTouches[0])
-	touch.end.x = e.changedTouches[0].clientX;
-	touch.end.y = e.changedTouches[0].clientY;
-	console.log(touch.start,touch.end)
-	touch_handler();
+	if (e.target.nodeName != 'A') {
+		e.preventDefault();
+		touch.end.x = e.changedTouches[0].clientX;
+		touch.end.y = e.changedTouches[0].clientY;
+		console.log(touch.start,touch.end)
+		touch_handler();
+	}
 }
 
 function touch_handler() {
