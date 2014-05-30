@@ -224,32 +224,9 @@ function Cube (element_id) {
 	return this;
 }
 
+var infobox = false;
+var touch = {start:{x:undefined,y:undefined},end:{x:undefined,y:undefined}};
 var cube = new Cube('cube3d') // main cube object	
-
-
-function set_shortcut () {
-	shortcut.add('up',function () {cube.make('up')});
-	shortcut.add('down',function () {cube.make('down')});
-	shortcut.add('left',function () {cube.make('left')});
-	shortcut.add('Right',function () {cube.make('right')});
-
-	$$('body').on('swipeUp',function () {cube.make('up')});
-	$$('body').on('swipeDown',function () {cube.make('down')});
-	$$('body').on('swipeLeft',function () {cube.make('left')});
-	$$('body').on('swipeRight',function () {cube.make('right')});
-}
-set_shortcut();
-function remove_shortcut () {
-	shortcut.remove('up');
-	shortcut.remove('down');
-	shortcut.remove('left');
-	shortcut.remove('Right');
-
-	$$('body').off('swipeUp');
-	$$('body').off('swipeDown');
-	$$('body').off('swipeLeft');
-	$$('body').off('swipeRight');
-}
 
 function get_color (value) {
 	Math.seedrandom(value);
@@ -290,10 +267,7 @@ function show_info (params) {
 		DOM_info.style.opacity = 1;
 	},0);
 
-		shortcut.add('space',function () {hide_info(params.reset)});
-		$$('body').on('tap',function () {hide_info(params.reset)});
-
-	remove_shortcut();
+	infobox = true;
 }
 show_info({top:'',header:'hello'
 		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>. <br/>Chosen side will increased, if it equal to front, cube will rotate otherwise. <br/> Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
@@ -303,8 +277,55 @@ function hide_info (reset) {
 	DOM_info.style.backgroundColor = '';
 	DOM_info.style.opacity = 0;
 	setTimeout(function(){DOM_info.style.display = 'none';},0);
-	shortcut.remove('space');
-	$$('body').off('tap');
-	set_shortcut();
+	infobox = false;
 	if (reset) cube.init();
+}
+
+
+function touchStart (e) {
+	e.preventDefault();
+	// console.log(e.changedTouches[0]);
+	touch.start.x = e.changedTouches[0].clientX;
+	touch.start.y = e.changedTouches[0].clientY;
+};
+function touchMove (e) {};
+function touchCansel (e) {};
+function touchEnd (e) {
+	e.preventDefault();
+	// console.log(e.changedTouches[0])
+	touch.end.x = e.changedTouches[0].clientX;
+	touch.end.y = e.changedTouches[0].clientY;
+	console.log(touch.start,touch.end)
+	touch_handler();
+}
+
+function touch_handler() {
+	var evnt = '';
+	var dX = touch.end.x - touch.start.x;
+	var dY = touch.end.y - touch.start.y;
+	if (Math.abs(dX)==Math.abs(dY)) {
+		evnt = 'tap';
+		console.info('is it tap?',touch,dX,dY)
+	} else {
+		var d = 0;
+		if (Math.abs(dX)>Math.abs(dY)) {
+			d = Math.abs(dX);
+			evnt = (dX>0)?'right':'left';
+		} else {
+			d = Math.abs(dY);
+			evnt = (dY>0)?'down':'up';
+		}
+		if (d<20) evnt = 'tap';
+	}
+	console.log(evnt);
+	event_handler(evnt);
+}
+
+function event_handler(ev) {
+	console.log(ev,'infobox=',infobox);
+	if (infobox) {
+		if (ev=='tap') hide_info();
+	} else {
+		cube.make(ev);
+	}
 }
