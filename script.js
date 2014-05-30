@@ -22,7 +22,7 @@ function Cube (element_id) {
 
 
 		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_z" class="side front"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-z" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div>';
-		DOM.cube.style.webkitTransform = new WebKitCSSMatrix();
+		// DOM.cube.style.webkitTransform = new WebKitCSSMatrix();
 
 		for (i in axis) DOM.side[axis[i]]=document.getElementById('side_'+axis[i]);
 		for (i in axis) DOM.value[axis[i]]=document.getElementById('side_'+axis[i]).childNodes[0];
@@ -214,9 +214,9 @@ function Cube (element_id) {
 	}
 
 	function rotate3d(x,y,z,degree) {
-		var matrix = new WebKitCSSMatrix(DOM.cube.style.webkitTransform);
-		matrix = matrix.rotateAxisAngle(x,y,z,degree);
-		DOM.cube.style.webkitTransform = matrix.toString();
+		// var matrix = new WebKitCSSMatrix(DOM.cube.style.webkitTransform);
+		// matrix = matrix.rotateAxisAngle(x,y,z,degree);
+		// DOM.cube.style.webkitTransform = matrix.toString();
 	}
 
 	init();
