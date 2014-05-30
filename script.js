@@ -13,13 +13,13 @@ function Cube (element_id) {
 
 	var score = 0;
 	var max_value = 0;
+	this.end = false;
 
 	function init () {
 		coords = ['x','y','z'];
 		score = 0;
 		max_value = 0;
-
-
+		this.end = false;
 
 		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_z" class="side front"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-z" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div>';
 		DOM.cube.style.webkitTransform = new WebKitCSSMatrix();
@@ -97,7 +97,10 @@ function Cube (element_id) {
 	   			};
 
 	   		}
-	   		if (check_fail()) show_info({top:'So sorry ):',header:max_value,text:"... and <b>"+score+"</b> points - that's all what you've got.<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart",reset:true});
+	   		if (check_fail()) {
+	   			this.end = true;
+	   			show_info({top:'So sorry ):',header:max_value,text:"... and <b>"+score+"</b> points - that's all what you've got.<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart"});
+	   		}
 	   	};	
 	   	var prev_front = document.getElementsByClassName('front')[0];
 	   	prev_front.className='side';
@@ -226,7 +229,7 @@ function Cube (element_id) {
 
 var infobox = false;
 var touch = {start:{x:undefined,y:undefined},end:{x:undefined,y:undefined}};
-var cube = new Cube('cube3d') // main cube object	
+var cube = new Cube('cube3d') // main cube object
 
 function get_color (value) {
 	Math.seedrandom(value);
@@ -272,13 +275,13 @@ function show_info (params) {
 show_info({top:'',header:'hello'
 		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>. <br/>Chosen side will increased, if it equal to front, cube will rotate otherwise. <br/> Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
 
-function hide_info (reset) {
+function hide_info () {
 	var DOM_info = document.getElementById('info');
 	DOM_info.style.backgroundColor = '';
 	DOM_info.style.opacity = 0;
 	setTimeout(function(){DOM_info.style.display = 'none';},0);
 	infobox = false;
-	if (reset) cube.init();
+	if (cube.end) cube.init();
 }
 
 
@@ -321,10 +324,22 @@ function touch_handler() {
 	event_handler(evnt);
 }
 
+function keyup (ev) {
+	console.log(ev.which)
+	var table = {
+		 32:'space'
+		,37:'left'
+		,38:'up'
+		,39:'right'
+		,40:'down'
+	}
+	event_handler(table[ev.which])
+}
+
 function event_handler(ev) {
 	console.log(ev,'infobox=',infobox);
 	if (infobox) {
-		if (ev=='tap') hide_info();
+		if (ev=='tap' || ev=='space') hide_info();
 	} else {
 		cube.make(ev);
 	}
