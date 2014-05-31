@@ -69,26 +69,37 @@ function Cube (element_id) {
 	   	if (front_value!=compare_value) {
 	   		rotate(direction);
 	   	} else {
-	   		side[current_sides[direction]]++;
+	   		var max_value_changed = false;
+			side[current_sides[direction]]++;
+			if (side[current_sides[direction]]>max_value) {
+				max_value=side[current_sides[direction]];
+				max_value_changed = true;
+
+				for (i in DOM.max) {
+		   			DOM.max[i].innerHTML = max_value;
+		   		}
+			}
+
 	   		score += side[current_sides[direction]];
+
 	   		side[current_sides.front] = get_new_value();
+
 	   		animate_sides(current_sides.front,current_sides[direction]);
 	   		fill();
 	   		for (i in DOM.score) {
 	   			DOM.score[i].innerHTML = score;
 	   		}
+
+
 	   		if (check_fail()) {
 	   			this.end = true;
 	   			ga('send', 'event', 'max', 'max-'+side[current_sides[direction]]);
 	   			
 	   		} else this.end = false;
-	   		var fail_text = "<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart<br/>See source on <a href='//github.com/titulus/cubegame' target=_blank>github</a>";
-	   		if (side[current_sides[direction]]>max_value) {
-	   			max_value=side[current_sides[direction]];
 
-		   		for (i in DOM.max) {
-		   			DOM.max[i].innerHTML = max_value;
-		   		}
+
+	   		var fail_text = "<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart<br/>See source on <a href='//github.com/titulus/cubegame' target=_blank>github</a>";
+	   		if (max_value_changed) {
 	   			if (max_value==5) show_info({top:'CONGRATULATIONS!',header:side[current_sides[direction]],text:'If you get 10 - you will <b>win</b>'+((check_fail())?fail_text:'')});
 	   			if (max_value==10) {show_info({top:'YOU <b>WON</b>!',header:side[current_sides[direction]],text:'So... can you get 15?'+(check_fail())?fail_text:''});ga('send', 'event', 'game', 'win');}
 	   			if (max_value==15) show_info({top:'AMAZING!',header:side[current_sides[direction]],text:"I'll bet - you will do 20!"+(check_fail())?fail_text:''});
@@ -259,7 +270,7 @@ function show_info (params) {
 	DOM_top.innerHTML = params.top;
 	DOM_h1.innerHTML = params.header;
 	DOM_p.innerHTML = params.text;
-	DOM_info.style.backgroundColor = 'rgba('+get_color(params.header).join(',')+',.5)';
+	DOM_info.style.backgroundColor = (cube.end)?'rgba(0,0,0,.3)':'rgba('+get_color(params.header).join(',')+',.5)';
 	DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb('+get_color(params.header).join(',')+')';
 	DOM_info.style.display = 'block';
 	
