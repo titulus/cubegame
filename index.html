@@ -21,11 +21,14 @@ body {
   font-family: Arial;
 }
 #cube3d {
+  position: absolute;
   font-weight: 700;
-  margin: auto;
+  margin: -2em 0 0 -2em;
   padding: 1em;
   width: 2em;
   height: 2em;
+  top: 50%;
+  left: 50%;
   opacity: .7;
   transform-style: preserve-3d;
   transition: transform .1s linear;
@@ -126,7 +129,7 @@ body {
 #logo {
   font-style: italic;
   font-weight: 700;
-  font-size: 10vw;
+  font-size: 16vw;
   position: absolute;
   color: white;
   text-shadow: 0 0 .3em #588;
@@ -140,7 +143,10 @@ body {
 }
 @media (orientation: portrait) {
   body {font-size: 4vw;}
-  #cube3d {font-size: 20vw;margin-top:10vh;}
+  #cube3d {
+    font-size: 20vw;
+    /*margin-top:10vh;*/
+  }
 
 }
         </style>
