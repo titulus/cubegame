@@ -315,9 +315,14 @@ function show_info (params) {
 	DOM_top.innerHTML = params.top;
 	DOM_h1.innerHTML = params.header;
 	DOM_p.innerHTML = params.text;
-	DOM_info.style.backgroundColor = (cube.end)?'rgba(125,0,0,.5)':'rgba('+get_color(params.header).join(',')+',.5)';
-	DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb('+((cube.end)?'125,0,0':get_color(params.header).join(','))+')';
-	DOM_h1.style.color='rgb('+((cube.end)?'125,0,0':get_color(params.header).join(','))+')';
+	if (cube.end) {
+		DOM_info.style.backgroundColor = 'rgba(125,0,0,.5)';
+		DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb(125,0,0)';
+	}
+	// DOM_info.style.backgroundColor = (cube.end)?'rgba(125,0,0,.5)':'rgba('+get_color(params.header).join(',')+',.5)';
+	// DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb('+((cube.end)?'125,0,0':get_color(params.header).join(','))+')';
+	DOM_h1.style.color='rgb('+get_color(params.header).join(',')+')';
+	DOM_h1.style.textShadow='0 0 .5em rgb('+get_color(params.header).join(',')+')';
 	DOM_info.style.display = 'block';
 	
 	setTimeout(function(){
