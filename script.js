@@ -97,24 +97,49 @@ function Cube (element_id) {
 	   			
 	   		} else this.end = false;
 
+	   		/*
+			this.end - fail
+			max_value - max
+			score - score
+	   		*/
 
-	   		var fail_text = "<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart<br/>See source on <a href='//github.com/titulus/cubegame' target=_blank>github</a>";
+	   		var info_show=false;
+	   		var fail_text = "... and <b>"+score+"</b> points.<br/>but there are no ather moves...<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart<br/>See source on <a href='//github.com/titulus/cubegame' target=_blank>github</a>";
+   			var header = max_value;
+   			var top = '';
+   			var text = '';
 	   		if (max_value_changed) {
-	   			if (max_value==5) show_info({top:'CONGRATULATIONS!',header:side[current_sides[direction]],text:'If you get 10 - you will <b>win</b>'+((check_fail())?fail_text:'')});
-	   			if (max_value==10) {show_info({top:'YOU <b>WON</b>!',header:side[current_sides[direction]],text:'So... can you get 15?'+(check_fail())?fail_text:''});ga('send', 'event', 'game', 'win');}
-	   			if (max_value==15) show_info({top:'AMAZING!',header:side[current_sides[direction]],text:"I'll bet - you will do 20!"+(check_fail())?fail_text:''});
+	   			if (max_value==5) {
+	   				top = 'CONGRATULATIONS!';
+	   				text = 'try to get 10 (;';
+	   				info_show = true;
+	   			}
+	   			if (max_value==10) {
+	   				top = 'YOU <b>WON</b>!';
+	   				text = 'So... can you get 15?';
+	   				ga('send', 'event', 'game', 'win');
+	   				info_show = true;
+	   			}
+	   			if (max_value==15) {
+	   				top = 'AMAZING!';
+	   				text = "I'll bet - you will do 20!";
+	   				info_show = true;
+	   			}
 	   			if (max_value>=20) {
-	   				var graz = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
-	   				graz = graz[Math.floor(Math.random()*graz.length)];
-
-	   				show_info({top:graz,header:side[current_sides[direction]],text:'Try to get '+(side[current_sides[direction]]+1)+(check_fail())?fail_text:''});
+	   				top = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
+	   				top = top[Math.floor(Math.random()*top.length)];
+	   				text = 'Try to get '+(max_value+1);
+	   				info_show = true;
 	   			};
-
-	   		}
-	   		if (check_fail() && !infobox) {
-	   			
-	   			show_info({top:'So sorry ):',header:max_value,text:"... and <b>"+score+"</b> points - that's all what you've got."+fail_text});
-	   		}
+	   		};
+   			if (this.end) {
+   				text = fail_text;
+   				top = (top=='')?'So sorry ):':top;
+				info_show = true;
+				
+   			}
+   			if (info_show) show_info({top:top,header:header,text:text});
+   			
 	   	};	
 	   	var prev_front = document.getElementsByClassName('front')[0];
 	   	prev_front.className='side';
@@ -240,10 +265,30 @@ var touch = {start:{x:undefined,y:undefined},end:{x:undefined,y:undefined}};
 var cube = new Cube('cube3d') // main cube object
 
 function get_color (value) {
-	Math.seedrandom(value);
-    var color = [(Math.round(Math.random()*150)+55),(Math.round(Math.random()*250)+5),(Math.round(Math.random()*250)+5)];
-    Math.seedrandom();
-    return color;
+	
+	switch (value) {
+		case 'hello': return [50,21,82];break;
+		case 0: return [255,255,255];break;
+		case 1: return [125,0,0];break;
+		case 2: return [0,125,0];break;
+		case 3: return [0,0,125];break;
+		case 4: return [125,0,125];break;
+		case 5: return [0,125,125];break;
+		case 6: return [125,125,0];break;
+		case 7: return [0,75,0];break;
+		case 8: return [0,0,75];break;
+		case 9: return [75,75,0];break;
+		case 10: return [0,75,75];break;
+		case 11: return [75,0,75];break;
+		default: {
+			Math.seedrandom(value);
+			var color = [(Math.round(Math.random()*250)+5),(Math.round(Math.random()*250)+5),(Math.round(Math.random()*250)+5)];
+    		Math.seedrandom();
+    		return color;
+		}
+	}
+	
+    
 }
 
 function unique(arr) {
@@ -270,8 +315,9 @@ function show_info (params) {
 	DOM_top.innerHTML = params.top;
 	DOM_h1.innerHTML = params.header;
 	DOM_p.innerHTML = params.text;
-	DOM_info.style.backgroundColor = (cube.end)?'rgba(0,0,0,.3)':'rgba('+get_color(params.header).join(',')+',.5)';
-	DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb('+get_color(params.header).join(',')+')';
+	DOM_info.style.backgroundColor = (cube.end)?'rgba(125,0,0,.5)':'rgba('+get_color(params.header).join(',')+',.5)';
+	DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb('+((cube.end)?'125,0,0':get_color(params.header).join(','))+')';
+	DOM_h1.style.color='rgb('+((cube.end)?'125,0,0':get_color(params.header).join(','))+')';
 	DOM_info.style.display = 'block';
 	
 	setTimeout(function(){
