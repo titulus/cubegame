@@ -79,8 +79,8 @@ function Cube (element_id) {
 	   		}
 	   		if (check_fail()) {
 	   			this.end = true;
-	   			ga('send', 'metric1',side[current_sides[direction]]);
-	   			ga('send', 'metric2',score);
+	   			ga('send', 'event', 'game', 'end', {'metric1':side[current_sides[direction]],'metric2':score});
+	   			
 	   		} else this.end = false;
 	   		var fail_text = "<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart<br/>See source on <a href='//github.com/titulus/cubegame' target=_blank>github</a>";
 	   		if (side[current_sides[direction]]>max_value) {
@@ -90,7 +90,7 @@ function Cube (element_id) {
 		   			DOM.max[i].innerHTML = max_value;
 		   		}
 	   			if (max_value==5) show_info({top:'CONGRATULATIONS!',header:side[current_sides[direction]],text:'If you get 10 - you will <b>win</b>'+((check_fail())?fail_text:'')});
-	   			if (max_value==10) show_info({top:'YOU <b>WON</b>!',header:side[current_sides[direction]],text:'So... can you get 15?'+(check_fail())?fail_text:''});
+	   			if (max_value==10) {show_info({top:'YOU <b>WON</b>!',header:side[current_sides[direction]],text:'So... can you get 15?'+(check_fail())?fail_text:''});ga('send', 'event', 'game', 'win');}
 	   			if (max_value==15) show_info({top:'AMAZING!',header:side[current_sides[direction]],text:"I'll bet - you will do 20!"+(check_fail())?fail_text:''});
 	   			if (max_value>=20) {
 	   				var graz = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
