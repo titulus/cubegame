@@ -79,7 +79,7 @@ function Cube (element_id) {
 	   		}
 	   		if (check_fail()) {
 	   			this.end = true;
-	   			ga('send', 'event', 'game', 'end', {'metric1':side[current_sides[direction]],'metric2':score});
+	   			ga('send', 'event', 'max', 'max-'+side[current_sides[direction]]);
 	   			
 	   		} else this.end = false;
 	   		var fail_text = "<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart<br/>See source on <a href='//github.com/titulus/cubegame' target=_blank>github</a>";
