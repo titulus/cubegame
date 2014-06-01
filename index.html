@@ -23,6 +23,7 @@ body {
 #cube3d {
   position: absolute;
   font-weight: 700;
+  font-size: 500%;
   margin: -2em 0 0 -2em;
   padding: 1em;
   width: 2em;
@@ -97,13 +98,13 @@ body {
   transition: all .1s linear;
 }
   #info > .content {
-    width: 70vw;
-    height: 70vh;
-    margin: 10vh auto 0;
+    width: 17.5em;
+    height: 17.5em;
+    margin: 2.5em auto 0;
     text-align: center;
     transition: all .1s linear;
     background-color: inherit;
-    padding: 5vh 5vw;
+    padding: 1em 1em;
     border-radius: 2em;
     vertical-align: middle;
   }
@@ -129,30 +130,17 @@ body {
 #logo {
   font-style: italic;
   font-weight: 700;
-  font-size: 16vw;
+  font-size: 400%;
   position: absolute;
   color: white;
   text-shadow: 0 0 .3em #588;
   top: .3em;
   left: .3em;
 }
-
-@media (orientation: landscape) {
-  body {font-size: 4vh;}
-  #cube3d {font-size: 20vh;}
-}
-@media (orientation: portrait) {
-  body {font-size: 4vw;}
-  #cube3d {
-    font-size: 20vw;
-    /*margin-top:10vh;*/
-  }
-
-}
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     </head>
-    <body ontouchstart="touchStart(event);" ontouchmove="touchMove(event);" ontouchend="touchEnd(event);" ontouchcancel="touchCancel(event);" onkeyup="keyup(event);">
+    <body ontouchstart="touchStart(event);" ontouchmove="touchMove(event);" ontouchend="touchEnd(event);" ontouchcancel="touchCancel(event);" onkeyup="keyup(event);" onResize="update_fontsize();">
       <div id="panel"><div id="logo">#cubegame</div></div>
       <div id="cube3d"></div>
       <div id="info"><div class="content"><p id="info_top"></p><h1 id="info_h1"></h1><p id="info_p"></p></div></div>

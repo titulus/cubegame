@@ -411,3 +411,11 @@ function event_handler(ev) {
 		cube.make(ev);
 	}
 }
+
+
+function update_fontsize () {
+	var W = window.innerWidth;
+	var H = window.innerHeight;
+	document.body.style.fontSize = ((W>H)?H*0.04:W*0.04)+'px';
+}
+update_fontsize();
