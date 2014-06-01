@@ -1,32 +1,154 @@
+/* CLEAR CSS */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline; background: transparent;}
+body {line-height: 1;}
+ol, ul {list-style: none;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after, q:before, q:after {content: ''; content: none;}
+/* remember to define focus styles! */
+:focus {outline: 0;}
+/* remember to highlight inserts somehow! */
+ins {text-decoration: none;}
+del {text-decoration: line-through;}
+/* tables still need 'cellspacing="0"' in the markup */
+table {border-collapse: collapse; border-spacing: 0;}
+body {
+  background: url('cubes.png');
+  font-family: Arial;
+}
 #cube3d {
-  font-size: 70px;
+  position: absolute;
   font-weight: 700;
-  margin: auto;
+  font-size: 500%;
+  margin: -2em 0 0 -2em;
   padding: 1em;
   width: 2em;
   height: 2em;
+  top: 50%;
+  left: 50%;
   opacity: .7;
   transform-style: preserve-3d;
+  transition: -webkit-transform .1s linear;
   transition: transform .1s linear;
 }
 
 .side {
   position: absolute;
+  font-size: 100%;
   width: 2em;
   height: 2em;
-  border: 1px solid cornflowerblue;
+  border: 0.05em solid cornflowerblue;
   line-height: 2em;
-  border-radius:.2em;
+  border-radius:0.2em;
+  color: #014;
+  text-shadow: 0px 0px 0.1em white;
+  transition: all .1s linear;
+}
+
+#side_-z {
+  -webkit-transform: translateZ(-1.1em) rotateY(180deg);
+  transform: translateZ(-1.1em) rotateY(180deg);
+}
+#side_z {
+  -webkit-transform: translateZ(1.1em);
+  transform: translateZ(1.1em);
+}
+#side_-y {
+  -webkit-transform: translateY(-1.1em) rotateX(90deg);
+  transform: translateY(-1.1em) rotateX(90deg);
+}
+#side_y {
+  -webkit-transform: translateY(1.1em) rotateX(-90deg);
+  transform: translateY(1.1em) rotateX(-90deg);
+}
+#side_-x {
+  -webkit-transform: translateX(-1.1em) rotateY(-90deg);
+  transform: translateX(-1.1em) rotateY(-90deg);
+}
+#side_x {
+  -webkit-transform: translateX(1.1em) rotateY(90deg);
+  transform: translateX(1.1em) rotateY(90deg);
+}
+.side > span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   text-align: center;
-  background: rgba(0,200,200,.4);
-  color: rgb(30, 59, 144);
-  /*text-shadow: 0px 0px 1px black;*/
-  box-shadow: 0 0 .2em rgba(100,149,237,.5); 
+  transform-style: preserve-3d;
+  transition: all .1s linear;
+}
+
+
+.status {
+  font-size: 50%;
+  opacity: 0;
+}
+  .front .status {opacity: 1;}
+  .status > * {
+    position: absolute;
+    margin: 0.1em;
+    bottom: 0;
+    height: 1em;
+    line-height: 1em;
+  }
+  .status > .score {
+    left: 0;
+  }
+  .status > .max {
+    right: 0;
   }
 
-#back {transform: translateZ(-1.05em) rotateX(180deg) rotateY(0deg);}
-#front {transform: translateZ(1.05em) rotateX(0deg) rotateY(0deg);}
-#top {transform: translateY(-1.05em) rotateX(90deg) rotateY(0deg);}
-#bottom {transform: translateY(1.05em) rotateX(-90deg) rotateY(0deg);}
-#left {transform: translateX(-1.05em) rotateX(0deg) rotateY(-90deg);}
-#right {transform: translateX(1.05em) rotateX(0deg) rotateY(90deg);}
+#info {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  color: #014;
+  display: none;
+  opacity: 0;
+  transition: all .1s linear;
+}
+  #info > .content {
+    width: 17.5em;
+    height: 17.5em;
+    margin: 2.5em auto 0;
+    text-align: center;
+    transition: all .1s linear;
+    background-color: inherit;
+    padding: 1em 1em;
+    border-radius: 2em;
+    vertical-align: middle;
+  }
+  #info h1 {
+    margin: 0.3em 0;
+    font-size: 500%;
+  }
+  #info .key {
+    border: 1px solid;
+    border-radius: 0.3em;
+    padding: 0 0.3em 0.1em;
+    -webkit-box-shadow: 0 0 0.1em white;
+    box-shadow: 0 0 0.1em white;
+    background: rgba(255,255,255,0.2);
+  }
+  #info .touch {
+    border: 1px solid;
+    border-radius: 100%;
+    padding: 0.3em;
+    -webkit-box-shadow: 0 0 0.1em white;
+    box-shadow: 0 0 0.1em white;
+    background: rgba(255,255,255,0.2);
+  }
+  #info_p {line-height: 1.5em;}
+#logo {
+  font-style: italic;
+  font-weight: 700;
+  font-size: 400%;
+  position: absolute;
+  color: white;
+  text-shadow: 0 0 .3em #588;
+  top: .3em;
+  left: .3em;
+}
