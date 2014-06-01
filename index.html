@@ -33,6 +33,7 @@ body {
   opacity: .7;
   transform-style: preserve-3d;
   transition: -webkit-transform .1s linear;
+  transition: transform .1s linear;
 }
 
 .side {
@@ -48,12 +49,30 @@ body {
   transition: all .1s linear;
   }
 
-#side_-z {-webkit-transform: translateZ(-1.1em) rotateY(180deg);}
-#side_z {-webkit-transform: translateZ(1.1em);}
-#side_-y {-webkit-transform: translateY(-1.1em) rotateX(90deg);}
-#side_y {-webkit-transform: translateY(1.1em) rotateX(-90deg);}
-#side_-x {-webkit-transform: translateX(-1.1em) rotateY(-90deg);}
-#side_x {-webkit-transform: translateX(1.1em) rotateY(90deg);}
+#side_-z {
+  -webkit-transform: translateZ(-1.1em) rotateY(180deg);
+  transform: translateZ(-1.1em) rotateY(180deg);
+}
+#side_z {
+  -webkit-transform: translateZ(1.1em);
+  transform: translateZ(1.1em);
+}
+#side_-y {
+  -webkit-transform: translateY(-1.1em) rotateX(90deg);
+  transform: translateY(-1.1em) rotateX(90deg);
+}
+#side_y {
+  -webkit-transform: translateY(1.1em) rotateX(-90deg);
+  transform: translateY(1.1em) rotateX(-90deg);
+}
+#side_-x {
+  -webkit-transform: translateX(-1.1em) rotateY(-90deg);
+  transform: translateX(-1.1em) rotateY(-90deg);
+}
+#side_x {
+  -webkit-transform: translateX(1.1em) rotateY(90deg);
+  transform: translateX(1.1em) rotateY(90deg);
+}
 .side > span {
   position: absolute;
   width: 100%;
@@ -116,6 +135,7 @@ body {
     border-radius: 0.3em;
     padding: 0 0.3em 0.1em;
     -webkit-box-shadow: 0 0 0.1em white;
+    box-shadow: 0 0 0.1em white;
     background: rgba(255,255,255,0.2);
   }
   #info .touch {
@@ -123,6 +143,7 @@ body {
     border-radius: 100%;
     padding: 0.3em;
     -webkit-box-shadow: 0 0 0.1em white;
+    box-shadow: 0 0 0.1em white;
     background: rgba(255,255,255,0.2);
   }
   #info_p {line-height: 1.5em;}
