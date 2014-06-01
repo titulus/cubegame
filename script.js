@@ -316,13 +316,26 @@ function show_info (params) {
 	DOM_h1.innerHTML = params.header;
 	DOM_p.innerHTML = params.text;
 	if (cube.end) {
-		DOM_info.style.backgroundColor = 'rgba(125,0,0,.5)';
-		DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb(125,0,0)';
+		DOM_info.style.backgroundColor = 'rgba(255,125,125,.5)';
+		DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb(255,125,125)';
+		DOM_info.childNodes[0].style.backgroundColor = 'inherit';
+		DOM_h1.style.color='rgb('+get_color(params.header).join(',')+')';
+		DOM_h1.style.textShadow='0 0 .5em rgb('+get_color(params.header).join(',')+')';
+	} else if (params.header=='hello') {
+		DOM_info.style.backgroundColor = 'rgba(125,125,255,.5)';
+		DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb(125,125,255)';
+		DOM_info.childNodes[0].style.backgroundColor = 'inherit';
+		DOM_h1.style.color='rgb('+get_color(params.header).join(',')+')';
+		DOM_h1.style.textShadow='0 0 .5em rgb('+get_color(params.header).join(',')+')';
+	} else {
+		DOM_info.style.backgroundColor = 'rgba('+get_color(params.header).join(',')+',.5)';
+		DOM_info.childNodes[0].style.backgroundColor = 'rgba(255,255,255,.5)';
+		DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb(255,255,255)';
 	}
+
 	// DOM_info.style.backgroundColor = (cube.end)?'rgba(125,0,0,.5)':'rgba('+get_color(params.header).join(',')+',.5)';
 	// DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb('+((cube.end)?'125,0,0':get_color(params.header).join(','))+')';
-	DOM_h1.style.color='rgb('+get_color(params.header).join(',')+')';
-	DOM_h1.style.textShadow='0 0 .5em rgb('+get_color(params.header).join(',')+')';
+	
 	DOM_info.style.display = 'block';
 	
 	setTimeout(function(){
