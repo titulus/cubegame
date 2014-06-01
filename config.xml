@@ -13,6 +13,6 @@
 
     <author>Titulus Desiderio</author>
 
-    <gap:platform name="android" />
+    <!-- <gap:platform name="android" /> -->
 
 </widget>
