@@ -322,9 +322,6 @@ function show_info (params) {
 	} else {
 		DOM_info.style.backgroundColor = 'rgba('+get_color(params.header).join(',')+',.5)';
 	}
-
-	// DOM_info.style.backgroundColor = (cube.end)?'rgba(125,0,0,.5)':'rgba('+get_color(params.header).join(',')+',.5)';
-	// DOM_info.childNodes[0].style.boxShadow = '0 0 2em rgb('+((cube.end)?'125,0,0':get_color(params.header).join(','))+')';
 	
 	DOM_info.style.display = 'block';
 	
