@@ -1,4 +1,4 @@
-function Cube (element_id) {
+function Cube (element_id,sides) {
 	var DOM = {};
 	DOM.cube = document.getElementById(element_id);
 	DOM.side = {}
@@ -7,7 +7,7 @@ function Cube (element_id) {
 	DOM.max = document.getElementsByClassName('max');
 	this.DOM = DOM;
 
-	var axis = ['z','-y','y','-z','-x','x'];
+	var axis = ['x','y','z','-x','-y','-z'];
 	var side = {};
 	this.side = side;
 	var coords = ['x','y','z'];
@@ -28,7 +28,8 @@ function Cube (element_id) {
 
 		for (i in axis) DOM.side[axis[i]]=document.getElementById('side_'+axis[i]);
 		for (i in axis) DOM.value[axis[i]]=document.getElementById('side_'+axis[i]).childNodes[0];
-		for (i in axis) {side[axis[i]]=Math.round(Math.random()*2);}
+		for (i in axis) {side[axis[i]]=(sides)?sides[i]:Math.round(Math.random()*2);}
+		sides = undefined;
 
 		rotate3d(-1,-1,0,30); // initial rotation
 		fill(); // initial filling
@@ -56,7 +57,7 @@ function Cube (element_id) {
 		// DOM.value[reseted].style.fontSize='100%';
 	}
 
-	function make (direction) {
+	function make (direction,value) {
 		var current_sides = {};
 		current_sides.front = coords[2];
 		current_sides.down = coords[1];
@@ -83,7 +84,7 @@ function Cube (element_id) {
 
 	   		score += side[current_sides[direction]];
 
-	   		side[current_sides.front] = get_new_value();
+	   		side[current_sides.front] = (value)?value:get_new_value();
 
 	   		animate_sides(current_sides.front,current_sides[direction]);
 	   		fill();
@@ -261,7 +262,7 @@ function Cube (element_id) {
 
 var infobox = false;
 var touch = {start:{x:undefined,y:undefined},end:{x:undefined,y:undefined}};
-var cube = new Cube('cube3d') // main cube object
+var cube = new Cube('cube3d',[1,0,0,1,0,1]) // main cube object
 
 function get_color (value) {
 	
