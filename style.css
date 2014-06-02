@@ -107,7 +107,7 @@ body {
     margin: 0.3em 0;
     font-size: 500%;
   }
-  #info .key {
+  .key {
     border: 1px solid;
     border-radius: 0.3em;
     padding: 0 0.3em 0.1em;
@@ -115,7 +115,7 @@ body {
     box-shadow: 0 0 0.1em #014;
     background: rgba(0,10,40,0.1);
   }
-  #info .touch {
+  .touch {
     border: 1px solid;
     border-radius: 100%;
     padding: 0.3em;
