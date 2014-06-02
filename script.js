@@ -154,7 +154,7 @@ function Cube (element_id) {
             rand = Math.round(Math.random());
         } else if (values.length>2) {
             rand = Math.round(Math.random()*9);
-            rand = (rand < 4)?0:(rand < 9)?1:2;
+            rand = (rand < 3)?0:(rand < 9)?1:2;
         }
 
 		return values[rand];
