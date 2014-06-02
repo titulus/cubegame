@@ -262,7 +262,7 @@ function Cube (element_id,sides) {
 
 var status = '';
 var touch = {start:{x:undefined,y:undefined},end:{x:undefined,y:undefined}};
-var cube = new Cube('cube3d',[1,0,0,1,0,1]) // main cube object
+var cube = new Cube('cube3d') // main cube object
 
 function get_color (value) {
 	
