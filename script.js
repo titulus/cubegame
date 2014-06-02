@@ -260,7 +260,7 @@ function Cube (element_id,sides) {
 	return this;
 }
 
-var infobox = false;
+var status = '';
 var touch = {start:{x:undefined,y:undefined},end:{x:undefined,y:undefined}};
 var cube = new Cube('cube3d',[1,0,0,1,0,1]) // main cube object
 
@@ -329,7 +329,7 @@ function show_info (params) {
 		DOM_info.style.opacity = 1;
 	},0);
 
-	infobox = true;
+	status = 'infobox';
 }
 show_info({top:'',header:'hello'
 		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>. <br/>Chosen side will increased, if it equal to front, cube will rotate otherwise. <br/> Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
@@ -339,7 +339,7 @@ function hide_info () {
 	DOM_info.style.backgroundColor = '';
 	DOM_info.style.opacity = 0;
 	setTimeout(function(){DOM_info.style.display = 'none';},0);
-	infobox = false;
+	status = 'game';
 	if (cube.end) cube.init();
 }
 
@@ -392,10 +392,14 @@ function keyup(ev) {
 }
 
 function event_handler(ev) {
-	if (infobox) {
-		if (ev=='tap' || ev=='space') hide_info();
-	} else {
-		cube.make(ev);
+	switch(status) {
+		case 'infobox' : {
+			if (ev=='tap' || ev=='space') hide_info();
+		}; break;
+		case 'game' : {
+			cube.make(ev);
+		}; break;
+		default: throw new Error('unexpected status: '+status);
 	}
 }
 
