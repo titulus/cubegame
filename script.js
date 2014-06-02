@@ -22,7 +22,7 @@ function Cube (element_id) {
 		max_value = 0;
 		this.end = false;
 
-		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_z" class="side front"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-z" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div>';
+		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span></div><div id="side_z" class="side front"><span></span></div><div id="side_x" class="side"><span></span></div><div id="side_y" class="side"><span></span></div><div id="side_-z" class="side"><span></span></div><div id="side_-x" class="side"><span></span></div>';
 		DOM.cube.style.webkitTransform = new WebKitCSSMatrix();
 		DOM.score.innerHTML = score;
 
