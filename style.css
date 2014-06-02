@@ -107,23 +107,23 @@ body {
     margin: 0.3em 0;
     font-size: 500%;
   }
-  .key {
-    border: 1px solid;
-    border-radius: 0.3em;
-    padding: 0 0.3em 0.1em;
-    -webkit-box-shadow: 0 0 0.1em #014;
-    box-shadow: 0 0 0.1em #014;
-    background: rgba(0,10,40,0.1);
-  }
-  .touch {
-    border: 1px solid;
-    border-radius: 100%;
-    padding: 0.3em;
-    -webkit-box-shadow: 0 0 0.1em #014;
-    box-shadow: 0 0 0.1em #014;
-    background: rgba(0,10,40,0.1);
-  }
   #info_p {line-height: 1.5em;}
+.key {
+  border: 1px solid;
+  border-radius: 0.3em;
+  padding: 0 0.3em 0.1em;
+  -webkit-box-shadow: 0 0 0.1em #014;
+  box-shadow: 0 0 0.1em #014;
+  background: rgba(0,10,40,0.1);
+}
+.touch {
+  border: 1px solid;
+  border-radius: 100%;
+  padding: 0.3em;
+  -webkit-box-shadow: 0 0 0.1em #014;
+  box-shadow: 0 0 0.1em #014;
+  background: rgba(0,10,40,0.1);
+}
 #logo {
   font-style: italic;
   font-weight: 700;
