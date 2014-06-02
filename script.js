@@ -3,7 +3,7 @@ function Cube (element_id) {
 	DOM.cube = document.getElementById(element_id);
 	DOM.side = {}
 	DOM.value = {}
-	DOM.score = document.getElementsByClassName('score');
+	DOM.score = document.getElementById('score');
 	DOM.max = document.getElementsByClassName('max');
 	this.DOM = DOM;
 
@@ -24,6 +24,7 @@ function Cube (element_id) {
 
 		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_z" class="side front"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_y" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-z" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div><div id="side_-x" class="side"><span></span><div class="status"><span class="score"></span><span class="max"></span></div></div>';
 		DOM.cube.style.webkitTransform = new WebKitCSSMatrix();
+		DOM.score.innerHTML = score;
 
 		for (i in axis) DOM.side[axis[i]]=document.getElementById('side_'+axis[i]);
 		for (i in axis) DOM.value[axis[i]]=document.getElementById('side_'+axis[i]).childNodes[0];
@@ -86,9 +87,7 @@ function Cube (element_id) {
 
 	   		animate_sides(current_sides.front,current_sides[direction]);
 	   		fill();
-	   		for (i in DOM.score) {
-	   			DOM.score[i].innerHTML = score;
-	   		}
+	   		DOM.score.innerHTML = score;
 
 
 	   		if (check_fail()) {

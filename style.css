@@ -18,7 +18,7 @@ body {
 #cube3d {
   position: absolute;
   font-weight: 700;
-  font-size: 500%;
+  font-size: 400%;
   margin: -2em 0 0 -2em;
   padding: 1em;
   width: 2em;
@@ -150,5 +150,14 @@ body {
   color: white;
   text-shadow: 0 0 .3em #588;
   top: .3em;
+  left: .3em;
+}
+#score {
+  font-weight: 700;
+  font-size: 400%;
+  position: absolute;
+  color: white;
+  text-shadow: 0 0 .3em #588;
+  bottom: .3em;
   left: .3em;
 }
