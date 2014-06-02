@@ -77,26 +77,6 @@ body {
   transition: all .1s linear;
 }
 
-
-.status {
-  font-size: 50%;
-  opacity: 0;
-}
-  .front .status {opacity: 1;}
-  .status > * {
-    position: absolute;
-    margin: 0.1em;
-    bottom: 0;
-    height: 1em;
-    line-height: 1em;
-  }
-  .status > .score {
-    left: 0;
-  }
-  .status > .max {
-    right: 0;
-  }
-
 #info {
   position: absolute;
   width: 100%;
