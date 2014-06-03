@@ -42,7 +42,8 @@ function Cube (element_id) {
 			var value = side[axis[i]];
 			element.childNodes[0].innerHTML=value;
 			var color = get_color(value);
-			element.style.backgroundColor = 'rgba('+color.join(',')+',.6)';
+			element.style.backgroundColor = 'rgba('+color.join(',')+',.8)';
+			// element.style.webkitBoxShadow = '0 0 .1em rgb('+color.join(',')+')';
 		}
 	}
 
@@ -270,18 +271,18 @@ function get_color (value) {
 	
 	switch (value) {
 		case 'hello': return [50,21,82];break;
-		case 0: return [255,255,255];break;
-		case 1: return [125,0,0];break;
-		case 2: return [0,125,0];break;
-		case 3: return [0,0,125];break;
-		case 4: return [125,0,125];break;
-		case 5: return [0,125,125];break;
-		case 6: return [125,125,0];break;
-		case 7: return [0,75,0];break;
-		case 8: return [0,0,75];break;
-		case 9: return [75,75,0];break;
-		case 10: return [0,75,75];break;
-		case 11: return [75,0,75];break;
+		case 0: return [75,0,125];break;
+		// case 1: return [125,0,0];break;
+		// case 2: return [0,125,0];break;
+		// case 3: return [0,0,125];break;
+		// case 4: return [125,0,125];break;
+		// case 5: return [0,125,125];break;
+		// case 6: return [125,125,0];break;
+		// case 7: return [0,75,0];break;
+		// case 8: return [0,0,75];break;
+		// case 9: return [75,75,0];break;
+		// case 10: return [0,75,75];break;
+		// case 11: return [75,0,75];break;
 		default: {
 			Math.seedrandom(value);
 			var color = [(Math.round(Math.random()*250)+5),(Math.round(Math.random()*250)+5),(Math.round(Math.random()*250)+5)];

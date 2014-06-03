@@ -25,7 +25,7 @@ body {
   height: 2em;
   top: 50%;
   left: 50%;
-  opacity: .7;
+  /*opacity: .7;*/
   transform-style: preserve-3d;
   transition: -webkit-transform .1s linear;
   transition: transform .1s linear;
@@ -36,7 +36,7 @@ body {
   font-size: 100%;
   width: 2em;
   height: 2em;
-  border: 0.02em solid #014;
+  border: 0.015em solid #014;
   line-height: 2em;
   border-radius:0.1em;
   color: #014;
@@ -45,7 +45,7 @@ body {
 }
 .sside {
   padding: 0 .3em;
-  border: 0.05em solid cornflowerblue;
+  border: 0.05em solid #014;
   border-radius:0.2em;
   text-shadow: 0px 0px 0.1em white;  
 }
@@ -112,6 +112,8 @@ body {
   #info h1 {
     margin: 0.3em 0;
     font-size: 500%;
+    /*color: white;*/
+    text-shadow: 0 0 .3em #014;
   }
   #info_p {line-height: 1.5em;}
 .key {
@@ -136,7 +138,7 @@ body {
   font-size: 400%;
   position: absolute;
   color: white;
-  text-shadow: 0 0 .3em #588;
+  text-shadow: 0 0 .3em #014;
   top: .3em;
   left: .3em;
 }
@@ -145,7 +147,7 @@ body {
   font-size: 400%;
   position: absolute;
   color: white;
-  text-shadow: 0 0 .3em #588;
+  text-shadow: 0 0 .3em #014;
   bottom: .3em;
   left: .3em;
 }
