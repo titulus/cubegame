@@ -203,8 +203,34 @@ function Cube (element_id) {
 	}
 	this.rotate = rotate;
 	function rotate_sides () {
-		var side = DOM.side['z'];
+		var side = DOM.value['z'];
 		console.log(coords);
+		var X = (/(?:X\()(\d{1,3})(?=deg)/).exec(side.style.webkitTransform)[1];
+		var Y = (/(?:Y\()(\d{1,3})(?=deg)/).exec(side.style.webkitTransform)[1];
+		var Z = (/(?:Z\()(\d{1,3})(?=deg)/).exec(side.style.webkitTransform)[1];
+		console.log(X,Y,Z)
+
+		// switch (coords[2]) {
+		// 	case 'z' : {
+		// 		side.style.webkitTransform = '';
+		// 	};break;
+		// 	case '-z' : {
+		// 		side.style.webkitTransform = 'rotateY(180deg)';
+		// 	};break;
+		// 	case 'x' : {
+		// 		side.style.webkitTransform = 'rotateY(180deg)';
+		// 	};break;
+		// 	case '-x' : {
+		// 		side.style.webkitTransform = '';
+		// 	};break;
+		// 	case 'y' : {
+		// 		side.style.webkitTransform = '';
+		// 	};break;
+		// 	case '-y' : {
+		// 		side.style.webkitTransform = 'rotateY(180deg)';
+		// 	};break;
+		// }
+		// console.log(side.style.webkitTransform);
 	}
 
 
