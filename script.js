@@ -139,7 +139,7 @@ function Cube (element_id,sides) {
 				
    			}
    			if (info_show) {
-   				show_info({top:top,header:header,text:text});
+   				toggle_info({top:top,header:header,text:text});
    				status = 'infobox'
    			};
 	   	};	
@@ -309,40 +309,38 @@ function unique(arr) {
   return result;
 }
 
-function show_info (params) {
-	var DOM_info = document.getElementById('info');
-	var DOM_top = document.getElementById('info_top'); 
-	var DOM_h1 = document.getElementById('info_h1');
-	var DOM_p = document.getElementById('info_p');
-	DOM_top.innerHTML = params.top;
-	DOM_h1.innerHTML = params.header;
-	DOM_p.innerHTML = params.text;
-	if (cube.end) {
-		DOM_info.style.backgroundColor = 'rgba(255,125,125,.5)';
-	} else if (params.header=='hello') {
-		DOM_info.style.backgroundColor = 'rgba(125,125,255,.5)';
+function toggle_info (params) {
+	var DOM = {};
+	DOM.info = document.getElementById('info');
+	DOM.top = document.getElementById('info_top');
+	DOM.h1 = document.getElementById('info_h1');
+	DOM.p = document.getElementById('info_p');
+	if (params) {
+		DOM.top.innerHTML = params.top;
+		DOM.h1.innerHTML = params.header;
+		DOM.p.innerHTML = params.text;
+		if (cube.end) {
+			DOM.info.style.backgroundColor = 'rgba(255,125,125,.5)';
+		} else if (params.header=='hello') {
+			DOM.info.style.backgroundColor = 'rgba(125,125,255,.5)';
+		} else {
+			DOM.info.style.backgroundColor = 'rgba('+get_color(params.header).join(',')+',.5)';
+		}
+		
+		DOM.info.style.display = 'block';
+		
+		setTimeout(function(){DOM.info.style.opacity = 1;},0);
 	} else {
-		DOM_info.style.backgroundColor = 'rgba('+get_color(params.header).join(',')+',.5)';
+		DOM.info.style.backgroundColor = '';
+		DOM.info.style.opacity = 0;
+		setTimeout(function(){
+			DOM.info.style.display = 'none';},100);
+		if (cube.end) cube.init();
 	}
-	
-	DOM_info.style.display = 'block';
-	
-	setTimeout(function(){
-		DOM_info.style.opacity = 1;
-	},0);
 }
-show_info({top:'',header:'hello'
+toggle_info({top:'',header:'hello'
 		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>. <br/>Chosen side will increased, if it equal to front, cube will rotate otherwise. <br/> Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
 status='infobox';
-
-function hide_info () {
-	var DOM_info = document.getElementById('info');
-	DOM_info.style.backgroundColor = '';
-	DOM_info.style.opacity = 0;
-	setTimeout(function(){DOM_info.style.display = 'none';},0);
-	if (cube.end) cube.init();
-}
-
 
 function touchStart (e) {
 	e.preventDefault();
@@ -395,7 +393,7 @@ function event_handler(ev) {
 	switch(status) {
 		case 'infobox' : {
 			if (ev=='tap' || ev=='space') {
-				hide_info();
+				toggle_info();
 				status = 'game';
 			}
 		}; break;
