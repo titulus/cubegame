@@ -199,6 +199,12 @@ function Cube (element_id) {
 	        default: throw new TypeError('direction must be "up", "down", "left" or "right", but not: "'+direction+'"');
 	    };
 		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
+		rotate_sides();
+	}
+	this.rotate = rotate;
+	function rotate_sides () {
+		var side = DOM.side['z'];
+
 	}
 
 
@@ -405,6 +411,9 @@ function event_handler(ev) {
 				status = 'game';
 			}
 		}; break;
+		case 'debug' : {
+			cube.rotate(ev);
+		}; break;
 		default: throw new Error('unexpected status: '+status);
 	}
 }
@@ -420,11 +429,7 @@ update_fontsize();
 function tutorial (state) {
 	switch (state) {
 		case 0 : {
-			toggle_info({top:'',header:'hello'
-		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
-		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
-		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
-			status='hello';
+			
 		}; break;
 		case 1 : {
 			toggle_info({top:'',header:'hello'
@@ -436,4 +441,23 @@ function tutorial (state) {
 	}
 }
 
-tutorial(0);
+ function init (state) {
+ 	switch (state) {
+ 		case 'game': {
+ 			toggle_info({top:'',header:'hello'
+		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
+		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
+		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
+			status='hello';
+ 		}; break;
+ 		case 'tutorial' : {
+ 			tutorial(1);
+ 		}; break;
+ 		case 'debug' : {
+ 			status = 'debug';
+ 			cube.init(['+x','+y','+z','-x','-y','-z'])
+ 		}; break;
+ 	}
+ }
+
+ init('debug');
