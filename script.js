@@ -204,7 +204,7 @@ function Cube (element_id) {
 	this.rotate = rotate;
 	function rotate_sides () {
 		var side = DOM.side['z'];
-
+		console.log(coords);
 	}
 
 
@@ -389,8 +389,7 @@ function keyup(ev) {
 		,38:'up'
 		,39:'right'
 		,40:'down'
-	}
-	console.log(ev.which)
+	};
 	if (table[ev.which]) event_handler(table[ev.which])
 }
 
