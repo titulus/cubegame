@@ -138,8 +138,10 @@ function Cube (element_id,sides) {
 				info_show = true;
 				
    			}
-   			if (info_show) show_info({top:top,header:header,text:text});
-   			
+   			if (info_show) {
+   				show_info({top:top,header:header,text:text});
+   				status = 'infobox'
+   			};
 	   	};	
 	   	var prev_front = document.getElementsByClassName('front')[0];
 	   	prev_front.className='side';
@@ -328,18 +330,16 @@ function show_info (params) {
 	setTimeout(function(){
 		DOM_info.style.opacity = 1;
 	},0);
-
-	status = 'infobox';
 }
 show_info({top:'',header:'hello'
 		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>. <br/>Chosen side will increased, if it equal to front, cube will rotate otherwise. <br/> Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
+status='infobox';
 
 function hide_info () {
 	var DOM_info = document.getElementById('info');
 	DOM_info.style.backgroundColor = '';
 	DOM_info.style.opacity = 0;
 	setTimeout(function(){DOM_info.style.display = 'none';},0);
-	status = 'game';
 	if (cube.end) cube.init();
 }
 
@@ -394,7 +394,10 @@ function keyup(ev) {
 function event_handler(ev) {
 	switch(status) {
 		case 'infobox' : {
-			if (ev=='tap' || ev=='space') hide_info();
+			if (ev=='tap' || ev=='space') {
+				hide_info();
+				status = 'game';
+			}
 		}; break;
 		case 'game' : {
 			cube.make(ev);
