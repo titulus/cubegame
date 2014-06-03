@@ -1,4 +1,4 @@
-function Cube (element_id,sides) {
+function Cube (element_id) {
 	var DOM = {};
 	DOM.cube = document.getElementById(element_id);
 	DOM.side = {}
@@ -16,7 +16,7 @@ function Cube (element_id,sides) {
 	var max_value = 0;
 	this.end = false;
 
-	function init () {
+	function init (sides) {
 		coords = ['x','y','z'];
 		score = 0;
 		max_value = 0;
@@ -42,7 +42,7 @@ function Cube (element_id,sides) {
 			var value = side[axis[i]];
 			element.childNodes[0].innerHTML=value;
 			var color = get_color(value);
-			element.style.backgroundColor = 'rgba('+color.join(',')+',.5)';
+			element.style.backgroundColor = 'rgba('+color.join(',')+',.6)';
 		}
 	}
 
@@ -333,14 +333,10 @@ function toggle_info (params) {
 	} else {
 		DOM.info.style.backgroundColor = '';
 		DOM.info.style.opacity = 0;
-		setTimeout(function(){
-			DOM.info.style.display = 'none';},100);
+		DOM.info.style.display = 'none';
 		if (cube.end) cube.init();
 	}
 }
-toggle_info({top:'',header:'hello'
-		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>. <br/>Chosen side will increased, if it equal to front, cube will rotate otherwise. <br/> Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
-status='infobox';
 
 function touchStart (e) {
 	e.preventDefault();
@@ -380,12 +376,14 @@ function touch_handler() {
 
 function keyup(ev) {
 	var table = {
-		 32:'space'
+		 27:'esc'
+		,32:'space'
 		,37:'left'
 		,38:'up'
 		,39:'right'
 		,40:'down'
 	}
+	console.log(ev.which)
 	if (table[ev.which]) event_handler(table[ev.which])
 }
 
@@ -398,7 +396,13 @@ function event_handler(ev) {
 			}
 		}; break;
 		case 'game' : {
-			cube.make(ev);
+			if (ev == 'up' || ev == 'down' || ev == 'left' || ev == 'right') cube.make(ev);
+		}; break;
+		case 'hello' : {
+			if (ev=='esc' || ev=='tap' || ev=='space') {
+				toggle_info();
+				status = 'game';
+			}
 		}; break;
 		default: throw new Error('unexpected status: '+status);
 	}
@@ -411,3 +415,24 @@ function update_fontsize () {
 	document.body.style.fontSize = ((W>H)?H*0.04:W*0.04)+'px';
 }
 update_fontsize();
+
+function tutorial (state) {
+	switch (state) {
+		case 0 : {
+			toggle_info({top:'',header:'hello'
+		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
+		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
+		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
+			status='hello';
+		}; break;
+		case 1 : {
+			toggle_info({top:'',header:'hello'
+		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
+		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
+		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
+			status='tutorial';
+		}; break;
+	}
+}
+
+tutorial(0);
