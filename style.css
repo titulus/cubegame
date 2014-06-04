@@ -51,8 +51,8 @@ body {
 }
 
 #side_-z {
-  -webkit-transform: translateZ(-1.1em) rotateY(180deg);
-  transform: translateZ(-1.1em) rotateY(180deg);
+  -webkit-transform: translateZ(-1.1em);
+  transform: translateZ(-1.1em);
 }
 #side_z {
   -webkit-transform: translateZ(1.1em);
@@ -63,12 +63,12 @@ body {
   transform: translateY(-1.1em) rotateX(90deg);
 }
 #side_y {
-  -webkit-transform: translateY(1.1em) rotateX(-90deg);
-  transform: translateY(1.1em) rotateX(-90deg);
+  -webkit-transform: translateY(1.1em) rotateX(90deg);
+  transform: translateY(1.1em) rotateX(90deg);
 }
 #side_-x {
-  -webkit-transform: translateX(-1.1em) rotateY(-90deg);
-  transform: translateX(-1.1em) rotateY(-90deg);
+  -webkit-transform: translateX(-1.1em) rotateY(90deg);
+  transform: translateX(-1.1em) rotateY(90deg);
 }
 #side_x {
   -webkit-transform: translateX(1.1em) rotateY(90deg);

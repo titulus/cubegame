@@ -199,37 +199,74 @@ function Cube (element_id) {
 	        default: throw new TypeError('direction must be "up", "down", "left" or "right", but not: "'+direction+'"');
 	    };
 		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
-		rotate_sides();
+		rotate_sides(direction);
 	}
 	this.rotate = rotate;
-	function rotate_sides () {
-		var side = DOM.value['z'];
-		console.log(coords);
-		var X = (/(?:X\()(\d{1,3})(?=deg)/).exec(side.style.webkitTransform)[1];
-		var Y = (/(?:Y\()(\d{1,3})(?=deg)/).exec(side.style.webkitTransform)[1];
-		var Z = (/(?:Z\()(\d{1,3})(?=deg)/).exec(side.style.webkitTransform)[1];
-		console.log(X,Y,Z)
+	function rotate_sides (direction) {
+		function get_side_rotate_angles(element) {
+			var x = ((/(?:X\()(.?\d{1,3})(?=deg)/).test(element.style.webkitTransform))?(/(?:X\()(.?\d{1,3})(?=deg)/).exec(element.style.webkitTransform)[1]:0;
+			var y = ((/(?:Y\()(.?\d{1,3})(?=deg)/).test(element.style.webkitTransform))?(/(?:Y\()(.?\d{1,3})(?=deg)/).exec(element.style.webkitTransform)[1]:0;
+			var z = ((/(?:Z\()(.?\d{1,3})(?=deg)/).test(element.style.webkitTransform))?(/(?:Z\()(.?\d{1,3})(?=deg)/).exec(element.style.webkitTransform)[1]:0;
+			return [parseInt(x),parseInt(y),parseInt(z)];
+		}
+		function rotate_angle (init_angles,rotate_angles) {
+			returned_angles = [0,0,0];
+			for (i in returned_angles) {
+				returned_angles[i] = init_angles[i]+rotate_angles[i];
 
-		// switch (coords[2]) {
-		// 	case 'z' : {
-		// 		side.style.webkitTransform = '';
-		// 	};break;
-		// 	case '-z' : {
-		// 		side.style.webkitTransform = 'rotateY(180deg)';
-		// 	};break;
-		// 	case 'x' : {
-		// 		side.style.webkitTransform = 'rotateY(180deg)';
-		// 	};break;
-		// 	case '-x' : {
-		// 		side.style.webkitTransform = '';
-		// 	};break;
-		// 	case 'y' : {
-		// 		side.style.webkitTransform = '';
-		// 	};break;
-		// 	case '-y' : {
-		// 		side.style.webkitTransform = 'rotateY(180deg)';
-		// 	};break;
-		// }
+				if (returned_angles[i]>=360) returned_angles[i] -= 360;
+				if (returned_angles[i]<0) returned_angles[i] += 360;
+			}
+			return returned_angles;
+		}
+
+		function rotate_side (aside,angles) {
+			var temp_axis = {'x':0,'y':1,'z':2};
+			var side;
+			if (aside.length==1) {side=DOM.value[coords[temp_axis[aside]]];} else {
+				aside = temp_axis[aside[1]];
+				side = DOM.value[(coords[aside].length==1)?('-'+coords[aside]):coords[aside][1]];
+			}
+			var rotate_angles = get_side_rotate_angles(side);
+			var new_angles = rotate_angle(rotate_angles,angles)
+			side.style.webkitTransform = 'rotateX('+new_angles[0]+'deg) rotateY('+new_angles[1]+'deg) rotateZ('+new_angles[2]+'deg)';
+		}
+
+		console.log(coords);
+		
+		switch (direction) {
+			case 'up' : {
+				rotate_side('x',[0,0,-90]);
+				rotate_side('-x',[0,0,-90]);
+
+				rotate_side('z',[180,0,0]);
+				rotate_side('-z',[180,0,0]);
+			}; break;
+			case 'down' : {
+				rotate_side('x',[0,0,90]);
+				rotate_side('-x',[0,0,90]);
+
+				rotate_side('y',[180,0,0]);
+				rotate_side('-y',[180,0,0]);
+			}; break;
+			case 'left' : {
+				rotate_side('x',[0,180,0]);
+				rotate_side('-x',[0,180,0]);
+
+				rotate_side('y',[0,0,-90]);
+				rotate_side('-y',[0,0,-90]);
+			}; break;
+			case 'right' : {
+				console.log('right')
+				rotate_side('z',[0,180,0]);
+				rotate_side('-z',[0,180,0]);
+
+				rotate_side('y',[0,0,90]);
+				rotate_side('-y',[0,0,90]);
+			}; break;
+
+		}
+		// side.style.webkitTransform = 'rotateX('+tx+'deg) rotateY('+ty+'deg) rotateZ('+tz+'deg)';
 		// console.log(side.style.webkitTransform);
 	}
 
