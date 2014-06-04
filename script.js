@@ -205,71 +205,11 @@ function Cube (element_id) {
 	}
 	this.rotate = rotate;
 	function rotate_sides (direction) {
-		function get_side_rotate_angles(element) {
-			var x = ((/(?:X\()(.?\d{1,3})(?=deg)/).test(element.style.webkitTransform))?(/(?:X\()(.?\d{1,3})(?=deg)/).exec(element.style.webkitTransform)[1]:0;
-			var y = ((/(?:Y\()(.?\d{1,3})(?=deg)/).test(element.style.webkitTransform))?(/(?:Y\()(.?\d{1,3})(?=deg)/).exec(element.style.webkitTransform)[1]:0;
-			var z = ((/(?:Z\()(.?\d{1,3})(?=deg)/).test(element.style.webkitTransform))?(/(?:Z\()(.?\d{1,3})(?=deg)/).exec(element.style.webkitTransform)[1]:0;
-			return [parseInt(x),parseInt(y),parseInt(z)];
-		}
-		function rotate_angle (init_angles,rotate_angles) {
-			returned_angles = [0,0,0];
-			for (i in returned_angles) {
-				returned_angles[i] = init_angles[i]+rotate_angles[i];
-
-				if (returned_angles[i]>=360) returned_angles[i] -= 360;
-				if (returned_angles[i]<0) returned_angles[i] += 360;
-			}
-			return returned_angles;
+	
+		function rotate_side (side,angles) {
+			side.style.webkitTransform = 'rotateX('+angles[0]+'deg) rotateY('+angles[1]+'deg) rotateZ('+angles[2]+'deg)';
 		}
 
-		function rotate_side (aside,angles) {
-			var temp_axis = {'x':0,'y':1,'z':2};
-			var side;
-			if (aside.length==1) {side=DOM.value[coords[temp_axis[aside]]];} else {
-				aside = temp_axis[aside[1]];
-				side = DOM.value[(coords[aside].length==1)?('-'+coords[aside]):coords[aside][1]];
-			}
-			var rotate_angles = get_side_rotate_angles(side);
-			var new_angles = rotate_angle(rotate_angles,angles)
-			side.style.webkitTransform = 'rotateX('+new_angles[0]+'deg) rotateY('+new_angles[1]+'deg) rotateZ('+new_angles[2]+'deg)';
-		}
-
-		console.log(coords);
-		
-		switch (direction) {
-			case 'up' : {
-				rotate_side('x',[0,0,-90]);
-				rotate_side('-x',[0,0,-90]);
-
-				rotate_side('z',[180,0,0]);
-				rotate_side('-z',[180,0,0]);
-			}; break;
-			case 'down' : {
-				rotate_side('x',[0,0,90]);
-				rotate_side('-x',[0,0,90]);
-
-				rotate_side('y',[180,0,0]);
-				rotate_side('-y',[180,0,0]);
-			}; break;
-			case 'left' : {
-				rotate_side('x',[0,180,0]);
-				rotate_side('-x',[0,180,0]);
-
-				rotate_side('y',[0,0,-90]);
-				rotate_side('-y',[0,0,-90]);
-			}; break;
-			case 'right' : {
-				console.log('right')
-				rotate_side('z',[0,180,0]);
-				rotate_side('-z',[0,180,0]);
-
-				rotate_side('y',[0,0,90]);
-				rotate_side('-y',[0,0,90]);
-			}; break;
-
-		}
-		// side.style.webkitTransform = 'rotateX('+tx+'deg) rotateY('+ty+'deg) rotateZ('+tz+'deg)';
-		// console.log(side.style.webkitTransform);
 	}
 
 	function update_coords (direction) {
