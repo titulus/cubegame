@@ -198,7 +198,9 @@ function Cube (element_id) {
 	        }; break;
 	        default: throw new TypeError('direction must be "up", "down", "left" or "right", but not: "'+direction+'"');
 	    };
+	    update_coords(direction);
 		rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
+
 		rotate_sides(direction);
 	}
 	this.rotate = rotate;
@@ -270,11 +272,32 @@ function Cube (element_id) {
 		// console.log(side.style.webkitTransform);
 	}
 
-
+	function update_coords (direction) {
+		switch (direction) {
+			case "up": { //up
+				var temp = coords[2];
+				coords[2] = coords[1];
+				coords[1] = (temp.length==1)?'-'+temp:temp[1];
+			}; break;
+			case "down": { //down
+				var temp = coords[1];
+				coords[1] = coords[2];
+				coords[2] = (temp.length==1)?'-'+temp:temp[1];
+			}; break;
+			case "right": { //right
+				var temp = coords[0];
+				coords[0] = coords[2];
+				coords[2] = (temp.length==1)?'-'+temp:temp[1];
+			}; break;
+			case "left": { //left
+				var temp = coords[2];
+				coords[2] = coords[0];
+				coords[0] = (temp.length==1)?'-'+temp:temp[1];
+			}; break;
+		};
+	}
 	function convert_angles (x,y) {
 		var new_angles = [0,0,0];
-		
-
 			switch (coords[0]) {
 				case "x" : new_angles[0]=x;break;
 				case "-x" : new_angles[0]=-x;break;
@@ -291,32 +314,6 @@ function Cube (element_id) {
 				case "z" : new_angles[2]=y;break;
 				case "-z" : new_angles[2]=-y;break;
 			}
-
-			switch ([x,y].join(',')) {
-				case "1,0": { //up
-					var temp = coords[2];
-					coords[2] = coords[1];
-					coords[1] = (temp.length==1)?'-'+temp:temp[1];
-				}; break;
-				case "-1,0": { //down
-					var temp = coords[1];
-					coords[1] = coords[2];
-					coords[2] = (temp.length==1)?'-'+temp:temp[1];
-				}; break;
-				case "0,1": { //right
-					var temp = coords[0];
-					coords[0] = coords[2];
-					coords[2] = (temp.length==1)?'-'+temp:temp[1];
-				}; break;
-				case "0,-1": { //left
-					var temp = coords[2];
-					coords[2] = coords[0];
-					coords[0] = (temp.length==1)?'-'+temp:temp[1];
-				}; break;
-			};
-
-		
-		var tX = 0,tY=0,tZ=0;
 		
 		return new_angles;
 	}
