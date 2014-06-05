@@ -141,7 +141,7 @@ function Cube (element_id) {
 				
    			}
    			if (info_show) {
-   				toggle_info({top:top,header:header,text:text});
+   				toggle_info({top:top,header:header,text:text,color:[255,125,125]});
    				status = 'infobox'
    			};
 	   	};	
@@ -453,13 +453,7 @@ function toggle_info (params) {
 		DOM.top.innerHTML = params.top;
 		DOM.h1.innerHTML = params.header;
 		DOM.p.innerHTML = params.text;
-		if (cube.end) {
-			DOM.info.style.backgroundColor = 'rgba(255,125,125,.5)';
-		} else if (params.header=='hello') {
-			DOM.info.style.backgroundColor = 'rgba(125,125,255,.5)';
-		} else {
-			DOM.info.style.backgroundColor = 'rgba('+get_color(params.header).join(',')+',.5)';
-		}
+		DOM.info.style.backgroundColor = 'rgba('+((params.color)?params.color:get_color(params.header)).join(',')+',.5)';
 		
 		DOM.info.style.display = 'block';
 		
@@ -558,14 +552,16 @@ function tutorial (state) {
  			toggle_info({top:'',header:'hello'
 		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
 		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
-		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
+		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'
+		  ,color:[125,125,255]});
 			status='tutorial-0';
 		}; break;
 		case 1 : {
 			toggle_info({top:'',header:'hello'
 		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
 		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
-		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
+		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'
+		  ,color:[125,125,255]});
 			status='tutorial';
 		}; break;
 	}
@@ -587,4 +583,4 @@ function tutorial (state) {
  	}
  }
 
- init('game');
+ init('tutorial');
