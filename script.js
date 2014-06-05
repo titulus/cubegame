@@ -532,6 +532,25 @@ function event_handler(ev) {
 		case 'debug' : {
 			cube.rotate(ev);
 		}; break;
+		case 'tutorial-0' : {
+			if (ev=='tap' || ev=='space') {
+				tutorial(1);
+			}
+			if (ev=='esc' || ev=='up') {
+				toggle_info();
+				status = 'game';
+			}
+		}; break;
+		case 'tutorial-1' : {
+			if (ev=='up') {
+				tutorial(2);
+			}
+		}; break;
+		case 'tutorial-2' : {
+			if (ev=='right') {
+				tutorial(3);
+			}
+		}; break;
 		default: throw new Error('unexpected status: '+status);
 	}
 }
@@ -550,10 +569,45 @@ function tutorial (state) {
  			toggle_info({top:'',header:'hello'
 		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
 		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
-		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'
+		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to see <b>tutorial</b>.<br/>'
+		  +'Press <span class="key">esc</span> or swipe <span class="touch">&uarr;</span> to skip it.'
 		  ,color:[255,255,125]});
 			status='tutorial-0';
 		}; break;
+		case 1 : {
+			cube.init([1,1,0,1,0,0]);
+			toggle_info();
+			document.getElementById('tutorial-1').style.display='block';
+			setTimeout(function () {
+				document.getElementById('tutorial-1').style.opacity=1;
+			},0);
+			status='tutorial-1';
+		}; break;
+		case 2 : {
+			cube.make('up',2);
+			document.getElementById('tutorial-1').style.opacity=0;
+			
+			setTimeout(function () {
+				document.getElementById('tutorial-1').style.display='none';
+
+				document.getElementById('tutorial-2').style.display='block';
+				setTimeout(function () {
+					document.getElementById('tutorial-2').style.opacity=1;
+				},0);
+
+			},500);
+
+			status='tutorial-2';
+		}; break;
+		case 3 : {
+			cube.make('right');
+			document.getElementById('tutorial-2').style.opacity=0;
+			setTimeout(function () {
+				document.getElementById('tutorial-1').style.display='none';
+			},500);
+			status='game';
+		}; break;
+
 	}
 }
 
@@ -578,4 +632,4 @@ function tutorial (state) {
  	}
  }
 
- init('game');
+ init('tutorial');
