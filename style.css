@@ -97,9 +97,11 @@ body {
   transition: all .1s linear;
 }
   #info > .content {
+    position: relative;
+    top: 50%;
     width: 17.5em;
     height: 17.5em;
-    margin: 2.5em auto 0;
+    margin: -9em auto;
     text-align: center;
     transition: all .1s linear;
     background-color: rgba(255,255,255,.5);

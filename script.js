@@ -454,9 +454,7 @@ function toggle_info (params) {
 		DOM.h1.innerHTML = params.header;
 		DOM.p.innerHTML = params.text;
 		DOM.info.style.backgroundColor = 'rgba('+((params.color)?params.color:get_color(params.header)).join(',')+',.5)';
-		
 		DOM.info.style.display = 'block';
-		
 		setTimeout(function(){DOM.info.style.opacity = 1;},0);
 	} else {
 		DOM.info.style.backgroundColor = '';
