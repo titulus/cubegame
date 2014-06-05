@@ -586,4 +586,4 @@ function tutorial (state) {
  	}
  }
 
- init('debug');
+ init('game');
