@@ -32,6 +32,7 @@ function Cube (element_id) {
 		sides = undefined;
 
 		rotate3d(-1,-1,0,30); // initial rotation
+		rotate_sides()
 		fill(); // initial filling
 	};
 	this.init = init;
@@ -204,13 +205,139 @@ function Cube (element_id) {
 		rotate_sides(direction);
 	}
 	this.rotate = rotate;
-	function rotate_sides (direction) {
+	function rotate_sides() {
 	
 		function rotate_side (side,angles) {
-			side.style.webkitTransform = 'rotateX('+angles[0]+'deg) rotateY('+angles[1]+'deg) rotateZ('+angles[2]+'deg)';
+			DOM.value[side].style.webkitTransform = 'rotateX('+angles[0]+'deg) rotateY('+angles[1]+'deg) rotateZ('+angles[2]+'deg)';
+		};
+		function rotate_both_sides (side,angles) {
+			rotate_side(side,angles);
+			rotate_side('-'+side,angles);
 		}
 
-	}
+		switch(coords.join(',')) {
+			case 'x,y,z' : { //default
+				rotate_both_sides('x',[0,0,0]);
+				rotate_both_sides('y',[0,0,0]);
+				rotate_both_sides('z',[0,0,0]);
+			};break;
+			case 'z,x,y' : {
+				rotate_both_sides('x',[0,180,0]);
+				rotate_both_sides('y',[0,180,90]);
+				rotate_both_sides('z',[0,0,-90]);
+			};break;
+			case 'y,z,x' : {
+				rotate_both_sides('x',[0,0,90]);
+				rotate_both_sides('y',[0,180,0]);
+				rotate_both_sides('z',[0,180,90]);
+			};break;
+			case 'x,-z,y' : {
+				rotate_both_sides('x',[0,0,-90]);
+				rotate_both_sides('y',[180,0,0]);
+				rotate_both_sides('z',[0,0,0]);
+			};break;
+			case 'z,-y,x' : {
+				rotate_both_sides('x',[180,180,0]);
+				rotate_both_sides('y',[0,180,90]);
+				rotate_both_sides('z',[180,180,0]);
+			};break;
+			case 'y,-x,z' : {
+				rotate_both_sides('x',[0,0,90]);
+				rotate_both_sides('y',[180,0,90]);
+				rotate_both_sides('z',[0,0,90]);
+			};break;
+			case '-z,y,x' : {
+				rotate_both_sides('x',[0,0,0]);
+				rotate_both_sides('y',[0,0,-90]);
+				rotate_both_sides('z',[0,180,0]);
+			};break;
+			case '-x,z,y' : {
+				rotate_both_sides('x',[180,0,90]);
+				rotate_both_sides('y',[0,180,0]);
+				rotate_both_sides('z',[0,180,0]);
+			};break;
+			case '-y,x,z' : {
+				rotate_both_sides('x',[180,0,90]);
+				rotate_both_sides('y',[0,0,-90]);
+				rotate_both_sides('z',[0,0,-90]);
+			};break;
+			case '-x,-y,z' : {
+				rotate_both_sides('x',[180,0,0]);
+				rotate_both_sides('y',[0,180,0]);
+				rotate_both_sides('z',[0,0,180]);
+			};break;
+			case '-z,-x,y' : {
+				rotate_both_sides('x',[0,0,0]);
+				rotate_both_sides('y',[180,0,90]);
+				rotate_both_sides('z',[180,0,90]);
+			};break;
+			case '-y,-z,x' : {
+				rotate_both_sides('x',[0,0,-90]);
+				rotate_both_sides('y',[0,0,180]);
+				rotate_both_sides('z',[0,0,-90]);
+			};break;
+			case 'x,z,-y' : {
+				rotate_both_sides('x',[0,0,90]);
+				rotate_both_sides('y',[0,0,0]);
+				rotate_both_sides('z',[180,0,0]);
+			};break;
+			case 'z,y,-x' : {
+				rotate_both_sides('x',[0,180,0]);
+				rotate_both_sides('y',[0,0,90]);
+				rotate_both_sides('z',[0,0,0]);
+			};break;
+			case 'y,x,-z' : {
+				rotate_both_sides('x',[0,180,90]);
+				rotate_both_sides('y',[0,180,90]);
+				rotate_both_sides('z',[0,180,90]);
+			};break;
+			case 'x,-y,-z' : {
+				rotate_both_sides('x',[0,0,180]);
+				rotate_both_sides('y',[0,180,0]);
+				rotate_both_sides('z',[180,0,0]);
+			};break;
+			case 'z,-x,-y' : {
+				rotate_both_sides('x',[180,0,0]);
+				rotate_both_sides('y',[0,0,90]);
+				rotate_both_sides('z',[0,0,90]);
+			};break;
+			case 'y,-z,-x' : {
+				rotate_both_sides('x',[0,180,90]);
+				rotate_both_sides('y',[180,0,0]);
+				rotate_both_sides('z',[0,0,90]);
+			};break;
+			case '-y,-x,-z' : {
+				rotate_both_sides('x',[0,0,-90]);
+				rotate_both_sides('y',[0,0,90]);
+				rotate_both_sides('z',[180,0,90]);
+			};break;
+			case '-x,-z,-y' : {
+				rotate_both_sides('x',[0,180,90]);
+				rotate_both_sides('y',[180,180,0]);
+				rotate_both_sides('z',[0,0,180]);
+			};break;
+			case '-z,-y,-x' : {
+				rotate_both_sides('x',[180,0,0]);
+				rotate_both_sides('y',[180,0,90]);
+				rotate_both_sides('z',[180,0,0]);
+			};break;
+			case '-x,y,-z' : {
+				rotate_both_sides('x',[0,180,0]);
+				rotate_both_sides('y',[0,0,180]);
+				rotate_both_sides('z',[0,180,0]);
+			};break;
+			case '-z,x,-y' : {
+				rotate_both_sides('x',[180,0,0]);
+				rotate_both_sides('y',[0,0,-90]);
+				rotate_both_sides('z',[0,180,90]);
+			};break;
+			case '-y,z,-x' : {
+				rotate_both_sides('x',[180,0,90]);
+				rotate_both_sides('y',[0,0,0]);
+				rotate_both_sides('z',[180,0,90]);
+			};break;
+		};
+	};
 
 	function update_coords (direction) {
 		switch (direction) {
@@ -454,7 +581,7 @@ function tutorial (state) {
  		}; break;
  		case 'debug' : {
  			status = 'debug';
- 			cube.init(['+x','+y','+z','-x','-y','-z'])
+ 			cube.init(['+.x','+.y','+.z','-.x','-.y','-.z'])
  		}; break;
  	}
  }
