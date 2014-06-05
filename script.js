@@ -551,16 +551,8 @@ function tutorial (state) {
 		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
 		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
 		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'
-		  ,color:[125,125,255]});
+		  ,color:[255,255,125]});
 			status='tutorial-0';
-		}; break;
-		case 1 : {
-			toggle_info({top:'',header:'hello'
-		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
-		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
-		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'
-		  ,color:[125,125,255]});
-			status='tutorial';
 		}; break;
 	}
 }
@@ -569,10 +561,15 @@ function tutorial (state) {
  	switch (state) {
  		case 'game': {
  			cube.init();
- 			status='game';
+ 			toggle_info({top:'',header:'hello'
+		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
+		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
+		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'
+		  ,color:[125,125,255]});
+ 			status='infobox';
  		}; break;
  		case 'tutorial' : {
- 			tutorial(1);
+ 			tutorial(0);
  		}; break;
  		case 'debug' : {
  			status = 'debug';
@@ -581,4 +578,4 @@ function tutorial (state) {
  	}
  }
 
- init('tutorial');
+ init('game');
