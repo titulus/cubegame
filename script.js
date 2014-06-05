@@ -555,7 +555,11 @@ update_fontsize();
 function tutorial (state) {
 	switch (state) {
 		case 0 : {
-			
+ 			toggle_info({top:'',header:'hello'
+		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
+		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
+		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
+			status='tutorial-0';
 		}; break;
 		case 1 : {
 			toggle_info({top:'',header:'hello'
@@ -570,11 +574,8 @@ function tutorial (state) {
  function init (state) {
  	switch (state) {
  		case 'game': {
- 			toggle_info({top:'',header:'hello'
-		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
-		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
-		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to close info.'});
-			status='hello';
+ 			cube.init();
+ 			status='game';
  		}; break;
  		case 'tutorial' : {
  			tutorial(1);
