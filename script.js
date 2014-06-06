@@ -86,7 +86,7 @@ function Cube (element_id) {
 
 	   		score += side[current_sides[direction]];
 
-	   		side[current_sides.front] = (value)?value:get_new_value();
+	   		side[current_sides.front] = (value!=undefined)?value:get_new_value();
 
 	   		animate_sides(current_sides.front,current_sides[direction]);
 	   		fill();
@@ -551,6 +551,11 @@ function event_handler(ev) {
 				tutorial(3);
 			}
 		}; break;
+		case 'tutorial-3' : {
+			if (ev=='up' || ev=='down') {
+				tutorial(4,ev);
+			}
+		}; break;
 		default: throw new Error('unexpected status: '+status);
 	}
 }
@@ -563,12 +568,12 @@ function update_fontsize () {
 }
 update_fontsize();
 
-function tutorial (state) {
+function tutorial (state,ev) {
 	switch (state) {
 		case 0 : {
  			toggle_info({top:'',header:'hello'
-		  ,text:'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
-		  +'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
+		  ,text:'Use arrowkeys <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>or swipes <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span> to increase chosen side, if it equal to front, or rotate cube otherwise.<br/>'
+		  +'<b>Goal:</b> get <span class="sside" style="background-color: rgba(247, 72, 54, 0.8); padding:0;">10</span> on one side.<br/>'
 		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to see <b>tutorial</b>.<br/>'
 		  +'Press <span class="key">esc</span> or swipe <span class="touch">&uarr;</span> to skip it.'
 		  ,color:[255,255,125]});
@@ -602,10 +607,29 @@ function tutorial (state) {
 		case 3 : {
 			cube.make('right');
 			document.getElementById('tutorial-2').style.opacity=0;
+			
 			setTimeout(function () {
-				document.getElementById('tutorial-1').style.display='none';
+				document.getElementById('tutorial-2').style.display='none';
+
+				document.getElementById('tutorial-3').style.display='block';
+				setTimeout(function () {
+					document.getElementById('tutorial-3').style.opacity=1;
+				},0);
+
 			},500);
-			status='game';
+
+			status='tutorial-3';
+		}; break;
+		case 4 : {
+			document.getElementById('tutorial-3').style.opacity=0;
+			
+			setTimeout(function () {
+				document.getElementById('tutorial-3').style.display='none';
+				cube.make(ev,0);
+
+				status='game';
+			},500);
+
 		}; break;
 
 	}
