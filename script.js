@@ -622,10 +622,20 @@ function tutorial (state,ev) {
 		}; break;
 		case 4 : {
 			document.getElementById('tutorial-3').style.opacity=0;
+			document.getElementById('score').style.backgroundColor='rgba(255, 255, 125, 0.5)';
+			document.getElementById('score').style.boxShadow='0 0 0.5em rgb(255, 255, 125)';
+			document.getElementById('score').style.webkitBoxShadow='0 0 0.5em rgb(255, 255, 125)';
+			document.getElementById('score').style.color='rgb(255, 255, 125)';
 			
 			setTimeout(function () {
 				document.getElementById('tutorial-3').style.display='none';
 				cube.make(ev,0);
+				setTimeout(function () {
+					document.getElementById('score').style.backgroundColor='';
+					document.getElementById('score').style.boxShadow='';
+					document.getElementById('score').style.webkitBoxShadow='';
+					document.getElementById('score').style.color='white';
+				},1000);
 
 				status='game';
 			},500);
