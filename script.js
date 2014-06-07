@@ -627,6 +627,10 @@ function tutorial (state,ev) {
 			document.getElementById('score').style.webkitBoxShadow='0 0 0.5em rgb(255, 255, 125)';
 			document.getElementById('score').style.color='rgb(255, 255, 125)';
 			
+			document.getElementById('tutorial-4').style.display='block';
+			setTimeout(function () {
+				document.getElementById('tutorial-4').style.opacity=1;
+			},0);
 			setTimeout(function () {
 				document.getElementById('tutorial-3').style.display='none';
 				cube.make(ev,0);
@@ -635,10 +639,15 @@ function tutorial (state,ev) {
 					document.getElementById('score').style.boxShadow='';
 					document.getElementById('score').style.webkitBoxShadow='';
 					document.getElementById('score').style.color='white';
-				},1000);
 
-				status='game';
-			},500);
+					document.getElementById('tutorial-4').style.opacity=0;
+					setTimeout(function () {
+						document.getElementById('tutorial-4').style.display='none';
+						status='game';
+					},500);
+				},1000);
+			},1000);
+			status='tutorial-4';
 
 		}; break;
 

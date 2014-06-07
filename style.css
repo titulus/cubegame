@@ -178,22 +178,26 @@ body {
 .tutorial  .helper {
   position: absolute;
   opacity: .6;
-  top: 50%;
+  bottom: 50%;
   left: 50%;
 }
 #tutorial-1 .helper {
   margin-left: -57px;
-  margin-top: -120px;
+  margin-bottom: -57px;
 }
 #tutorial-2 .helper {
-  margin-left: -90px;
-  margin-top: -57px;
+  margin-left: -57px;
+  margin-bottom: -57px;
 }
 #tutorial-3 .helper.up {
   margin-left: -57px;
-  margin-top: -160px;
+  margin-bottom: 20px;
 }
 #tutorial-3 .helper.down {
   margin-left: -57px;
-  margin-top: 0px;
+  margin-bottom: -120px;
+}
+#tutorial-4 .helper {
+  left: 4em;
+  bottom: 0;
 }
