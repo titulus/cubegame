@@ -106,7 +106,7 @@ function Cube (element_id) {
 	   		*/
 
 	   		var info_show=false;
-	   		var fail_text = "... and <b>"+score+"</b> points.<br/>but there are no other moves...<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart<br/>See source on <a href='//github.com/titulus/cubegame' target=_blank>github</a>";
+	   		var fail_text = "... and <b>"+score+"</b> points.<br/>but there are no other moves...<br/><br/><span class='touch'>tap</span> or press <span class='key'>space</span> to restart<br/>See source on <a href='//github.com/titulus/cubegame'>github</a>";
    			var header = max_value;
    			var top = '';
    			var text = '';
@@ -477,6 +477,8 @@ function touchEnd (e) {
 		touch.end.x = e.changedTouches[0].clientX;
 		touch.end.y = e.changedTouches[0].clientY;
 		touch_handler();
+	} else {
+		console.log(e);
 	}
 }
 
