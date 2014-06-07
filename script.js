@@ -106,10 +106,11 @@ function Cube (element_id) {
 	   		*/
 
 	   		var info_show=false;
-	   		var fail_text = "... and <b>"+score+'</b> points.<br/>but there are no other moves...<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to restart<br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
+	   		var fail_text = "... and <b>"+score+'</b> points.<br/>but there are no other moves...<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
    			var header = max_value;
    			var top = '';
    			var text = '';
+   			var color = undefined;
 	   		if (max_value_changed) {
 	   			if (max_value==5) {
 	   				top = 'CONGRATULATIONS!';
@@ -137,10 +138,12 @@ function Cube (element_id) {
    			if (this.end) {
    				text = fail_text;
    				top = (top=='')?'So sorry ):':top;
+				color = [0,0,0];
 				info_show = true;
-   			} else text +='<br/><span class="touch">tap</span> or press <span class="key">space</span> to continue<br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
+
+   			} else text +='<br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>continue</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
    			if (info_show) {
-   				toggle_info({top:top,header:header,text:text,color:[255,25,25]});
+   				toggle_info({top:top,header:header,text:text,color:(color)?color:get_color(header)});
    				status = 'infobox'
    			};
 	   	};	
@@ -577,7 +580,7 @@ function tutorial (state,ev) {
 		  +'<b>Goal:</b> get <span class="sside" style="background-color: rgba(247, 72, 54, 0.8); padding:0;">10</span> on one side.<br/>'
 		  +'Press <span class="key">space</span> or <span class="touch">tap</span> to see <b>tutorial</b>.<br/>'
 		  +'Press <span class="key">esc</span> or swipe <span class="touch">&uarr;</span> to skip it.'
-		  ,color:[255,255,125]});
+		  ,color:[125,125,255]});
 			status='tutorial-0';
 		}; break;
 		case 1 : {
