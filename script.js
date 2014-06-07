@@ -140,7 +140,7 @@ function Cube (element_id) {
 				info_show = true;
    			} else text +='<br/><span class="touch">tap</span> or press <span class="key">space</span> to continue<br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
    			if (info_show) {
-   				toggle_info({top:top,header:header,text:text,color:[255,125,125]});
+   				toggle_info({top:top,header:header,text:text,color:[255,25,25]});
    				status = 'infobox'
    			};
 	   	};	
