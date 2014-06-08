@@ -294,7 +294,7 @@ function Cube (element_id) {
 			};break;
 			case 'x,-y,-z' : {
 				rotate_both_sides('x',[0,0,180]);
-				rotate_both_sides('y',[0,180,0]);
+				rotate_both_sides('y',[180,0,0]);
 				rotate_both_sides('z',[180,0,0]);
 			};break;
 			case 'z,-x,-y' : {
