@@ -23,7 +23,7 @@ function Cube (element_id) {
 		this.end = false;
 
 		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span></div><div id="side_z" class="side front"><span></span></div><div id="side_x" class="side"><span></span></div><div id="side_y" class="side"><span></span></div><div id="side_-z" class="side"><span></span></div><div id="side_-x" class="side"><span></span></div>';
-		DOM.cube.style.webkitTransform = new WebKitCSSMatrix();
+		DOM.cube.style.transform = new WebKitCSSMatrix();
 		DOM.score.innerHTML = score;
 
 		for (i in axis) DOM.side[axis[i]]=document.getElementById('side_'+axis[i]);
@@ -44,7 +44,6 @@ function Cube (element_id) {
 			element.childNodes[0].innerHTML=value;
 			var color = get_color(value);
 			element.style.backgroundColor = 'rgba('+color.join(',')+',.8)';
-			// element.style.webkitBoxShadow = '0 0 .1em rgb('+color.join(',')+')';
 		}
 	}
 
@@ -210,7 +209,7 @@ function Cube (element_id) {
 	function rotate_sides() {
 	
 		function rotate_side (side,angles) {
-			DOM.value[side].style.webkitTransform = 'rotateX('+angles[0]+'deg) rotateY('+angles[1]+'deg) rotateZ('+angles[2]+'deg)';
+			DOM.value[side].style.transform = 'rotateX('+angles[0]+'deg) rotateY('+angles[1]+'deg) rotateZ('+angles[2]+'deg)';
 		};
 		function rotate_both_sides (side,angles) {
 			rotate_side(side,angles);
@@ -388,9 +387,9 @@ function Cube (element_id) {
 	}
 
 	function rotate3d(x,y,z,degree) {
-		var matrix = new WebKitCSSMatrix(DOM.cube.style.webkitTransform);
+		var matrix = new WebKitCSSMatrix(DOM.cube.style.transform);
 		matrix = matrix.rotateAxisAngle(x,y,z,degree);
-		DOM.cube.style.webkitTransform = matrix.toString();
+		DOM.cube.style.transform = matrix.toString();
 	}
 
 	init();
@@ -628,7 +627,7 @@ function tutorial (state,ev) {
 			document.getElementById('tutorial-3').style.opacity=0;
 			document.getElementById('score').style.backgroundColor='rgba(255, 255, 125, 0.5)';
 			document.getElementById('score').style.boxShadow='0 0 0.5em rgb(255, 255, 125)';
-			document.getElementById('score').style.webkitBoxShadow='0 0 0.5em rgb(255, 255, 125)';
+			document.getElementById('score').style.boxShadow='0 0 0.5em rgb(255, 255, 125)';
 			document.getElementById('score').style.color='rgb(255, 255, 125)';
 			
 			document.getElementById('tutorial-4').style.display='block';
@@ -641,7 +640,7 @@ function tutorial (state,ev) {
 				setTimeout(function () {
 					document.getElementById('score').style.backgroundColor='';
 					document.getElementById('score').style.boxShadow='';
-					document.getElementById('score').style.webkitBoxShadow='';
+					document.getElementById('score').style.boxShadow='';
 					document.getElementById('score').style.color='white';
 
 					document.getElementById('tutorial-4').style.opacity=0;
