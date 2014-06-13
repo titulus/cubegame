@@ -37,8 +37,7 @@ body {
   border: 0.02em solid #014;
   line-height: 2em;
   border-radius:0.1em;
-  color: #014;
-  text-shadow: 0px 0px 0.1em white;
+  color: white;
   transition: all .1s linear;
 }
 .sside {
