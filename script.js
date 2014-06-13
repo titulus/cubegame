@@ -473,6 +473,7 @@ function touchEnd (e) {
 		touch_handler();
 	} else {
 		console.log(e);
+		e.target.click();
 	}
 }
 
