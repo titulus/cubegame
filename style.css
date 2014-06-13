@@ -17,6 +17,7 @@ body {
 }
 #cube3d {
   position: absolute;
+  z-index: 10;
   font-weight: 700;
   font-size: 400%;
   margin: -2em 0 0 -2em;
@@ -31,6 +32,7 @@ body {
 
 .side {
   position: absolute;
+  z-index: 10;
   font-size: 100%;
   width: 2em;
   height: 2em;
@@ -68,6 +70,7 @@ body {
 }
 .side > span {
   position: absolute;
+  z-index: 10;
   width: 100%;
   height: 100%;
   text-align: center;
@@ -77,6 +80,7 @@ body {
 
 #info {
   position: absolute;
+  z-index: 100;
   width: 100%;
   height: 100%;
   margin: 0;
@@ -87,6 +91,7 @@ body {
   display: none;
   opacity: 0;
   transition: all .1s linear;
+  transform: translateZ(10em);
 }
   #info > .content {
     position: relative;
@@ -103,7 +108,7 @@ body {
     vertical-align: middle;
   }
   #info h1 {
-    margin: 0 0 0.3em;
+    margin: 0;
     font-size: 500%;
     text-shadow: 0 0 .3em #014;
   }
@@ -145,6 +150,7 @@ body {
 
 .tutorial {
   position: absolute;
+  z-index: 100;
   bottom: 0;
   width: 100%;
   height: 100%;
@@ -177,13 +183,9 @@ body {
   margin-left: -57px;
   margin-bottom: -32px;
 }
-#tutorial-3 .helper.up {
+#tutorial-3 .helper {
   margin-left: -32px;
-  margin-bottom: 20px;
-}
-#tutorial-3 .helper.down {
-  margin-left: -32px;
-  margin-bottom: -120px;
+  margin-bottom: -57px;
 }
 #tutorial-4 .helper {
   left: 4em;

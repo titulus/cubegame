@@ -548,8 +548,8 @@ function event_handler(ev) {
 			}
 		}; break;
 		case 'tutorial-3' : {
-			if (ev=='up' || ev=='down') {
-				tutorial(4,ev);
+			if (ev=='up') {
+				tutorial(4);
 			}
 		}; break;
 		default: throw new Error('unexpected status: '+status);
@@ -576,7 +576,7 @@ function tutorial (state,ev) {
 			status='tutorial-0';
 		}; break;
 		case 1 : {
-			cube.init([1,1,0,1,0,0]);
+			cube.init([1,0,1,2,1,0]);
 			toggle_info();
 			document.getElementById('tutorial-1').style.display='block';
 			setTimeout(function () {
@@ -585,7 +585,7 @@ function tutorial (state,ev) {
 			status='tutorial-1';
 		}; break;
 		case 2 : {
-			cube.make('up',2);
+			cube.make('up',0);
 			document.getElementById('tutorial-1').style.opacity=0;
 			
 			setTimeout(function () {
@@ -625,15 +625,19 @@ function tutorial (state,ev) {
 			
 			setTimeout(function () {
 				document.getElementById('tutorial-3').style.display='none';
-				cube.make(ev,0);
+				cube.make('up');
 				setTimeout(function () {
 					document.getElementById('score').style.backgroundColor='';
 					document.getElementById('score').style.boxShadow='';
 					document.getElementById('score').style.boxShadow='';
 					document.getElementById('score').style.color='white';
-					status='game';
-				},1000);
-			},1000);
+					toggle_info({top:'cool! you got',header:'3'
+					  ,text:'Now, try to get <span class="sside" style="background-color: rgba(229, 25, 244, 0.8);">5</span> somewhere<br/><br/>'
+					  +'<span class="touch">tap</span> or press <span class="key">space</span> to <b>continue</b>.<br/>'
+					  ,color:[194,158,250]});
+					status='infobox';
+				},500);
+			},500);
 			status='tutorial-4';
 
 		}; break;
