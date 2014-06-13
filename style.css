@@ -170,19 +170,19 @@ body {
   left: 50%;
 }
 #tutorial-1 .helper {
-  margin-left: -57px;
+  margin-left: -32px;
   margin-bottom: -57px;
 }
 #tutorial-2 .helper {
   margin-left: -57px;
-  margin-bottom: -57px;
+  margin-bottom: -32px;
 }
 #tutorial-3 .helper.up {
-  margin-left: -57px;
+  margin-left: -32px;
   margin-bottom: 20px;
 }
 #tutorial-3 .helper.down {
-  margin-left: -57px;
+  margin-left: -32px;
   margin-bottom: -120px;
 }
 #tutorial-4 .helper {
