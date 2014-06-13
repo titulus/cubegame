@@ -48,14 +48,7 @@ function Cube (element_id) {
 	}
 
 	function animate_sides(reseted,increased) {
-		DOM.value[reseted].style.fontSize='50%';
-		DOM.value[increased].style.fontSize='150%';
-		function return_state () {
-			DOM.value[reseted].style.fontSize='100%'
-			DOM.value[increased].style.fontSize='100%';
-		}
-		setTimeout(return_state,100);
-		// DOM.value[reseted].style.fontSize='100%';
+		// deprecated
 	}
 
 	function make (direction,value) {
