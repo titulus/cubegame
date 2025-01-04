@@ -18,6 +18,7 @@ export class Cube {
     private score: number;
     private max_value: number;
     public end: boolean;
+    private rotateSound: HTMLAudioElement;
 
     constructor(element_id: string) {
         this.DOM = {
@@ -34,6 +35,7 @@ export class Cube {
         this.score = 0;
         this.max_value = 0;
         this.end = false;
+        this.rotateSound = new Audio('public/sounds/rotate.mp3');
 
         this.init();
     }
@@ -208,6 +210,7 @@ export class Cube {
     }
 
     public rotate(direction: string): void {
+        this.playSound();
         let t_angles: number[] = [0,0,0];
         switch (direction) {
             case "up": {
@@ -227,6 +230,10 @@ export class Cube {
         this.update_coords(direction);
         this.rotate3d(t_angles[0],t_angles[1],t_angles[2],90);
         this.rotate_sides(direction);
+    }
+
+    private playSound(): void {
+        this.rotateSound.play();
     }
 
     private rotate_sides(_direction?: string): void {
@@ -414,4 +421,4 @@ export class Cube {
         const newMatrix = matrix.rotateAxisAngle(x, y, z, degree);
         this.DOM.cube.style.transform = newMatrix.toString();
     }
-} 
+}
