@@ -19,6 +19,8 @@ export class Cube {
     private max_value: number;
     public end: boolean;
     private rotateSound: HTMLAudioElement;
+    private winSound: HTMLAudioElement;
+    private failSound: HTMLAudioElement;
 
     constructor(element_id: string) {
         this.DOM = {
@@ -36,6 +38,8 @@ export class Cube {
         this.max_value = 0;
         this.end = false;
         this.rotateSound = new Audio('public/sounds/rotate.mp3');
+        this.winSound = new Audio('public/sounds/win.mp3');
+        this.failSound = new Audio('public/sounds/fail.mp3');
 
         this.init();
     }
@@ -132,22 +136,26 @@ export class Cube {
                     top = 'CONGRATULATIONS!';
                     text = 'try to get 10 (;';
                     info_show = true;
+                    this.playSound('win');
                 }
                 if (this.max_value == 10) {
                     top = 'YOU <b>WON</b>!';
                     text = 'So... can you get 15?';
                     info_show = true;
+                    this.playSound('win');
                 }
                 if (this.max_value == 15) {
                     top = 'AMAZING!';
                     text = "I'll bet - you will do 20!";
                     info_show = true;
+                    this.playSound('win');
                 }
                 if (this.max_value >= 20) {
                     const tops = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
                     top = tops[Math.floor(Math.random()*tops.length)];
                     text = 'Try to get '+(this.max_value+1);
                     info_show = true;
+                    this.playSound('win');
                 }
             }
 
@@ -156,6 +164,7 @@ export class Cube {
                 top = (top=='') ? 'So sorry ):' : top;
                 color = [0,0,0];
                 info_show = true;
+                this.playSound('fail');
             } else {
                 text += '<br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>continue</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
             }
@@ -210,7 +219,7 @@ export class Cube {
     }
 
     public rotate(direction: string): void {
-        this.playSound();
+        this.playSound('rotate');
         let t_angles: number[] = [0,0,0];
         switch (direction) {
             case "up": {
@@ -232,8 +241,14 @@ export class Cube {
         this.rotate_sides(direction);
     }
 
-    private playSound(): void {
-        this.rotateSound.play();
+    private playSound(type: string = 'rotate'): void {
+        if (type === 'rotate') {
+            this.rotateSound.play();
+        } else if (type === 'win') {
+            this.winSound.play();
+        } else if (type === 'fail') {
+            this.failSound.play();
+        }
     }
 
     private rotate_sides(_direction?: string): void {
