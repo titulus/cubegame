@@ -16,16 +16,18 @@ function Cube (element_id) {
 	var max_value = 0;
 	this.end = false;
 
+	var self = this;
 	function init (sides) {
 		coords = ['x','y','z'];
 		score = 0;
 		max_value = 0;
-		this.end = false;
+		self.end = false;
 
 		DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span></div><div id="side_z" class="side front"><span></span></div><div id="side_x" class="side"><span></span></div><div id="side_y" class="side"><span></span></div><div id="side_-z" class="side"><span></span></div><div id="side_-x" class="side"><span></span></div>';
 		DOM.cube.style.transform = new WebKitCSSMatrix();
 		DOM.score.innerHTML = score;
 
+		var i;
 		for (i in axis) DOM.side[axis[i]]=document.getElementById('side_'+axis[i]);
 		for (i in axis) DOM.value[axis[i]]=document.getElementById('side_'+axis[i]).childNodes[0];
 		for (i in axis) {side[axis[i]]=(sides)?sides[i]:Math.round(Math.random()*2);}
@@ -38,6 +40,7 @@ function Cube (element_id) {
 	this.init = init;
 
 	function fill () { // fill DOM.cube cube sides with appropriate values
+		var i;
 		for (i in axis) {
 			var element = DOM.side[axis[i]];
 			var value = side[axis[i]];
@@ -59,89 +62,86 @@ function Cube (element_id) {
 		current_sides.back = (current_sides.front.length==1)?'-'+current_sides.front:current_sides.front[1];
 		current_sides.up = (current_sides.down.length==1)?'-'+current_sides.down:current_sides.down[1];
 		current_sides.left = (current_sides.right.length==1)?'-'+current_sides.right:current_sides.right[1];
-	    var front_value = side[current_sides.front];
-	    var compare_value = side[current_sides[direction]];
+		var front_value = side[current_sides.front];
+		var compare_value = side[current_sides[direction]];
 
-	   	if (front_value!=compare_value) {
-	   		rotate(direction);
-	   	} else {
-	   		var max_value_changed = false;
+		if (front_value!=compare_value) {
+			rotate(direction);
+		} else {
+			var max_value_changed = false;
 			side[current_sides[direction]]++;
 			if (side[current_sides[direction]]>max_value) {
 				max_value=side[current_sides[direction]];
 				max_value_changed = true;
 
-				for (i in DOM.max) {
-		   			DOM.max[i].innerHTML = max_value;
-		   		}
+				for (var i = 0; i < DOM.max.length; i++) {
+					DOM.max[i].innerHTML = max_value;
+				}
 			}
 
-	   		score += side[current_sides[direction]];
+			score += side[current_sides[direction]];
 
-	   		side[current_sides.front] = (value!=undefined)?value:get_new_value();
+			side[current_sides.front] = (value!=undefined)?value:get_new_value();
 
-	   		animate_sides(current_sides.front,current_sides[direction]);
-	   		fill();
-	   		DOM.score.innerHTML = score;
+			animate_sides(current_sides.front,current_sides[direction]);
+			fill();
+			DOM.score.innerHTML = score;
 
 
-	   		if (check_fail()) {
-	   			this.end = true;
-	   			ga('send', 'event', 'max', 'max-'+side[current_sides[direction]]);
-	   			
-	   		} else this.end = false;
+			if (check_fail()) {
+				this.end = true;
+			} else this.end = false;
 
-	   		/*
+			/*
 			this.end - fail
 			max_value - max
 			score - score
-	   		*/
+			*/
 
-	   		var info_show=false;
-	   		var fail_text = "... and <b>"+score+'</b> points.<br/>but there are no other moves...<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
-   			var header = max_value;
-   			var top = '';
-   			var text = '';
-   			var color = undefined;
-	   		if (max_value_changed) {
-	   			if (max_value==5) {
-	   				top = 'CONGRATULATIONS!';
-	   				text = 'try to get 10 (;';
-	   				info_show = true;
-	   			}
-	   			if (max_value==10) {
-	   				top = 'YOU <b>WON</b>!';
-	   				text = 'So... can you get 15?';
-	   				ga('send', 'event', 'game', 'win');
-	   				info_show = true;
-	   			}
-	   			if (max_value==15) {
-	   				top = 'AMAZING!';
-	   				text = "I'll bet - you will do 20!";
-	   				info_show = true;
-	   			}
-	   			if (max_value>=20) {
-	   				top = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
-	   				top = top[Math.floor(Math.random()*top.length)];
-	   				text = 'Try to get '+(max_value+1);
-	   				info_show = true;
-	   			};
-	   		};
-   			if (this.end) {
-   				text = fail_text;
-   				top = (top=='')?'So sorry ):':top;
+			var info_show=false;
+			var fail_text = "... and <b>"+score+'</b> points.<br/>but there are no other moves...<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
+			var header = max_value;
+			var top = '';
+			var text = '';
+			var color = undefined;
+			if (max_value_changed) {
+				if (max_value==5) {
+					top = 'CONGRATULATIONS!';
+					text = 'try to get 10 (;';
+					info_show = true;
+				}
+				if (max_value==10) {
+					top = 'YOU <b>WON</b>!';
+					text = 'So... can you get 15?';
+					info_show = true;
+				}
+				if (max_value==15) {
+					top = 'AMAZING!';
+					text = "I'll bet - you will do 20!";
+					info_show = true;
+				}
+				if (max_value>=20) {
+					top = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
+					top = top[Math.floor(Math.random()*top.length)];
+					text = 'Try to get '+(max_value+1);
+					info_show = true;
+				};
+			};
+			if (this.end) {
+				text = fail_text;
+				top = (top=='')?'So sorry ):':top;
 				color = [0,0,0];
 				info_show = true;
 
-   			} else text +='<br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>continue</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
-   			if (info_show) {
-   				toggle_info({top:top,header:header,text:text,color:(color)?color:get_color(header)});
-   				status = 'infobox'
-   			};
-	   	};	
-	   	var prev_front = document.getElementsByClassName('front')[0];
-	   	prev_front.className='side';
-	   	DOM.side[coords[2]].className='side front';
+			} else text +='<br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>continue</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
+			if (info_show) {
+				toggle_info({top:top,header:header,text:text,color:(color)?color:get_color(header)});
+				status = 'infobox'
+			};
+		};	
+		var prev_front = document.getElementsByClassName('front')[0];
+		prev_front.className='side';
+		DOM.side[coords[2]].className='side front';
 	};
 	this.make = make;
 
@@ -149,12 +149,12 @@ function Cube (element_id) {
 		var values = unique([side['x'],side['-x'],side['y'],side['-y'],side['-z']]).sort();
 		if (values[0]!=0) values.unshift(values[0]-1);
 		var rand = 0;
-        if (values.length==2) {
-            rand = Math.round(Math.random());
-        } else if (values.length>2) {
-            rand = Math.round(Math.random()*9);
-            rand = (rand < 3)?0:(rand < 9)?1:2;
-        }
+		if (values.length==2) {
+			rand = Math.round(Math.random());
+		} else if (values.length>2) {
+			rand = Math.round(Math.random()*9);
+			rand = (rand < 3)?0:(rand < 9)?1:2;
+		}
 
 		return values[rand];
 	}
@@ -200,7 +200,7 @@ function Cube (element_id) {
 	}
 	this.rotate = rotate;
 	function rotate_sides() {
-	
+		var i;
 		function rotate_side (side,angles) {
 			DOM.value[side].style.transform = 'rotateX('+angles[0]+'deg) rotateY('+angles[1]+'deg) rotateZ('+angles[2]+'deg)';
 		};
@@ -422,19 +422,19 @@ function get_color (value) {
 }
 
 function unique(arr) {
-  var obj = {};
-  var result = [];
+	var obj = {};
+	var result = [];
  
-  nextInput:
-  for(var i=0; i<arr.length; i++) {
-    var str = arr[i];
-    for(var j=0; j<result.length; j++) {
-      if (result[j] == str) continue nextInput;
-    }
-    result.push(str);
-  }
-  
-  return result;
+	nextInput:
+	for(var i=0; i<arr.length; i++) {
+		var str = arr[i];
+		for(var j=0; j<result.length; j++) {
+			if (result[j] == str) continue nextInput;
+		}
+		result.push(str);
+	}
+	
+	return result;
 }
 
 function toggle_info (params) {
@@ -464,7 +464,7 @@ function touchStart (e) {
 	touch.start.y = e.changedTouches[0].clientY;
 };
 function touchMove (e) {};
-function touchCansel (e) {};
+function touchCancel (e) {};
 function touchEnd (e) {
 	if (e.target.nodeName != 'A') {
 		e.preventDefault();
@@ -668,3 +668,12 @@ function tutorial (state,ev) {
  }
 
  init('tutorial');
+
+ export function initEventHandlers() {
+    document.body.addEventListener('touchstart', touchStart);
+    document.body.addEventListener('touchmove', touchMove);
+    document.body.addEventListener('touchend', touchEnd);
+    document.body.addEventListener('touchcancel', touchCancel);
+    document.body.addEventListener('keyup', keyup);
+    window.addEventListener('resize', update_fontsize);
+}

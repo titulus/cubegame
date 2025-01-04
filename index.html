@@ -1,47 +1,37 @@
-<html>
-    <head>
-        <meta charset='UTF-8' />
-        <title>cube game</title>
-        <link rel="stylesheet" href="style.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-        <link rel="shortcut icon" href="./img/favicon.ico">
-        <link rel="apple-touch-icon" sizes="57x57" href="./img/apple-touch-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="./img/apple-touch-icon-114x114.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="./img/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="144x144" href="./img/apple-touch-icon-144x144.png">
-        <link rel="apple-touch-icon" sizes="60x60" href="./img/apple-touch-icon-60x60.png">
-        <link rel="apple-touch-icon" sizes="120x120" href="./img/apple-touch-icon-120x120.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="./img/apple-touch-icon-76x76.png">
-        <link rel="apple-touch-icon" sizes="152x152" href="./img/apple-touch-icon-152x152.png">
-        <link rel="icon" type="image/png" href="./img/favicon-196x196.png" sizes="196x196">
-        <link rel="icon" type="image/png" href="./img/favicon-160x160.png" sizes="160x160">
-        <link rel="icon" type="image/png" href="./img/favicon-96x96.png" sizes="96x96">
-        <link rel="icon" type="image/png" href="./img/favicon-16x16.png" sizes="16x16">
-        <link rel="icon" type="image/png" href="./img/favicon-32x32.png" sizes="32x32">
-        <meta name="msapplication-TileColor" content="#2b5797">
-        <meta name="msapplication-TileImage" content="./img/mstile-144x144.png">
-        <meta name="msapplication-config" content="./img/browserconfig.xml">
-    </head>
-    <body ontouchstart="touchStart(event);" ontouchmove="touchMove(event);" ontouchend="touchEnd(event);" ontouchcancel="touchCancel(event);" onkeyup="keyup(event);" onResize="update_fontsize();">
-      <div id="panel"><div id="logo">#cubegame</div></div>
-      <div id="cube3d"></div>
-      <div id="score">0</div>
-      <div id="info"><div class="content"><p id="info_top"></p><h1 id="info_h1"></h1><p id="info_p"></p></div></div>
-      <div id="tutorial-1" class="tutorial"><img src="img/arrow_u.gif" class="helper"><div class="content"><b>front</b> <span class="sside" style="background-color: rgba(75, 0, 125, 0.8);">0</span> = <b>top</b> <span class="sside" style="background-color: rgba(75, 0, 125, 0.8);">0</span><br/>do <span class="key">&uarr;</span> or <span class="touch">&uarr;</span> to combine them.<br/><b>top</b> will increase <span class="sside" style="background-color: rgba(75, 0, 125, 0.8);">0</span> &rarr; <span class="sside" style="background-color: rgba(49, 59, 136, 0.8);">1</span><br/>and <b>front</b> will get random <span class="sside" style="background-color: rgba(75, 0, 125, 0.8);">0</span> &rarr; <span class="sside" style="background-color: rgba(255, 75, 75, 0.8);">?</span></div></div>
-      <div id="tutorial-2" class="tutorial"><img src="img/arrow_r.gif" class="helper"><div class="content"><b>front</b> <span class="sside" style="background-color: rgba(98, 156, 61, 0.8);">2</span> &ne; <b>right</b> <span class="sside" style="background-color: rgba(49, 59, 136, 0.8);">1</span><br/>do <span class="key">&rarr;</span> or <span class="touch">&rarr;</span> to rotate cube.<br/>They <b>will not</b> change, but cube will rotate</div></div>
-      <div id="tutorial-3" class="tutorial"><img src="img/arrow_u.gif" class="helper"><div class="content">Once you combine sides, you get <b>points</b><br/>as much as you get on increased side<br/>You can see score on bottom left corner of screen.</div></div>
-      <script src='prefixfree.min.js'></script>
-      <script src='prefixfree.dynamic-dom.min.js'></script>
-      <script src='seedrandom.min.js'></script>
-      <script src='script.js'></script>
-      <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>cube game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/img/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/img/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/img/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/img/apple-touch-icon-152x152.png">
+    <link rel="icon" type="image/png" href="/img/favicon-196x196.png" sizes="196x196">
+    <link rel="icon" type="image/png" href="/img/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileImage" content="/img/mstile-144x144.png">
+    <meta name="msapplication-config" content="/img/browserconfig.xml">
+  </head>
+  <body>
+    <div id="panel"><div id="logo">#cubegame</div></div>
+    <div id="cube3d"></div>
+    <div id="score">0</div>
+    <div id="info"><div class="content"><p id="info_top"></p><h1 id="info_h1"></h1><p id="info_p"></p></div></div>
+    <div id="tutorial-1" class="tutorial"><img src="/img/arrow_u.gif" class="helper"><div class="content"><b>front</b> <span class="sside" style="background-color: rgba(75, 0, 125, 0.8);">0</span> = <b>top</b> <span class="sside" style="background-color: rgba(75, 0, 125, 0.8);">0</span><br/>do <span class="key">&uarr;</span> or <span class="touch">&uarr;</span> to combine them.<br/><b>top</b> will increase <span class="sside" style="background-color: rgba(75, 0, 125, 0.8);">0</span> &rarr; <span class="sside" style="background-color: rgba(49, 59, 136, 0.8);">1</span><br/>and <b>front</b> will get random <span class="sside" style="background-color: rgba(75, 0, 125, 0.8);">0</span> &rarr; <span class="sside" style="background-color: rgba(255, 75, 75, 0.8);">?</span></div></div>
+    <div id="tutorial-2" class="tutorial"><img src="/img/arrow_r.gif" class="helper"><div class="content"><b>front</b> <span class="sside" style="background-color: rgba(98, 156, 61, 0.8);">2</span> &ne; <b>right</b> <span class="sside" style="background-color: rgba(49, 59, 136, 0.8);">1</span><br/>do <span class="key">&rarr;</span> or <span class="touch">&rarr;</span> to rotate cube.<br/>They <b>will not</b> change, but cube will rotate</div></div>
+    <div id="tutorial-3" class="tutorial"><img src="/img/arrow_u.gif" class="helper"><div class="content">Once you combine sides, you get <b>points</b><br/>as much as you get on increased side<br/>You can see score on bottom left corner of screen.</div></div>
 
-ga('create', 'UA-51517725-1', 'titulus.github.io');
-ga('send', 'pageview');
-      </script>
-    </body>
+    <script src="/seedrandom.min.js"></script>
+    <script type="module" src="/main.js"></script>
+  </body>
 </html>
