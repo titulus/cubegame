@@ -21,6 +21,7 @@ export class Cube {
     private rotateSound: HTMLAudioElement;
     private winSound: HTMLAudioElement;
     private failSound: HTMLAudioElement;
+    private increaseSound: HTMLAudioElement;
 
     constructor(element_id: string) {
         this.DOM = {
@@ -40,6 +41,7 @@ export class Cube {
         this.rotateSound = new Audio('public/sounds/rotate.mp3');
         this.winSound = new Audio('public/sounds/win.mp3');
         this.failSound = new Audio('public/sounds/fail.mp3');
+        this.increaseSound = new Audio('public/sounds/increase.mp3');
 
         this.init();
     }
@@ -101,7 +103,8 @@ export class Cube {
         } else {
             let max_value_changed = false;
             this.side[current_sides[direction]] = (this.side[current_sides[direction]] as number) + 1;
-            
+            this.playSound('increase');
+
             if ((this.side[current_sides[direction]] as number) > this.max_value) {
                 this.max_value = this.side[current_sides[direction]] as number;
                 max_value_changed = true;
@@ -248,6 +251,8 @@ export class Cube {
             this.winSound.play();
         } else if (type === 'fail') {
             this.failSound.play();
+        } else if (type === 'increase') {
+            this.increaseSound.play();
         }
     }
 
