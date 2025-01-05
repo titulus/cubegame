@@ -9,6 +9,7 @@ export interface DOMElements {
     value: {[key: string]: HTMLElement};
     score: HTMLElement;
     max: HTMLCollectionOf<Element>;
+    increment: HTMLElement;
 }
 
 export interface InfoParams {

@@ -22,6 +22,7 @@ export class Cube {
     private winSound: HTMLAudioElement;
     private failSound: HTMLAudioElement;
     private increaseSound: HTMLAudioElement;
+    private remainingIncrements: number;
 
     constructor(element_id: string) {
         this.DOM = {
@@ -29,7 +30,8 @@ export class Cube {
             side: {},
             value: {},
             score: document.getElementById('score') as HTMLElement,
-            max: document.getElementsByClassName('max')
+            max: document.getElementsByClassName('max'),
+            increment: document.getElementById('increment-counter') as HTMLElement
         };
 
         this.axis = ['x','y','z','-x','-y','-z'];
@@ -37,6 +39,7 @@ export class Cube {
         this.coords = ['x','y','z'];
         this.score = 0;
         this.max_value = 0;
+        this.remainingIncrements = 1;
         this.end = false;
         this.rotateSound = new Audio('public/sounds/rotate.mp3');
         this.winSound = new Audio('public/sounds/win.mp3');
@@ -55,6 +58,7 @@ export class Cube {
         this.DOM.cube.innerHTML = '<div id="side_-y" class="side"><span></span></div><div id="side_z" class="side front"><span></span></div><div id="side_x" class="side"><span></span></div><div id="side_y" class="side"><span></span></div><div id="side_-z" class="side"><span></span></div><div id="side_-x" class="side"><span></span></div>';
         this.DOM.cube.style.transform = new WebKitCSSMatrix().toString();
         this.DOM.score.innerHTML = this.score.toString();
+        this.DOM.increment.innerHTML = `x${this.remainingIncrements}`;
 
         for (let i in this.axis) {
             this.DOM.side[this.axis[i]] = document.getElementById('side_'+this.axis[i]) as HTMLElement;
@@ -137,7 +141,7 @@ export class Cube {
             if (max_value_changed) {
                 if (this.max_value == 5) {
                     top = 'CONGRATULATIONS!';
-                    text = 'try to get 10 (;';
+                    text = 'You\'ve got +1<br/>You\'ll get it each time you increase the max value<br/>Try to get 10 (;';
                     info_show = true;
                     this.playSound('win');
                 }
@@ -159,6 +163,15 @@ export class Cube {
                     text = 'Try to get '+(this.max_value+1);
                     info_show = true;
                     this.playSound('win');
+                }
+                if (this.max_value >= 5) {
+                    this.remainingIncrements++;
+                    this.DOM.increment.innerHTML = `x${this.remainingIncrements}`;
+                    // Reset visual state if it was disabled
+                    if (this.remainingIncrements > 0) {
+                        this.DOM.increment.style.opacity = '1';
+                        this.DOM.increment.style.cursor = 'pointer';
+                    }
                 }
             }
 
@@ -205,6 +218,7 @@ export class Cube {
     }
 
     private check_fail(): boolean {
+        return false; // temporary. IDK if fail is needed at all
         return (
             this.side['z'] != this.side['-y'] &&
             this.side['z'] != this.side['-x'] &&
@@ -441,4 +455,31 @@ export class Cube {
         const newMatrix = matrix.rotateAxisAngle(x, y, z, degree);
         this.DOM.cube.style.transform = newMatrix.toString();
     }
+
+    public incrementFrontValue(): void {
+        if (this.remainingIncrements <= 0) return;
+    
+        this.remainingIncrements--;
+        this.DOM.increment.innerHTML = `x${this.remainingIncrements}`;
+        
+        if (this.remainingIncrements === 0) {
+            this.DOM.increment.style.opacity = '0.5';
+            this.DOM.increment.style.cursor = 'not-allowed';
+        }
+        
+        const frontSide = this.coords[2];
+        this.side[frontSide] = (this.side[frontSide] as number) + 1;
+        this.fill();
+        this.playSound('increase');
+        
+        this.score += 1;
+        this.DOM.score.innerHTML = this.score.toString();
+        
+        if ((this.side[frontSide] as number) > this.max_value) {
+            this.max_value = this.side[frontSide] as number;
+            for (let i = 0; i < this.DOM.max.length; i++) {
+                this.DOM.max[i].innerHTML = this.max_value.toString();
+            }
+        }
+    }    
 }

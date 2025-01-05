@@ -11,6 +11,10 @@ export function initEventHandlers(): void {
     document.body.addEventListener('touchcancel', touchCancel);
     document.body.addEventListener('keyup', keyup);
     window.addEventListener('resize', update_fontsize);
+    document.getElementById('increment-btn')?.addEventListener('click', () => {
+        cube.incrementFrontValue();
+    });
+    
 }
 
 export function event_handler(ev: string): void {
