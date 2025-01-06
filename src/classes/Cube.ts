@@ -41,10 +41,10 @@ export class Cube {
         this.max_value = 0;
         this.remainingIncrements = 1;
         this.end = false;
-        this.rotateSound = new Audio('public/sounds/rotate.mp3');
-        this.winSound = new Audio('public/sounds/win.mp3');
-        this.failSound = new Audio('public/sounds/fail.mp3');
-        this.increaseSound = new Audio('public/sounds/increase.mp3');
+        this.rotateSound = new Audio('sounds/rotate.mp3');
+        this.winSound = new Audio('sounds/win.mp3');
+        this.failSound = new Audio('sounds/fail.mp3');
+        this.increaseSound = new Audio('sounds/increase.mp3');
 
         this.init();
     }
