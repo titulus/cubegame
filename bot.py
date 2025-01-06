@@ -20,6 +20,7 @@ load_dotenv()
 app = FastAPI()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 WEBAPP_URL = os.getenv('WEBAPP_URL')
+IS_PRODUCTION = os.getenv('IS_PRODUCTION', '').lower() == 'true'
 
 # Initialize bot
 bot = telegram.Bot(token=BOT_TOKEN)
@@ -49,6 +50,10 @@ async def handle_message(message):
 
 async def polling():
     """Poll for new messages."""
+    if IS_PRODUCTION:
+        logger.info("Polling disabled in production")
+        return
+        
     logger.info("Starting bot polling...")
     offset = 0
     while True:
@@ -68,7 +73,20 @@ async def polling():
 @app.on_event("startup")
 async def startup_event():
     """Start the bot when the FastAPI server starts."""
-    asyncio.create_task(polling())
+    if not IS_PRODUCTION:
+        asyncio.create_task(polling())
+    else:
+        # Set webhook in production
+        webhook_url = f"{WEBAPP_URL}/telegram-webhook/{BOT_TOKEN}"
+        await bot.set_webhook(webhook_url)
+        logger.info(f"Webhook set to {webhook_url}")
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Cleanup when server shuts down."""
+    if IS_PRODUCTION:
+        await bot.delete_webhook()
+        logger.info("Webhook deleted")
 
 # Telegram webhook endpoint
 @app.post(f"/telegram-webhook/{BOT_TOKEN}")

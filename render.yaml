@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: cubegame
+    env: python
+    buildCommand: npm install && npm run build && pip install -r requirements.txt
+    startCommand: python -m uvicorn bot:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: WEBAPP_URL
+        sync: false
+      - key: IS_PRODUCTION
+        sync: false
+    autoDeploy: true
