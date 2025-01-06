@@ -14,7 +14,9 @@ export function initEventHandlers(): void {
     document.getElementById('increment-btn')?.addEventListener('click', () => {
         cube.incrementFrontValue();
     });
-    
+    document.getElementById('increment-btn')?.addEventListener('touchend', () => {
+        cube.incrementFrontValue();
+    });
 }
 
 export function event_handler(ev: string): void {
