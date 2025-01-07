@@ -66,6 +66,11 @@ export class Cube {
             this.side[this.axis[i]] = sides ? sides[parseInt(i)] : Math.round(Math.random()*2);
         }
 
+        this.remainingIncrements = 1
+        this.DOM.increment.innerHTML = `x${this.remainingIncrements}`;
+        this.DOM.increment.style.opacity = '1';
+        this.DOM.increment.style.cursor = 'pointer';
+
         this.rotate3d(-1,-1,0,30); // initial rotation
         this.rotate_sides();
         this.fill(); // initial filling
@@ -178,7 +183,7 @@ export class Cube {
             if (this.end) {
                 text = fail_text;
                 top = (top=='') ? 'So sorry ):' : top;
-                color = [0,0,0];
+                // color = [0,0,0];
                 info_show = true;
                 this.playSound('fail');
             } else {
@@ -218,7 +223,7 @@ export class Cube {
     }
 
     private check_fail(): boolean {
-        return false; // temporary. IDK if fail is needed at all
+        // return false; // temporary. IDK if fail is needed at all
         return (
             this.side['z'] != this.side['-y'] &&
             this.side['z'] != this.side['-x'] &&

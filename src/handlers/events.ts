@@ -5,9 +5,9 @@ import { touchStart, touchMove, touchEnd, touchCancel } from './touch';
 import { status, setStatus } from '../store';
 
 export function initEventHandlers(): void {
-    document.body.addEventListener('touchstart', touchStart);
-    document.body.addEventListener('touchmove', touchMove);
-    document.body.addEventListener('touchend', touchEnd);
+    document.body.addEventListener('touchstart', touchStart, { passive: false });
+    document.body.addEventListener('touchmove', touchMove, { passive: false });
+    document.body.addEventListener('touchend', touchEnd, { passive: false });
     document.body.addEventListener('touchcancel', touchCancel);
     document.body.addEventListener('keyup', keyup);
     window.addEventListener('resize', update_fontsize);
