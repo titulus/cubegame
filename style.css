@@ -103,11 +103,11 @@ body {
   transform: translateZ(10em);
 }
   #info > .content {
-    position: relative;
+    position: absolute;
     top: 50%;
-    width: 17.5em;
-    height: 17.5em;
-    margin: -9em auto;
+    left: 50%;
+    width: 80%;
+    transform: translate(-50%, -50%);
     text-align: center;
     transition: all .1s linear;
     background-color: rgba(255,255,255,.5);
