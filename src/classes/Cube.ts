@@ -506,13 +506,28 @@ export class Cube {
                 })
             });
             
-            // Get position in leaderboard
-            const positionResponse = await fetch(`/user-position/${tg.initDataUnsafe.user.username}/${this.score}`);
-            if (positionResponse.ok) {
+            // Get position in leaderboard and top players
+            const [positionResponse, leaderboardResponse] = await Promise.all([
+                fetch(`/user-position/${tg.initDataUnsafe.user.username}/${this.score}`),
+                fetch('/leaderboard')
+            ]);
+
+            if (positionResponse.ok && leaderboardResponse.ok) {
                 const position = await positionResponse.json();
-                // Update the info text with position
-                const positionText = `\nYour position: #${position.position} of ${position.total}`;
-                const failText = `... and <b>${this.score}</b> points.${positionText}<br/>but there are no other moves...<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>`;
+                const leaderboard = await leaderboardResponse.json();
+                
+                // Format leaderboard text
+                const leaderboardText = leaderboard.top_players
+                    .map((player: any, index: number) => {
+                        const isCurrentUser = player.username === tg.initDataUnsafe.user.username;
+                        const line = `#${index + 1}. ${player.username} - ${player.score} points (${player.max_cube_value})`;
+                        return isCurrentUser ? `<b>${line}</b>` : line;
+                    })
+                    .join('\n');
+
+                const positionText = `Your position: #${position.position} of ${position.total}`;
+                const failText = `... and <b>${this.score}</b> points.\n${positionText}\n\nLeaderboard:\n${leaderboardText}\n\nbut there are no other moves...\n\n<span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b>\nSee source on <a href="//github.com/titulus/cubegame">github</a>`;
+                
                 toggle_info({
                     top: 'So sorry ):',
                     header: this.max_value,

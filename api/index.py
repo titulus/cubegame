@@ -109,6 +109,16 @@ async def get_position(username: str, score: int):
         logger.error(f"Error getting position for {username}: {str(e)}")
         return {"error": str(e)}
 
+@app.get("/leaderboard")
+async def get_leaderboard():
+    """Get top 10 players from the leaderboard"""
+    try:
+        top_players = await get_top_scores(10)
+        return {"top_players": top_players}
+    except Exception as e:
+        logger.error(f"Error getting leaderboard: {str(e)}")
+        return {"error": str(e)}
+
 # Serve index.html for all other routes
 @app.get("/{full_path:path}")
 async def serve_index(full_path: str):
