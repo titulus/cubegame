@@ -26,11 +26,11 @@ export class Cube {
 
     constructor(element_id: string) {
         window.Telegram.WebApp.ready();
-        if (window.Telegram.WebApp.initDataUnsafe.user?.username) {
-            alert(`Hello, ${window.Telegram.WebApp.initDataUnsafe.user?.username}!`);
-        } else {
-            alert('not tg webapp');
-        }
+        // if (window.Telegram.WebApp.initDataUnsafe.user?.username) {
+        //     alert(`Hello, ${window.Telegram.WebApp.initDataUnsafe.user?.username}!`);
+        // } else {
+        //     alert('not tg webapp');
+        // }
         this.DOM = {
             cube: document.getElementById(element_id) as HTMLElement,
             side: {},
@@ -131,12 +131,19 @@ export class Cube {
         this.DOM.side[this.coords[2]].className = 'side front';
     }
 
-    private handle_fail(rank: number, total_players: number): void {
+    private handle_fail(rank: number, total_players: number, leaderboard: Array<{username: string, score: number, played_at: string, max_value: number}> ): void {
         const header = this.max_value;
         const tops = ['At least you tried!','Not bad! But you can do better!', 'You\'re almost there!', 'You can do better!', 'Try harder!'];
         const top = tops[Math.floor(Math.random()*tops.length)];
         let text = `... and <b>${this.score}</b> points.<br/>but there are no other moves...`
-        if (total_players) text += `<br/>Your rank is <b>${rank}</b> out of <b>${total_players}</b> players.`
+        if (total_players) {
+            text += `<br/>Your rank is <b>${rank}</b> out of <b>${total_players}</b> players.<br/>`
+            leaderboard.forEach((item: { username: string, score: number, played_at: string, max_value: number }, index: number) => {
+                const medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🎮';
+                const username = item.username === window.Telegram.WebApp.initDataUnsafe.user?.username ? `<b>${item.username}</b>` : item.username;
+                text += `<br/>${medal} ${index + 1}. ${username}: <b>${item.score}</b> 🎲 ${item.max_value}`;
+            });
+        }
         text += `<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>`;
         this.playSound('fail');
         toggle_info({top, header, text, color: get_color(header)});
@@ -154,10 +161,9 @@ export class Cube {
             this.playSound('win');
             toggle_info({top, header, text, color: get_color(header)});
             setStatus('infobox');
-            return
         }
 
-        if (this.max_value > 5) {
+        if (this.max_value >= 5) {
             this.remainingIncrements++;
             this.DOM.increment.innerHTML = `x${this.remainingIncrements}`;
             // Reset visual state if it was disabled
@@ -165,7 +171,6 @@ export class Cube {
                 this.DOM.increment.style.opacity = '1';
                 this.DOM.increment.style.cursor = 'pointer';
             }
-            return
         }
 
     }
@@ -506,14 +511,14 @@ export class Cube {
             });
             if (!response.ok) {
                 console.error('Failed to save score:', response.status, await response.text());
-                this.handle_fail(0, 0);
+                this.handle_fail(0, 0, []);
             } else {
                 const data = await response.json();
-                this.handle_fail(data.rank, data.total_players);
+                this.handle_fail(data.rank, data.total_players, data.leaderboard);
             }
         } catch (error) {
             console.error('Error saving score:', error);
-            this.handle_fail(0, 0);
+            this.handle_fail(0, 0, []);
         }
     }
 }

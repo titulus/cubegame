@@ -207,4 +207,14 @@ async def save_score(request: Request):
     total_players_query = "SELECT COUNT(DISTINCT username) FROM scores"
     total_players = await database.fetch_val(total_players_query)
 
-    return {"status": "success", "rank": rank, "total_players": total_players}
+    # Fetch leaderboard
+    leaderboard_query = """
+        SELECT username, score, max_value, played_at
+        FROM scores
+        WHERE played_at >= NOW() - INTERVAL '30 days'
+        ORDER BY score DESC
+        LIMIT 5
+    """
+    leaderboard = await database.fetch_all(leaderboard_query)
+
+    return {"status": "success", "rank": rank, "total_players": total_players, "leaderboard": leaderboard}
