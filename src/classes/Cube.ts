@@ -181,6 +181,7 @@ export class Cube {
             }
 
             if (this.end) {
+                this.saveScore();
                 text = fail_text;
                 top = (top=='') ? 'So sorry ):' : top;
                 // color = [0,0,0];
@@ -486,5 +487,30 @@ export class Cube {
                 this.DOM.max[i].innerHTML = this.max_value.toString();
             }
         }
-    }    
+    }
+
+    private async saveScore() {
+        const tg = (window as any).Telegram.WebApp;
+        if (!tg.initDataUnsafe?.user?.username) return;
+
+        try {
+            const response = await fetch('/save-score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: tg.initDataUnsafe.user.username,
+                    score: this.score,
+                    maxCubeValue: Math.max(...Object.values(this.side).map(v => Number(v)))
+                })
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                console.log('Score saved successfully');
+            }
+        } catch (error) {
+            console.error('Error saving score:', error);
+        }
+    }
 }
