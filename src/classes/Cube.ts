@@ -120,11 +120,10 @@ export class Cube {
 
             this.end = this.check_fail();
             if (this.end) {
-                this.handle_fail();
+                this.saveScore();
             } else {
                 if (max_value_changed) this.handle_max_value_changed();
             }
-            
         }
 
         const prev_front = document.getElementsByClassName('front')[0];
@@ -132,15 +131,16 @@ export class Cube {
         this.DOM.side[this.coords[2]].className = 'side front';
     }
 
-    private handle_fail(): void {
+    private handle_fail(rank: number, total_players: number): void {
         const header = this.max_value;
         const tops = ['At least you tried!','Not bad! But you can do better!', 'You\'re almost there!', 'You can do better!', 'Try harder!'];
         const top = tops[Math.floor(Math.random()*tops.length)];
-        let text = `... and <b>${this.score}</b> points.<br/>but there are no other moves...<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>`;
+        let text = `... and <b>${this.score}</b> points.<br/>but there are no other moves...`
+        if (total_players) text += `<br/>Your rank is <b>${rank}</b> out of <b>${total_players}</b> players.`
+        text += `<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>`;
         this.playSound('fail');
         toggle_info({top, header, text, color: get_color(header)});
         setTimeout(() => { setStatus('infobox'); }, 0);
-        this.saveScore();
     }
 
     private handle_max_value_changed(): void {
@@ -471,7 +471,7 @@ export class Cube {
         
         this.end = this.check_fail();
         if (this.end) {
-            this.handle_fail();
+            this.saveScore();
             return
         }
 
@@ -506,9 +506,14 @@ export class Cube {
             });
             if (!response.ok) {
                 console.error('Failed to save score:', response.status, await response.text());
+                this.handle_fail(0, 0);
+            } else {
+                const data = await response.json();
+                this.handle_fail(data.rank, data.total_players);
             }
         } catch (error) {
             console.error('Error saving score:', error);
+            this.handle_fail(0, 0);
         }
     }
 }

@@ -194,4 +194,17 @@ async def save_score(request: Request):
         score=data['score']
     )
     await database.execute(query)
-    return {"status": "success"}
+
+    # Calculate rank
+    rank_query = """
+        SELECT COUNT(*) + 1
+        FROM scores
+        WHERE score > (SELECT score FROM scores WHERE username = :username ORDER BY played_at DESC LIMIT 1)
+    """
+    rank = await database.fetch_val(rank_query, {"username": data['username']})
+    
+    # Calculate total players
+    total_players_query = "SELECT COUNT(DISTINCT username) FROM scores"
+    total_players = await database.fetch_val(total_players_query)
+
+    return {"status": "success", "rank": rank, "total_players": total_players}
