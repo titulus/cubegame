@@ -116,98 +116,58 @@ export class Cube {
         if (front_value != compare_value) {
             this.rotate(direction);
         } else {
-            let max_value_changed = false;
-            this.side[current_sides[direction]] = (this.side[current_sides[direction]] as number) + 1;
-            this.playSound('increase');
+            const max_value_changed = this.increase(direction, current_sides, value);
 
-            if ((this.side[current_sides[direction]] as number) > this.max_value) {
-                this.max_value = this.side[current_sides[direction]] as number;
-                max_value_changed = true;
-
-                for (let i = 0; i < this.DOM.max.length; i++) {
-                    this.DOM.max[i].innerHTML = this.max_value.toString();
-                }
-            }
-
-            this.score += this.side[current_sides[direction]] as number;
-            this.side[current_sides.front] = value !== undefined ? value : this.get_new_value();
-
-            this.animate_sides(current_sides.front, current_sides[direction]);
-            this.fill();
-            this.DOM.score.innerHTML = this.score.toString();
-
-            if (this.check_fail()) {
-                this.end = true;
-            } else {
-                this.end = false;
-            }
-
-            let info_show = false;
-            const fail_text = `... and <b>${this.score}</b> points.<br/>but there are no other moves...<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>`;
-            let header = this.max_value;
-            let top = '';
-            let text = '';
-            let color: number[] | undefined = undefined;
-
-            if (max_value_changed) {
-                if (this.max_value == 5) {
-                    top = 'CONGRATULATIONS!';
-                    text = 'You\'ve got +1<br/>You\'ll get it each time you increase the max value<br/>Try to get 10 (;';
-                    info_show = true;
-                    this.playSound('win');
-                }
-                if (this.max_value == 10) {
-                    top = 'YOU <b>WON</b>!';
-                    text = 'So... can you get 15?';
-                    info_show = true;
-                    this.playSound('win');
-                }
-                if (this.max_value == 15) {
-                    top = 'AMAZING!';
-                    text = "I'll bet - you will do 20!";
-                    info_show = true;
-                    this.playSound('win');
-                }
-                if (this.max_value >= 20) {
-                    const tops = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
-                    top = tops[Math.floor(Math.random()*tops.length)];
-                    text = 'Try to get '+(this.max_value+1);
-                    info_show = true;
-                    this.playSound('win');
-                }
-                if (this.max_value >= 5) {
-                    this.remainingIncrements++;
-                    this.DOM.increment.innerHTML = `x${this.remainingIncrements}`;
-                    // Reset visual state if it was disabled
-                    if (this.remainingIncrements > 0) {
-                        this.DOM.increment.style.opacity = '1';
-                        this.DOM.increment.style.cursor = 'pointer';
-                    }
-                }
-            }
-
+            this.end = this.check_fail();
             if (this.end) {
-                text = fail_text;
-                top = (top=='') ? 'So sorry ):' : top;
-                // color = [0,0,0];
-                info_show = true;
-                this.playSound('fail');
+                this.handle_fail();
             } else {
-                text += '<br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>continue</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>';
+                if (max_value_changed) this.handle_max_value_changed();
             }
-
-            if (info_show) {
-                toggle_info({top, header, text, color: color || get_color(header)});
-                setStatus('infobox');
-            }
-            if (this.end) {
-                this.saveScore();
-            }
+            
         }
 
         const prev_front = document.getElementsByClassName('front')[0];
         prev_front.className = 'side';
         this.DOM.side[this.coords[2]].className = 'side front';
+    }
+
+    private handle_fail(): void {
+        const header = this.max_value;
+        const tops = ['At least you tried!','Not bad! But you can do better!', 'You\'re almost there!', 'You can do better!', 'Try harder!'];
+        const top = tops[Math.floor(Math.random()*tops.length)];
+        let text = `... and <b>${this.score}</b> points.<br/>but there are no other moves...<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>`;
+        this.playSound('fail');
+        toggle_info({top, header, text, color: get_color(header)});
+        setTimeout(() => { setStatus('infobox'); }, 0);
+        this.saveScore();
+    }
+
+    private handle_max_value_changed(): void {
+        if (this.max_value < 5) return;
+
+        if (this.max_value === 5) {
+            const header = this.max_value;
+            const tops = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
+            const top = tops[Math.floor(Math.random()*tops.length)];
+            const text = 'You\'ve got +1<br/>You\'ll get it each time you increase the max value.';
+            this.playSound('win');
+            toggle_info({top, header, text, color: get_color(header)});
+            setStatus('infobox');
+            return
+        }
+
+        if (this.max_value > 5) {
+            this.remainingIncrements++;
+            this.DOM.increment.innerHTML = `x${this.remainingIncrements}`;
+            // Reset visual state if it was disabled
+            if (this.remainingIncrements > 0) {
+                this.DOM.increment.style.opacity = '1';
+                this.DOM.increment.style.cursor = 'pointer';
+            }
+            return
+        }
+
     }
 
     private get_new_value(): number {
@@ -249,6 +209,30 @@ export class Cube {
         );
     }
 
+    private increase(direction: string, current_sides: {[key: string]: string}, value?: number): boolean {
+        let max_value_changed = false;
+        this.side[current_sides[direction]] = (this.side[current_sides[direction]] as number) + 1;
+        this.playSound('increase');
+    
+        if ((this.side[current_sides[direction]] as number) > this.max_value) {
+            this.max_value = this.side[current_sides[direction]] as number;
+            max_value_changed = true;
+    
+            for (let i = 0; i < this.DOM.max.length; i++) {
+                this.DOM.max[i].innerHTML = this.max_value.toString();
+            }
+        }
+    
+        this.score += this.side[current_sides[direction]] as number;
+        this.side[current_sides.front] = value !== undefined ? value : this.get_new_value();
+    
+        this.animate_sides(current_sides.front, current_sides[direction]);
+        this.fill();
+        this.DOM.score.innerHTML = this.score.toString();
+
+        return max_value_changed;
+    }
+    
     public rotate(direction: string): void {
         this.playSound('rotate');
         let t_angles: number[] = [0,0,0];
@@ -484,6 +468,13 @@ export class Cube {
         const frontSide = this.coords[2];
         this.side[frontSide] = (this.side[frontSide] as number) + 1;
         this.fill();
+        
+        this.end = this.check_fail();
+        if (this.end) {
+            this.handle_fail();
+            return
+        }
+
         this.playSound('increase');
         
         this.score += 1;
