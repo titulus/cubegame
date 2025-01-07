@@ -41,7 +41,7 @@ async def handle_message(message):
             text="Play Cube Game!",
             web_app=telegram.WebAppInfo(url=WEBAPP_URL)
         )
-        reply_markup = telegram.ReplyKeyboardMarkup([[keyboard]], resize_keyboard=True)
+        reply_markup = telegram.InlineKeyboardMarkup([[keyboard]])
         await bot.send_message(
             chat_id=message.chat.id,
             text="Welcome to Cube Game! Click the button below to start playing:",

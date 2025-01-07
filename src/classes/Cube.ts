@@ -25,6 +25,12 @@ export class Cube {
     private remainingIncrements: number;
 
     constructor(element_id: string) {
+        window.Telegram.WebApp.ready();
+        if (window.Telegram.WebApp.initDataUnsafe.user?.username) {
+            alert(`Hello, ${window.Telegram.WebApp.initDataUnsafe.user?.username}!`);
+        } else {
+            alert('not tg webapp');
+        }
         this.DOM = {
             cube: document.getElementById(element_id) as HTMLElement,
             side: {},

@@ -58,7 +58,7 @@ npm run build
 
 4. Start the development server:
 ```bash
-python -m uvicorn bot:app --reload
+python -m uvicorn api.index:app --reload
 ```
 
 ## Production Deployment
