@@ -494,7 +494,7 @@ export class Cube {
         if (!tg.initDataUnsafe?.user?.username) return;
 
         try {
-            const response = await fetch('/save-score', {
+            await fetch('/save-score', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -505,9 +505,20 @@ export class Cube {
                     maxCubeValue: Math.max(...Object.values(this.side).map(v => Number(v)))
                 })
             });
-            const data = await response.json();
-            if (data.status === 'success') {
-                console.log('Score saved successfully');
+            
+            // Get position in leaderboard
+            const positionResponse = await fetch(`/user-position/${tg.initDataUnsafe.user.username}/${this.score}`);
+            if (positionResponse.ok) {
+                const position = await positionResponse.json();
+                // Update the info text with position
+                const positionText = `\nYour position: #${position.position} of ${position.total}`;
+                const failText = `... and <b>${this.score}</b> points.${positionText}<br/>but there are no other moves...<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>`;
+                toggle_info({
+                    top: 'So sorry ):',
+                    header: this.max_value,
+                    text: failText,
+                    color: get_color(this.max_value)
+                });
             }
         } catch (error) {
             console.error('Error saving score:', error);

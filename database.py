@@ -48,6 +48,23 @@ if IS_PRODUCTION:
         query = scores.select().where(scores.c.telegram_username == username).order_by(scores.c.score.desc()).limit(1)
         return await database.fetch_one(query)
 
+    async def get_user_position(username: str, current_score: int) -> dict:
+        # Get all scores higher than the current score
+        query = f"""
+        WITH user_rank AS (
+            SELECT COUNT(*) + 1 as rank
+            FROM scores
+            WHERE score > {current_score}
+        )
+        SELECT rank, (SELECT COUNT(*) FROM scores) as total
+        FROM user_rank;
+        """
+        result = await database.fetch_one(query)
+        return {
+            "position": result["rank"] if result else 1,
+            "total": result["total"] if result else 1
+        }
+
 else:
     # In-memory storage for development
     class InMemoryDB:
@@ -82,6 +99,22 @@ else:
                 return None
             return max(user_scores, key=lambda x: x["score"])
 
+        async def get_user_position(self, username: str, current_score: int) -> dict:
+            # Sort scores in descending order
+            all_scores = sorted(self.scores, key=lambda x: x["score"], reverse=True)
+            
+            # Find position of the current score
+            position = 1
+            for score in all_scores:
+                if current_score >= score["score"]:
+                    break
+                position += 1
+            
+            return {
+                "position": position,
+                "total": len(all_scores) + 1  # +1 because current score isn't saved yet
+            }
+
     # Create in-memory database instance
     database = InMemoryDB()
 
@@ -89,3 +122,4 @@ else:
     save_score = database.save_score
     get_top_scores = database.get_top_scores
     get_user_best_score = database.get_user_best_score
+    get_user_position = database.get_user_position

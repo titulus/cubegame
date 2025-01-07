@@ -16,7 +16,7 @@ parent_dir = str(Path(__file__).parent.parent)
 sys.path.append(parent_dir)
 
 from bot import app as bot_app
-from database import database, save_score, get_top_scores, get_user_best_score
+from database import database, save_score, get_top_scores, get_user_best_score, get_user_position
 
 app = FastAPI()
 
@@ -96,6 +96,17 @@ async def get_best_score(username: str):
         return {"best_score": score}
     except Exception as e:
         logger.error(f"Error getting best score for {username}: {str(e)}")
+        return {"error": str(e)}
+
+@app.get("/user-position/{username}/{score}")
+async def get_position(username: str, score: int):
+    logger.info(f"Getting position for user {username} with score {score}")
+    try:
+        position = await get_user_position(username, score)
+        logger.info(f"Position for {username}: {position}")
+        return position
+    except Exception as e:
+        logger.error(f"Error getting position for {username}: {str(e)}")
         return {"error": str(e)}
 
 # Serve index.html for all other routes
