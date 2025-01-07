@@ -200,6 +200,9 @@ export class Cube {
                 toggle_info({top, header, text, color: color || get_color(header)});
                 setStatus('infobox');
             }
+            if (this.end) {
+                this.saveScore();
+            }
         }
 
         const prev_front = document.getElementsByClassName('front')[0];
@@ -229,7 +232,7 @@ export class Cube {
     }
 
     private check_fail(): boolean {
-        // return false; // temporary. IDK if fail is needed at all
+        if (this.remainingIncrements > 0) return false;
         return (
             this.side['z'] != this.side['-y'] &&
             this.side['z'] != this.side['-x'] &&
@@ -492,5 +495,29 @@ export class Cube {
                 this.DOM.max[i].innerHTML = this.max_value.toString();
             }
         }
-    }    
+    }
+
+    private async saveScore(): Promise<void> {
+        const username = window.Telegram.WebApp.initDataUnsafe.user?.username || 'unknown';
+        const data = {
+            username: username,
+            max_value: this.max_value,
+            score: this.score
+        };
+
+        try {
+            const response = await fetch('/save-score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) {
+                console.error('Failed to save score:', response.status, await response.text());
+            }
+        } catch (error) {
+            console.error('Error saving score:', error);
+        }
+    }
 }

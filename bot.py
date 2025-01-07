@@ -151,3 +151,47 @@ async def serve_root_files(file_path: str):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+from databases import Database
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, DateTime, func
+
+# Database URL from environment
+DATABASE_URL = os.getenv('DATABASE_URL')
+database = Database(DATABASE_URL)
+metadata = MetaData()
+
+# Define scores table
+scores = Table(
+    "scores",
+    metadata,
+    Column("id", Integer, primary_key=True),
+    Column("username", String),
+    Column("max_value", Integer),
+    Column("score", Integer),
+    Column("played_at", DateTime, server_default=func.now())
+)
+
+# Create tables on startup
+@app.on_event("startup")
+async def startup_event():
+    engine = create_engine(DATABASE_URL)
+    metadata.create_all(engine)
+    await database.connect()
+    # existing startup code...
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    await database.disconnect()
+    # existing shutdown code...
+
+# Update score saving endpoint
+@app.post("/save-score")
+async def save_score(request: Request):
+    data = await request.json()
+    query = scores.insert().values(
+        username=data['username'],
+        max_value=data['max_value'],
+        score=data['score']
+    )
+    await database.execute(query)
+    return {"status": "success"}
