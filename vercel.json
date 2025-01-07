@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "bot.py",
+      "src": "api/index.py",
       "use": "@vercel/python"
     },
     {
@@ -16,7 +16,7 @@
   "routes": [
     {
       "src": "/telegram-webhook/(.*)",
-      "dest": "bot.py"
+      "dest": "/api/index.py"
     },
     {
       "src": "/assets/(.*)",
@@ -31,8 +31,12 @@
       "dest": "/dist/sounds/$1"
     },
     {
+      "src": "/(.*\\.(js|css|ico|png|jpg|gif|mp3))",
+      "dest": "/dist/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "bot.py"
+      "dest": "/dist/index.html"
     }
   ]
 }
