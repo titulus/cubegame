@@ -65,26 +65,30 @@ python -m uvicorn bot:app --reload
 
 ### Prerequisites
 - A Telegram bot token (get it from @BotFather)
-- A render.com account for hosting
+- A Vercel account for hosting
 
 ### Deployment Steps
 
-1. Create a new Web Service on render.com
+1. Install Vercel CLI (optional):
+```bash
+npm i -g vercel
+```
 
-2. Set the following environment variables:
-   - `BOT_TOKEN`: Your Telegram bot token
-   - `WEBAPP_URL`: Your render.com app URL
-   - `IS_PRODUCTION`: true
+2. Deploy to Vercel:
+   - Using CLI: Run `vercel` in the project directory
+   - Or using Vercel Dashboard:
+     1. Import your GitHub repository
+     2. Select Python framework
+     3. Set environment variables:
+        - `BOT_TOKEN`: Your Telegram bot token
+        - `WEBAPP_URL`: Your Vercel app URL
+        - `IS_PRODUCTION`: true
 
-3. Configure the build settings:
-   - Build Command: `npm install && npm run build && pip install -r requirements.txt`
-   - Start Command: `python -m uvicorn bot:app --host 0.0.0.0 --port $PORT`
-
-4. After deployment, set up your Telegram Mini App:
+3. After deployment, set up your Telegram Mini App:
    1. Go to @BotFather
    2. Use /setmenubutton
    3. Select your bot
-   4. Enter your render.com app URL
+   4. Enter your Vercel app URL
 
 ## Project Structure
 

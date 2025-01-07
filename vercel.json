@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "bot.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/telegram-webhook/(.*)",
+      "dest": "bot.py"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/dist/assets/$1"
+    },
+    {
+      "src": "/img/(.*)",
+      "dest": "/dist/img/$1"
+    },
+    {
+      "src": "/sounds/(.*)",
+      "dest": "/dist/sounds/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "bot.py"
+    }
+  ]
+}
