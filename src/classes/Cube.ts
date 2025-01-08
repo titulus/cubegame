@@ -461,6 +461,9 @@ export class Cube {
 
     public incrementFrontValue(): void {
         if (this.remainingIncrements <= 0) return;
+        if (document.body.getAttribute('data-status') === 'tutorial-3') {
+            return;
+        }
     
         this.remainingIncrements--;
         this.DOM.increment.innerHTML = `x${this.remainingIncrements}`;

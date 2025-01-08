@@ -19,7 +19,7 @@ export function tutorial(state: number): void {
             setStatus('tutorial-0');
         }; break;
         case 1: {
-            cube.init([1,0,1,2,1,0]);
+            cube.init([1,0,0,0,0,0]);
             toggle_info();
             const tutorial1 = document.getElementById('tutorial-1') as HTMLElement;
             tutorial1.style.display = 'block';
@@ -45,39 +45,53 @@ export function tutorial(state: number): void {
             setStatus('tutorial-2');
         }; break;
         case 3: {
-            cube.make('right');
+            cube.make('right', 0);
             const tutorial2 = document.getElementById('tutorial-2') as HTMLElement;
-            const tutorial3 = document.getElementById('tutorial-3') as HTMLElement;
             tutorial2.style.opacity = '0';
-            
             setTimeout(() => {
                 tutorial2.style.display = 'none';
+                const tutorial3 = document.getElementById('tutorial-3') as HTMLElement;
                 tutorial3.style.display = 'block';
-                setTimeout(() => {
+                 setTimeout(() => {
                     tutorial3.style.opacity = '1';
                 }, 100);
+                const increment = document.getElementById('increment-btn-tutorial') as HTMLElement;
+                const incrementClickHandler = () => {
+                    console.log('click');
+                    increment.removeEventListener('click', incrementClickHandler);
+                    tutorial(4);
+                };
+                increment.addEventListener('click', incrementClickHandler, { once: true });
+                increment.addEventListener('touchstart', incrementClickHandler, { once: true });
             }, 500);
-
             setStatus('tutorial-3');
         }; break;
         case 4: {
+            cube.incrementFrontValue();
             const tutorial3 = document.getElementById('tutorial-3') as HTMLElement;
-            const score = document.getElementById('score') as HTMLElement;
+            const tutorial4 = document.getElementById('tutorial-4') as HTMLElement;
             tutorial3.style.opacity = '0';
-            score.style.backgroundColor = 'rgba(255, 255, 125, 0.5)';
-            score.style.boxShadow = '0 0 0.5em rgb(255, 255, 125)';
-            score.style.color = 'rgb(255, 255, 125)';
             
             setTimeout(() => {
                 tutorial3.style.display = 'none';
-                cube.make('up');
+                tutorial4.style.display = 'block';
                 setTimeout(() => {
-                    score.style.backgroundColor = '';
-                    score.style.boxShadow = '';
-                    score.style.color = 'white';
+                    tutorial4.style.opacity = '1';
+                }, 100);
+            }, 500);
+
+            setStatus('tutorial-4');
+        }; break;
+        case 5: {
+            cube.make('up');
+            const tutorial4 = document.getElementById('tutorial-4') as HTMLElement;
+            tutorial4.style.opacity = '0';
+            setTimeout(() => {
+                tutorial4.style.display = 'none';
+                setTimeout(() => {
                     toggle_info({
                         top: 'cool! you got',
-                        header: '3',
+                        header: '2',
                         text: 'Now, try to get <span class="sside" style="background-color: rgba(229, 25, 244, 0.8);">5</span> somewhere<br/><br/>'
                             + '<span class="touch">tap</span> or press <span class="key">space</span> to <b>continue</b>.<br/>',
                         color: [194,158,250]
@@ -85,7 +99,7 @@ export function tutorial(state: number): void {
                     setStatus('infobox');
                 }, 500);
             }, 500);
-            setStatus('tutorial-4');
+            setStatus('tutorial-5');
         }; break;
     }
-} 
+}

@@ -59,8 +59,10 @@ export function event_handler(ev: string): void {
             }
         }; break;
         case 'tutorial-3': {
+        }; break;
+        case 'tutorial-4': {
             if (ev == 'up') {
-                tutorial(4);
+                tutorial(5);
             }
         }; break;
         default: throw new Error('unexpected status: ' + status);
@@ -79,4 +81,4 @@ export function keyup(ev: KeyboardEvent): void {
     if (table[ev.which]) event_handler(table[ev.which]);
 }
 
-export { status }; 
+export { status };

@@ -183,6 +183,20 @@ body {
   color: white;
   text-shadow: 0 0 .3em #014;
 }
+#increment-btn-tutorial {
+    position: absolute;
+    bottom: .3em;
+    right: .3em;
+    font-weight: 700;
+    font-size: 400%;
+    color: white;
+    text-shadow: 0 0 .3em #014;
+    cursor: pointer;
+    transition: all .1s linear;
+    padding: 0 0.3em;
+    border-radius: 0.2em;
+    background: rgba(0,10,40,0.1);
+}
 
 
 
@@ -221,13 +235,9 @@ body {
   margin-left: -57px;
   margin-bottom: -32px;
 }
-#tutorial-3 .helper {
+#tutorial-4 .helper {
   margin-left: -32px;
   margin-bottom: -57px;
-}
-#tutorial-4 .helper {
-  left: 4em;
-  bottom: 0;
 }
 
 @media (prefers-color-scheme: dark) {
