@@ -106,11 +106,17 @@ async def shutdown_event():
 @app.post(f"/telegram-webhook/{BOT_TOKEN}")
 async def telegram_webhook(request: Request):
     """Handle incoming Telegram updates."""
-    data = await request.json()
-    if "message" in data:
-        message = telegram.Message.de_json(data["message"], bot)
-        await handle_message(message)
-    return {"ok": True}
+    try:
+        data = await request.json()
+        logger.info(f"Received webhook data: {data}")
+        if "message" in data:
+            message = telegram.Message.de_json(data["message"], bot)
+            await handle_message(message)
+        return {"ok": True}
+    except Exception as e:
+        logger.error(f"Error processing webhook: {e}")
+        # Return 200 to Telegram even if we have an error
+        return {"ok": False, "error": str(e)}
 
 # Serve static files
 app.mount("/assets", StaticFiles(directory="dist/assets"), name="assets")
