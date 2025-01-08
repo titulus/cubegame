@@ -150,8 +150,11 @@ async def telegram_webhook(bot_token: str, request: Request):
 async def save_score(request: Request):
     try:
         logger.info("save_score endpoint called")
-        if not database.is_connected:
-            logger.error("Database is not connected")
+        
+        try:
+            await database.fetch_val("SELECT 1;")
+        except Exception as e:
+            logger.error(f"Database connection check failed: {e}")
             return {"status": "error", "error": "Database is not connected"}
 
         data = await request.json()
