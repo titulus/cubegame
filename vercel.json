@@ -15,7 +15,7 @@
   ],
   "routes": [
     {
-      "src": "/telegram-webhook/(.*)",
+      "src": "/telegram-webhook/([a-zA-Z0-9:]+)",
       "dest": "/api/index.py"
     },
     {
