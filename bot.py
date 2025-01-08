@@ -103,8 +103,8 @@ async def shutdown_event():
         logger.info("Webhook deleted")
 
 # Telegram webhook endpoint
-@app.post(f"/telegram-webhook/{BOT_TOKEN}")
-async def telegram_webhook(request: Request):
+@app.post("/telegram-webhook/{bot_token}")
+async def telegram_webhook(bot_token: str, request: Request):
     """Handle incoming Telegram updates."""
     try:
         data = await request.json()
