@@ -149,7 +149,7 @@ async def save_score(request: Request):
     rank_query = """
         SELECT COUNT(*) + 1
         FROM scores
-        WHERE score > (SELECT score FROM scores WHERE username = :username ORDER BY played_at DESC LIMIT 1)
+        WHERE score > COALESCE((SELECT score FROM scores WHERE username = :username ORDER BY played_at DESC LIMIT 1), 0)
     """
     rank = await database.fetch_val(rank_query, {"username": data['username']})
     
