@@ -30,7 +30,6 @@ A simple yet addictive math puzzle game where you combine numbers on a 3D cube t
 
 ### Backend
 - FastAPI for serving the game and handling bot interactions
-- Python Telegram Bot for Telegram integration
 - Uvicorn as ASGI server
 
 ## Development Setup
@@ -49,6 +48,7 @@ pip install -r requirements.txt
 BOT_TOKEN=your_telegram_bot_token
 WEBAPP_URL=your_webapp_url
 IS_PRODUCTION=false
+DATABASE_URL=your_database_url
 ```
 
 3. Build the frontend:
@@ -83,6 +83,7 @@ npm i -g vercel
         - `BOT_TOKEN`: Your Telegram bot token
         - `WEBAPP_URL`: Your Vercel app URL
         - `IS_PRODUCTION`: true
+        - `DATABASE_URL`: Your database URL
 
 3. After deployment, set up your Telegram Mini App:
    1. Go to @BotFather
@@ -120,11 +121,18 @@ cubegame/
 │   ├── assets/     # Compiled and hashed assets
 │   ├── img/        # Copied and optimized images
 │   └── sounds/     # Copied sound files
-├── bot.py          # Main FastAPI application
+├── api/index.py          # Main FastAPI application
 │   ├── startup()   # Server startup configuration
 │   ├── shutdown()  # Cleanup handlers
 │   ├── polling()   # Development mode bot updates
 │   └── webhook()   # Production mode bot updates
+│   ├── /telegram-webhook/{bot_token} # Handles incoming Telegram updates
+│   ├── /save-score # Saves the game score
+│   ├── / # Serves the main index.html file
+│   ├── /main-{hash}.{ext} # Serves the main assets
+│   ├── /img/{file_path:path} # Serves images
+│   ├── /sounds/{file_path:path} # Serves sounds
+│   └── /{file_path:path} # Serves other static files
 ├── requirements.txt # Python dependencies
 │   ├── fastapi     # Web framework
 │   ├── python-telegram-bot # Telegram Bot API
@@ -139,11 +147,12 @@ cubegame/
     ├── BOT_TOKEN     # Telegram Bot API token
     ├── WEBAPP_URL    # Application URL
     └── IS_PRODUCTION # Environment mode flag
+    └── DATABASE_URL  # Database URL
 ```
 
 ## Bot Functionality
 
-The bot operates in two modes:
+The bot logic is now implemented within the `api/index.py` file. It operates in two modes:
 - Development: Uses polling for receiving updates
 - Production: Uses webhooks for better performance
 
