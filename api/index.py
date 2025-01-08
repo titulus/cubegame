@@ -150,11 +150,20 @@ async def telegram_webhook(bot_token: str, request: Request):
 async def save_score(request: Request):
     try:
         logger.info("save_score endpoint called")
-        
+
+        try:
+            await database.connect()
+            logger.info("Database connected in save_score")
+        except Exception as e:
+            logger.error(f"Database connection failed in save_score: {e}")
+            return {"status": "error", "error": "Database is not connected"}
+
         try:
             await database.fetch_val("SELECT 1;")
         except Exception as e:
             logger.error(f"Database connection check failed: {e}")
+            await database.disconnect()
+            logger.info("Database disconnected after connection check failure in save_score")
             return {"status": "error", "error": "Database is not connected"}
 
         data = await request.json()
@@ -193,9 +202,14 @@ async def save_score(request: Request):
         leaderboard = await database.fetch_all(leaderboard_query)
         logger.info(f"Leaderboard query executed successfully")
 
+        await database.disconnect()
+        logger.info("Database disconnected after save_score")
+
         return {"status": "success", "rank": rank, "total_players": total_players, "leaderboard": leaderboard}
     except Exception as e:
         logger.error(f"Error saving score: {e}")
+        await database.disconnect()
+        logger.info("Database disconnected after error in save_score")
         return {"status": "error", "error": str(e)}
 
 # Static file serving
