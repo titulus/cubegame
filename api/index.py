@@ -17,20 +17,24 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-load_dotenv()
+try:
+    load_dotenv()
 
-app = FastAPI()
-BOT_TOKEN = os.getenv('BOT_TOKEN')
-WEBAPP_URL = os.getenv('WEBAPP_URL')
-IS_PRODUCTION = os.getenv('IS_PRODUCTION', '').lower() == 'true'
-DATABASE_URL = os.getenv('DATABASE_URL')
+    app = FastAPI()
+    BOT_TOKEN = os.getenv('BOT_TOKEN')
+    WEBAPP_URL = os.getenv('WEBAPP_URL')
+    IS_PRODUCTION = os.getenv('IS_PRODUCTION', '').lower() == 'true'
+    DATABASE_URL = os.getenv('DATABASE_URL')
 
-# Initialize bot
-bot = telegram.Bot(token=BOT_TOKEN)
+    # Initialize bot
+    bot = telegram.Bot(token=BOT_TOKEN)
 
-# Database setup
-database = Database(DATABASE_URL)
-metadata = MetaData()
+    # Database setup
+    database = Database(DATABASE_URL)
+    metadata = MetaData()
+except Exception as e:
+    logger.error(f"Error during initialization: {e}")
+    raise
 
 # Define scores table
 scores = Table(
@@ -139,6 +143,10 @@ async def telegram_webhook(bot_token: str, request: Request):
 @app.post("/save-score")
 async def save_score(request: Request):
     try:
+        if not database.is_connected:
+            logger.error("Database is not connected")
+            return {"status": "error", "error": "Database is not connected"}
+
         data = await request.json()
         logger.info(f"Saving score for user: {data['username']}")
         query = scores.insert().values(
