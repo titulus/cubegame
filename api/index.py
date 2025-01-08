@@ -94,29 +94,35 @@ async def polling():
 @app.on_event("startup")
 async def startup_event():
     """Start the bot when the FastAPI server starts."""
-    # Database setup
-    engine = create_engine(DATABASE_URL)
-    metadata.create_all(engine)
-    await database.connect()
+    try:
+        # Database setup
+        engine = create_engine(DATABASE_URL)
+        metadata.create_all(engine)
+        logger.info("Connecting to database...")
+        await database.connect()
+        logger.info("Database connected successfully")
 
-    # Bot setup
-    if not IS_PRODUCTION:
-        await bot.delete_webhook()
-        logger.info("Development mode: Webhook deleted")
-        asyncio.create_task(polling())
-    else:
-        webhook_url = f"{WEBAPP_URL.rstrip('/')}/telegram-webhook/{BOT_TOKEN}"
-        await asyncio.sleep(1)
-        await bot.set_webhook(webhook_url)
-        logger.info(f"Webhook set to {webhook_url}")
-        await bot.set_chat_menu_button(
-            menu_button=telegram.MenuButton(
-                type="web_app",
-                text="Play Cube Game",
-                web_app=telegram.WebAppInfo(url=WEBAPP_URL)
+        # Bot setup
+        if not IS_PRODUCTION:
+            await bot.delete_webhook()
+            logger.info("Development mode: Webhook deleted")
+            asyncio.create_task(polling())
+        else:
+            webhook_url = f"{WEBAPP_URL.rstrip('/')}/telegram-webhook/{BOT_TOKEN}"
+            await asyncio.sleep(1)
+            await bot.set_webhook(webhook_url)
+            logger.info(f"Webhook set to {webhook_url}")
+            await bot.set_chat_menu_button(
+                menu_button=telegram.MenuButton(
+                    type="web_app",
+                    text="Play Cube Game",
+                    web_app=telegram.WebAppInfo(url=WEBAPP_URL)
+                )
             )
-        )
-        logger.info(f"Menu button set with webapp URL: {WEBAPP_URL}")
+            logger.info(f"Menu button set with webapp URL: {WEBAPP_URL}")
+    except Exception as e:
+        logger.error(f"Error during startup: {e}")
+        raise
 
 @app.on_event("shutdown")
 async def shutdown_event():
