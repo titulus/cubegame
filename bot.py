@@ -8,6 +8,7 @@ import telegram
 import logging
 import asyncio
 from telegram.error import NetworkError
+from http.server import BaseHTTPRequestHandler
 
 # Enable logging
 logging.basicConfig(
@@ -81,9 +82,10 @@ async def startup_event():
     else:
         # Set webhook in production
         webhook_url = f"{WEBAPP_URL.rstrip('/')}/telegram-webhook/{BOT_TOKEN}"
+        await asyncio.sleep(1)
         await bot.set_webhook(webhook_url)
         logger.info(f"Webhook set to {webhook_url}")
-        # Configure menu button with Web App
+         # Configure menu button with Web App
         await bot.set_chat_menu_button(
             menu_button=telegram.MenuButton(
                 type="web_app",
