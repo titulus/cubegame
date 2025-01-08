@@ -13,10 +13,6 @@
       }
     }
   ],
-  "env": {
-    "POSTGRES_PRISMA_URL": "DATABASE_URL",
-    "POSTGRES_URL_NON_POOLING": "DATABASE_URL"
-  },
   "routes": [
     {
       "src": "/telegram-webhook/(.*)",
