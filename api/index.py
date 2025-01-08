@@ -138,34 +138,47 @@ async def telegram_webhook(bot_token: str, request: Request):
 
 @app.post("/save-score")
 async def save_score(request: Request):
-    data = await request.json()
-    query = scores.insert().values(
-        username=data['username'],
-        max_value=data['max_value'],
-        score=data['score']
-    )
-    await database.execute(query)
+    try:
+        data = await request.json()
+        logger.info(f"Saving score for user: {data['username']}")
+        query = scores.insert().values(
+            username=data['username'],
+            max_value=data['max_value'],
+            score=data['score']
+        )
+        logger.info(f"Executing insert query: {query}")
+        await database.execute(query)
+        logger.info(f"Insert query executed successfully")
 
-    rank_query = """
-        SELECT COUNT(*) + 1
-        FROM scores
-        WHERE score > COALESCE((SELECT score FROM scores WHERE username = :username ORDER BY played_at DESC LIMIT 1), 0)
-    """
-    rank = await database.fetch_val(rank_query, {"username": data['username']})
-    
-    total_players_query = "SELECT COUNT(DISTINCT username) FROM scores"
-    total_players = await database.fetch_val(total_players_query)
+        rank_query = """
+            SELECT COUNT(*) + 1
+            FROM scores
+            WHERE score > COALESCE((SELECT score FROM scores WHERE username = :username ORDER BY played_at DESC LIMIT 1), 0)
+        """
+        logger.info(f"Executing rank query: {rank_query}")
+        rank = await database.fetch_val(rank_query, {"username": data['username']})
+        logger.info(f"Rank query executed successfully, rank: {rank}")
+        
+        total_players_query = "SELECT COUNT(DISTINCT username) FROM scores"
+        logger.info(f"Executing total players query: {total_players_query}")
+        total_players = await database.fetch_val(total_players_query)
+        logger.info(f"Total players query executed successfully, total_players: {total_players}")
 
-    leaderboard_query = """
-        SELECT username, score, max_value, played_at
-        FROM scores
-        WHERE played_at >= NOW() - INTERVAL '30 days'
-        ORDER BY score DESC
-        LIMIT 5
-    """
-    leaderboard = await database.fetch_all(leaderboard_query)
+        leaderboard_query = """
+            SELECT username, score, max_value, played_at
+            FROM scores
+            WHERE played_at >= NOW() - INTERVAL '30 days'
+            ORDER BY score DESC
+            LIMIT 5
+        """
+        logger.info(f"Executing leaderboard query: {leaderboard_query}")
+        leaderboard = await database.fetch_all(leaderboard_query)
+        logger.info(f"Leaderboard query executed successfully")
 
-    return {"status": "success", "rank": rank, "total_players": total_players, "leaderboard": leaderboard}
+        return {"status": "success", "rank": rank, "total_players": total_players, "leaderboard": leaderboard}
+    except Exception as e:
+        logger.error(f"Error saving score: {e}")
+        return {"status": "error", "error": str(e)}
 
 # Static file serving
 app.mount("/assets", StaticFiles(directory="dist/assets"), name="assets")
