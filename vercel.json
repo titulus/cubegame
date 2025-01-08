@@ -41,10 +41,6 @@
     {
       "src": "/(.*\\.(js|css|ico|png|jpg|gif|mp3))",
       "dest": "/dist/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/index.html"
     }
   ]
 }
