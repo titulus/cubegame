@@ -15,12 +15,12 @@
   ],
   "routes": [
     {
-      "src": "/telegram-webhook/([a-zA-Z0-9:]+)",
-      "dest": "/api/index.py"
+      "src": "/telegram-webhook/(.*)",
+      "dest": "api/index.py"
     },
     {
       "src": "/save-score",
-      "dest": "/api/index.py"
+      "dest": "api/index.py"
     },
     {
       "src": "/assets/(.*)",
