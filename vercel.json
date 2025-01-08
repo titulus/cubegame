@@ -23,6 +23,10 @@
       "dest": "/api/index.py"
     },
     {
+      "src": "/save-score",
+      "dest": "/api/index.py"
+    },
+    {
       "src": "/assets/(.*)",
       "dest": "/dist/assets/$1"
     },
