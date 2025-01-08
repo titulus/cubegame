@@ -37,7 +37,7 @@ app.add_middleware(
 async def handle_message(message):
     """Handle incoming message."""
     if message.text == "/start":
-        keyboard = telegram.KeyboardButton(
+        keyboard = telegram.InlineKeyboardButton(
             text="Play Cube Game!",
             web_app=telegram.WebAppInfo(url=WEBAPP_URL)
         )
@@ -80,7 +80,7 @@ async def startup_event():
         asyncio.create_task(polling())
     else:
         # Set webhook in production
-        webhook_url = f"{WEBAPP_URL}/telegram-webhook/{BOT_TOKEN}"
+        webhook_url = f"{WEBAPP_URL.rstrip('/')}/telegram-webhook/{BOT_TOKEN}"
         await bot.set_webhook(webhook_url)
         logger.info(f"Webhook set to {webhook_url}")
         # Configure menu button with Web App
