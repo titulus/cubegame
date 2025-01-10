@@ -135,7 +135,7 @@ export class Cube {
         const header = this.max_value;
         const tops = ['At least you tried!','Not bad! But you can do better!', 'You\'re almost there!', 'You can do better!', 'Try harder!'];
         const top = tops[Math.floor(Math.random()*tops.length)];
-        let text = `... and <b>${rank}</b> points.<br/>but there are no other moves...`
+        let text = `... and <b>${this.score}</b> points.<br/>but there are no other moves...`
         if (total_games) {
             text += `<br/>Your score is <b>${rank}</b> out of <b>${total_games}</b> games.<br/>`
             leaderboard.forEach((item: { username: string, score: number, max_value: number, total_games: number }, index: number) => {
