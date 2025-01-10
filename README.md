@@ -161,7 +161,7 @@ Commands:
 - `/start`: Displays a button to launch the game
 
 ## Backlog
-- [ ] The leaderboard should be deduced by players, and your position should be shown not by game but by position in the leaderboard.
+- [x] The leaderboard should be deduced by players, and your position should be shown not by game but by position in the leaderboard.
 - [ ] In the info box with the number 5, add text indicating that you should press the spacebar or tap the screen to continue.
 - [ ] On the third step of the tutorial, which explains the "plus one" button, add an arrow pointing to where you need to click.
 - [ ] Analytics.

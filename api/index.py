@@ -186,15 +186,20 @@ async def save_score(request: Request):
         rank = await database.fetch_val(rank_query, {"username": data['username']})
         logger.info(f"Rank query executed successfully, rank: {rank}")
         
-        total_players_query = "SELECT COUNT(DISTINCT username) FROM scores"
-        logger.info(f"Executing total players query: {total_players_query}")
-        total_players = await database.fetch_val(total_players_query)
-        logger.info(f"Total players query executed successfully, total_players: {total_players}")
+        total_games_query = "SELECT COUNT(*) FROM scores WHERE played_at >= NOW() - INTERVAL '30 days'"
+        logger.info(f"Executing total players query: {total_games_query}")
+        total_games = await database.fetch_val(total_games_query)
+        logger.info(f"Total players query executed successfully, total_games: {total_games}")
 
         leaderboard_query = """
-            SELECT username, score, max_value, played_at
-            FROM scores
+            SELECT 
+                username,
+                MAX(score) as score,
+                MAX(max_value) as max_value,
+                COUNT(*) as total_games
+            FROM scores 
             WHERE played_at >= NOW() - INTERVAL '30 days'
+            GROUP BY username
             ORDER BY score DESC
             LIMIT 5
         """
@@ -205,7 +210,7 @@ async def save_score(request: Request):
         await database.disconnect()
         logger.info("Database disconnected after save_score")
 
-        return {"status": "success", "rank": rank, "total_players": total_players, "leaderboard": leaderboard}
+        return {"status": "success", "rank": rank, "total_games": total_games, "leaderboard": leaderboard}
     except Exception as e:
         logger.error(f"Error saving score: {e}")
         await database.disconnect()
