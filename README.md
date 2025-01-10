@@ -9,7 +9,8 @@ A simple yet addictive math puzzle game where you combine numbers on a 3D cube t
    - The chosen side's value increases by 1
    - The front side gets a new random value
 3. When numbers are different, the cube rotates instead
-4. Goal: Try to get 10 on one side!
+4. Use the [+1] button to increase the front side value by 1
+5. Compete for the top spot on the monthly leaderboard at the end of the game
 
 ## Game Features
 
@@ -158,6 +159,17 @@ The bot logic is now implemented within the `api/index.py` file. It operates in 
 
 Commands:
 - `/start`: Displays a button to launch the game
+
+## Backlog
+- [ ] The leaderboard should be deduced by players, and your position should be shown not by game but by position in the leaderboard.
+- [ ] In the info box with the number 5, add text indicating that you should press the spacebar or tap the screen to continue.
+- [ ] On the third step of the tutorial, which explains the "plus one" button, add an arrow pointing to where you need to click.
+- [ ] Analytics.
+- [ ] Paid actions.
+- - [ ] Star
+- - [ ] Card
+- [ ] The full leaderboard in chat.
+- [ ] My results in chat.
 
 ## Contributing
 
