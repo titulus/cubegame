@@ -156,7 +156,8 @@ export class Cube {
             const header = this.max_value;
             const tops = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
             const top = tops[Math.floor(Math.random()*tops.length)];
-            const text = 'You\'ve got +1<br/>You\'ll get it each time you increase the max value.';
+            let text = 'You\'ve got +1<br/>You\'ll get it each time you increase the max value.';
+            text += `<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>continue</b>`;
             this.playSound('win');
             toggle_info({top, header, text, color: get_color(header)});
             setStatus('infobox');
