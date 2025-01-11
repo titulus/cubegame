@@ -73,6 +73,9 @@ async def handle_message(message):
         )
     elif message.text == "/leaderboard":
         try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            
             await database.connect()
             logger.info("Database connected in /leaderboard")
 
@@ -88,12 +91,16 @@ async def handle_message(message):
 
             await database.disconnect()
             logger.info("Database disconnected after /leaderboard")
+            loop.close()
         except Exception as e:
             logger.error(f"Error in /leaderboard: {e}")
             await database.disconnect()
             logger.info("Database disconnected after error in /leaderboard")
     elif message.text == "/stats":
         try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            
             await database.connect()
             logger.info("Database connected in /stats")
 
@@ -111,7 +118,7 @@ async def handle_message(message):
             stats = await database.fetch_one(stats_query, {"username": message.from_user.username})
             
             if stats:
-                stats_text = f"� <b>Your Monthly Stats</b>\n\n"
+                stats_text = f"📊 <b>Your Monthly Stats</b>\n\n"
                 stats_text += f"🏆 Rank: <code>{stats['rank']}</code>\n"
                 stats_text += f"🎯 Best Score: <code>{stats['best_score']}</code>\n"
                 stats_text += f"🎲 Best Value: <code>{stats['best_max_value']}</code>\n"
@@ -143,10 +150,12 @@ async def handle_message(message):
 
             await database.disconnect()
             logger.info("Database disconnected after /stats")
+            loop.close()
         except Exception as e:
             logger.error(f"Error in /stats: {e}")
             await database.disconnect()
             logger.info("Database disconnected after error in /stats")
+
 async def polling():
     """Poll for new messages."""
     if IS_PRODUCTION:
