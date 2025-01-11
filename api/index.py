@@ -68,7 +68,7 @@ async def handle_message(message):
         reply_markup = telegram.InlineKeyboardMarkup([[keyboard]])
         await bot.send_message(
             chat_id=message.chat.id,
-            text="Welcome to Cube Game! Click the button below to start playing. Or type /leaderboard to see the leaderboard.",
+            text="Welcome to Cube Game! Click the button below to start playing. Or type /leaderboard to see the leaderboard, /stats to see your results.",
             reply_markup=reply_markup
         )
     elif message.text == "/leaderboard":
@@ -80,6 +80,50 @@ async def handle_message(message):
             if entry['username'] == message.from_user.username:
                 text += f" 😎"
         await bot.send_message(chat_id=message.chat.id, text=text, parse_mode='HTML')
+    elif message.text == "/stats":
+        stats_query = """
+            SELECT 
+                MAX(score) as best_score,
+                MAX(max_value) as best_max_value,
+                COUNT(*) as total_games,
+                AVG(score) as avg_score,
+                RANK() OVER (ORDER BY MAX(score) DESC) as rank
+            FROM scores 
+            WHERE username = :username AND played_at >= NOW() - INTERVAL '30 days'
+            GROUP BY username
+        """
+        stats = await database.fetch_one(stats_query, {"username": message.from_user.username})
+        
+        if stats:
+            stats_text = f"📊 <b>Your Monthly Stats</b>\n\n"
+            stats_text += f"🏆 Rank: <code>{stats['rank']}</code>\n"
+            stats_text += f"🎯 Best Score: <code>{stats['best_score']}</code>\n"
+            stats_text += f"🎲 Best Value: <code>{stats['best_max_value']}</code>\n"
+            stats_text += f"📈 Average Score: <code>{int(stats['avg_score'])}</code>\n"
+            stats_text += f"🎮 Games Played: <code>{stats['total_games']}</code>"
+            
+            await bot.send_message(chat_id=message.chat.id, text=stats_text, parse_mode='HTML')
+            
+            history_query = """
+                SELECT 
+                    played_at,
+                    score,
+                    max_value
+                FROM scores 
+                WHERE username = :username AND played_at >= NOW() - INTERVAL '30 days'
+                ORDER BY played_at DESC
+            """
+            history = await database.fetch_all(history_query, {"username": message.from_user.username})
+            
+            history_text = "📜 <b>Your Recent Games</b>\n\n"
+            history_text += "<code>   Date    Score  Max</code>\n"
+            for game in history:
+                date = game['played_at'].strftime("%Y-%m-%d")
+                history_text += f"<code>{date} {game['score']:>6} {game['max_value']:>4}</code>\n"
+                
+            await bot.send_message(chat_id=message.chat.id, text=history_text, parse_mode='HTML')
+        else:
+            await bot.send_message(chat_id=message.chat.id, text="You haven't played any games in the last 30 days!")
 
 async def polling():
     """Poll for new messages."""
