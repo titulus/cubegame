@@ -27,7 +27,7 @@ class DatabaseManager:
         self._engine = create_engine(DATABASE_URL)
         
     async def get_connection(self):
-        """Создает новое подключение к БД"""
+        """Creates a new database connection"""
         database = Database(
             DATABASE_URL,
             force_rollback=bool(os.getenv('TESTING'))
@@ -41,11 +41,11 @@ class DatabaseManager:
             raise
 
     def create_tables(self):
-        """Создает таблицы в базе данных"""
+        """Creates tables in the database"""
         metadata.create_all(self._engine)
 
     async def get_leaderboard(self, database, limit=None):
-        """Получает список лидеров с опциональным лимитом"""
+        """Gets the leaderboard with optional limit"""
         query = """
             SELECT 
                 username,
@@ -63,7 +63,7 @@ class DatabaseManager:
         return await database.fetch_all(query)
 
     async def save_score(self, database, username: str, max_value: int, score: int):
-        """Сохраняет результат игры"""
+        """Saves the game result"""
         query = scores.insert().values(
             username=username,
             max_value=max_value,
@@ -72,7 +72,7 @@ class DatabaseManager:
         await database.execute(query)
 
     async def get_user_stats(self, database, username: str):
-        """Получает статистику пользователя"""
+        """Gets user statistics"""
         stats_query = """
             SELECT 
                 MAX(score) as best_score,
@@ -87,7 +87,7 @@ class DatabaseManager:
         return await database.fetch_one(stats_query, {"username": username})
 
     async def get_user_history(self, database, username: str):
-        """Получает историю игр пользователя"""
+        """Gets user game history"""
         history_query = """
             SELECT 
                 played_at,
@@ -99,5 +99,5 @@ class DatabaseManager:
         """
         return await database.fetch_all(history_query, {"username": username})
 
-# Создаем глобальный экземпляр менеджера БД
-db_manager = DatabaseManager() 
+# Create global instance of DatabaseManager
+db_manager = DatabaseManager()

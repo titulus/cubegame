@@ -49,8 +49,11 @@ async def handle_telegram_message(message, bot, database):
             reply_markup = telegram.InlineKeyboardMarkup([[keyboard]])
             await bot.send_message(
                 chat_id=message.chat.id,
-                text="Welcome to Cube Game! Click the button below to start playing.",
-                reply_markup=reply_markup
+                           text="🎮 Welcome to Cube Game! 🎲\n\n"
+                                "Click the button below to start playing.\n\n"
+                                "Available commands:\n"
+                                "/stats - 📊 View your monthly statistics\n"
+                                "/leaderboard - 🏆 Check the monthly leaderboard",                reply_markup=reply_markup
             )
         elif message.text == "/leaderboard":
             leaderboard = await db_manager.get_leaderboard(database)
