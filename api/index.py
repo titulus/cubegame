@@ -72,59 +72,81 @@ async def handle_message(message):
             reply_markup=reply_markup
         )
     elif message.text == "/leaderboard":
-        leaderboard = await get_full_leaderboard()
-        text = "🏆 <b>Monthly Leaderboard</b> 🏆\n"
-        for idx, entry in enumerate(leaderboard):
-            medal = "🏆" if idx == 0 else "🥈" if idx == 1 else "🥉" if idx == 2 else "🎮"
-            text += f"\n{medal} <code>{entry['rank']:>2} {entry['username']:<20} {entry['score']:>4}</code> 🎲 <code>{entry['max_value']:>3}</code> (<code>{entry['total_games']:>3}</code> games)"
-            if entry['username'] == message.from_user.username:
-                text += f" 😎"
-        await bot.send_message(chat_id=message.chat.id, text=text, parse_mode='HTML')
+        try:
+            await database.connect()
+            logger.info("Database connected in /leaderboard")
+
+            leaderboard = await get_full_leaderboard()
+            text = "🏆 <b>Monthly Leaderboard</b> 🏆\n\n"
+            for idx, entry in enumerate(leaderboard):
+                medal = "🏆" if idx == 0 else "🥈" if idx == 1 else "🥉" if idx == 2 else "🎮"
+                formatted_username = entry['username']
+                if entry['username'] == message.from_user.username:
+                    formatted_username = f"<b>{formatted_username}</b>"
+                text += f"{medal} <code>{entry['rank']}. {formatted_username:<20} {entry['score']:>4}</code> 🎲 <code>{entry['max_value']:>2}</code> (<code>{entry['total_games']}</code> games)\n"
+            await bot.send_message(chat_id=message.chat.id, text=text, parse_mode='HTML')
+
+            await database.disconnect()
+            logger.info("Database disconnected after /leaderboard")
+        except Exception as e:
+            logger.error(f"Error in /leaderboard: {e}")
+            await database.disconnect()
+            logger.info("Database disconnected after error in /leaderboard")
     elif message.text == "/stats":
-        stats_query = """
-            SELECT 
-                MAX(score) as best_score,
-                MAX(max_value) as best_max_value,
-                COUNT(*) as total_games,
-                AVG(score) as avg_score,
-                RANK() OVER (ORDER BY MAX(score) DESC) as rank
-            FROM scores 
-            WHERE username = :username AND played_at >= NOW() - INTERVAL '30 days'
-            GROUP BY username
-        """
-        stats = await database.fetch_one(stats_query, {"username": message.from_user.username})
-        
-        if stats:
-            stats_text = f"📊 <b>Your Monthly Stats</b>\n\n"
-            stats_text += f"🏆 Rank: <code>{stats['rank']}</code>\n"
-            stats_text += f"🎯 Best Score: <code>{stats['best_score']}</code>\n"
-            stats_text += f"🎲 Best Value: <code>{stats['best_max_value']}</code>\n"
-            stats_text += f"📈 Average Score: <code>{int(stats['avg_score'])}</code>\n"
-            stats_text += f"🎮 Games Played: <code>{stats['total_games']}</code>"
-            
-            await bot.send_message(chat_id=message.chat.id, text=stats_text, parse_mode='HTML')
-            
-            history_query = """
+        try:
+            await database.connect()
+            logger.info("Database connected in /stats")
+
+            stats_query = """
                 SELECT 
-                    played_at,
-                    score,
-                    max_value
+                    MAX(score) as best_score,
+                    MAX(max_value) as best_max_value,
+                    COUNT(*) as total_games,
+                    AVG(score) as avg_score,
+                    RANK() OVER (ORDER BY MAX(score) DESC) as rank
                 FROM scores 
                 WHERE username = :username AND played_at >= NOW() - INTERVAL '30 days'
-                ORDER BY played_at DESC
+                GROUP BY username
             """
-            history = await database.fetch_all(history_query, {"username": message.from_user.username})
+            stats = await database.fetch_one(stats_query, {"username": message.from_user.username})
             
-            history_text = "📜 <b>Your Recent Games</b>\n\n"
-            history_text += "<code>   Date    Score  Max</code>\n"
-            for game in history:
-                date = game['played_at'].strftime("%Y-%m-%d")
-                history_text += f"<code>{date} {game['score']:>6} {game['max_value']:>4}</code>\n"
+            if stats:
+                stats_text = f"� <b>Your Monthly Stats</b>\n\n"
+                stats_text += f"🏆 Rank: <code>{stats['rank']}</code>\n"
+                stats_text += f"🎯 Best Score: <code>{stats['best_score']}</code>\n"
+                stats_text += f"🎲 Best Value: <code>{stats['best_max_value']}</code>\n"
+                stats_text += f"📈 Average Score: <code>{int(stats['avg_score'])}</code>\n"
+                stats_text += f"🎮 Games Played: <code>{stats['total_games']}</code>"
                 
-            await bot.send_message(chat_id=message.chat.id, text=history_text, parse_mode='HTML')
-        else:
-            await bot.send_message(chat_id=message.chat.id, text="You haven't played any games in the last 30 days!")
+                await bot.send_message(chat_id=message.chat.id, text=stats_text, parse_mode='HTML')
+                
+                history_query = """
+                    SELECT 
+                        played_at,
+                        score,
+                        max_value
+                    FROM scores 
+                    WHERE username = :username AND played_at >= NOW() - INTERVAL '30 days'
+                    ORDER BY played_at DESC
+                """
+                history = await database.fetch_all(history_query, {"username": message.from_user.username})
+                
+                history_text = "📜 <b>Your Recent Games</b>\n\n"
+                history_text += "<code>   Date    Score  Max</code>\n"
+                for game in history:
+                    date = game['played_at'].strftime("%Y-%m-%d")
+                    history_text += f"<code>{date} {game['score']:>6} {game['max_value']:>4}</code>\n"
+                    
+                await bot.send_message(chat_id=message.chat.id, text=history_text, parse_mode='HTML')
+            else:
+                await bot.send_message(chat_id=message.chat.id, text="You haven't played any games in the last 30 days!")
 
+            await database.disconnect()
+            logger.info("Database disconnected after /stats")
+        except Exception as e:
+            logger.error(f"Error in /stats: {e}")
+            await database.disconnect()
+            logger.info("Database disconnected after error in /stats")
 async def polling():
     """Poll for new messages."""
     if IS_PRODUCTION:
