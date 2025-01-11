@@ -10,8 +10,7 @@ import telegram
 import logging
 import asyncio
 from telegram.error import NetworkError
-from databases import Database
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, DateTime, func
+from .database import db_manager, scores
 
 # Enable logging
 logging.basicConfig(
@@ -26,28 +25,12 @@ try:
     BOT_TOKEN = os.getenv('BOT_TOKEN')
     WEBAPP_URL = os.getenv('WEBAPP_URL')
     IS_PRODUCTION = os.getenv('IS_PRODUCTION', '').lower() == 'true'
-    DATABASE_URL = os.getenv('DATABASE_URL')
 
     # Initialize bot
     bot = telegram.Bot(token=BOT_TOKEN)
-
-    # Database setup
-    database = Database(DATABASE_URL)
-    metadata = MetaData()
 except Exception as e:
     logger.error(f"Error during initialization: {e}")
     raise
-
-# Define scores table
-scores = Table(
-    "scores",
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("username", String),
-    Column("max_value", Integer),
-    Column("score", Integer),
-    Column("played_at", DateTime, server_default=func.now())
-)
 
 # Enable CORS
 app.add_middleware(
@@ -74,13 +57,7 @@ async def handle_message(message):
         )
     elif message.text == "/leaderboard":
         try:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            
-            await database.connect()
-            logger.info("Database connected in /leaderboard")
-
-            leaderboard = await get_full_leaderboard()
+            leaderboard = await db_manager.get_leaderboard()
             text = "🏆 <b>Monthly Leaderboard</b> 🏆\n\n"
             for idx, entry in enumerate(leaderboard):
                 medal = "🏆" if idx == 0 else "🥈" if idx == 1 else "🥉" if idx == 2 else "🎮"
@@ -89,35 +66,11 @@ async def handle_message(message):
                     formatted_username = f"<b>{formatted_username}</b>"
                 text += f"{medal} <code>{entry['rank']}. {formatted_username:<20} {entry['score']:>4}</code> 🎲 <code>{entry['max_value']:>2}</code> (<code>{entry['total_games']}</code> games)\n"
             await bot.send_message(chat_id=message.chat.id, text=text, parse_mode='HTML')
-
-            await database.disconnect()
-            logger.info("Database disconnected after /leaderboard")
-            loop.close()
         except Exception as e:
             logger.error(f"Error in /leaderboard: {e}")
-            await database.disconnect()
-            logger.info("Database disconnected after error in /leaderboard")
     elif message.text == "/stats":
         try:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            
-            await database.connect()
-            logger.info("Database connected in /stats")
-
-            stats_query = """
-                SELECT 
-                    MAX(score) as best_score,
-                    MAX(max_value) as best_max_value,
-                    COUNT(*) as total_games,
-                    AVG(score) as avg_score,
-                    RANK() OVER (ORDER BY MAX(score) DESC) as rank
-                FROM scores 
-                WHERE username = :username AND played_at >= NOW() - INTERVAL '30 days'
-                GROUP BY username
-            """
-            stats = await database.fetch_one(stats_query, {"username": message.from_user.username})
-            
+            stats = await db_manager.get_user_stats(message.from_user.username)
             if stats:
                 stats_text = f"📊 <b>Your Monthly Stats</b>\n\n"
                 stats_text += f"🏆 Rank: <code>{stats['rank']}</code>\n"
@@ -128,17 +81,7 @@ async def handle_message(message):
                 
                 await bot.send_message(chat_id=message.chat.id, text=stats_text, parse_mode='HTML')
                 
-                history_query = """
-                    SELECT 
-                        played_at,
-                        score,
-                        max_value
-                    FROM scores 
-                    WHERE username = :username AND played_at >= NOW() - INTERVAL '30 days'
-                    ORDER BY played_at DESC
-                """
-                history = await database.fetch_all(history_query, {"username": message.from_user.username})
-                
+                history = await db_manager.get_user_history(message.from_user.username)
                 history_text = "📜 <b>Your Recent Games</b>\n\n"
                 history_text += "<code>   Date    Score  Max</code>\n"
                 for game in history:
@@ -148,14 +91,8 @@ async def handle_message(message):
                 await bot.send_message(chat_id=message.chat.id, text=history_text, parse_mode='HTML')
             else:
                 await bot.send_message(chat_id=message.chat.id, text="You haven't played any games in the last 30 days!")
-
-            await database.disconnect()
-            logger.info("Database disconnected after /stats")
-            loop.close()
         except Exception as e:
             logger.error(f"Error in /stats: {e}")
-            await database.disconnect()
-            logger.info("Database disconnected after error in /stats")
 
 async def polling():
     """Poll for new messages."""
@@ -183,12 +120,8 @@ async def startup_event():
     """Start the bot when the FastAPI server starts."""
     try:
         # Database setup
-        engine = create_engine(DATABASE_URL)
-        metadata.create_all(engine)
-        logger.info("Connecting to database...")
-        await database.connect()
-        logger.info("Database connected successfully")
-
+        db_manager.create_tables()
+        
         # Bot setup
         if not IS_PRODUCTION:
             await bot.delete_webhook()
@@ -214,7 +147,7 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     """Cleanup when server shuts down."""
-    await database.disconnect()
+    await db_manager.disconnect()
     if IS_PRODUCTION:
         await bot.delete_webhook()
         logger.info("Webhook deleted")
@@ -236,72 +169,36 @@ async def telegram_webhook(bot_token: str, request: Request):
 @app.post("/save-score")
 async def save_score(request: Request):
     try:
-        logger.info("save_score endpoint called")
-
-        try:
-            await database.connect()
-            logger.info("Database connected in save_score")
-        except Exception as e:
-            logger.error(f"Database connection failed in save_score: {e}")
-            return {"status": "error", "error": "Database is not connected"}
-
-        try:
-            await database.fetch_val("SELECT 1;")
-        except Exception as e:
-            logger.error(f"Database connection check failed: {e}")
-            await database.disconnect()
-            logger.info("Database disconnected after connection check failure in save_score")
-            return {"status": "error", "error": "Database is not connected"}
-
         data = await request.json()
         logger.info(f"Saving score for user: {data['username']}")
-        query = scores.insert().values(
+        
+        await db_manager.save_score(
             username=data['username'],
             max_value=data['max_value'],
             score=data['score']
         )
-        logger.info(f"Executing insert query: {query}")
-        await database.execute(query)
-        logger.info(f"Insert query executed successfully")
 
-        rank_query = """
-            SELECT COUNT(*) + 1
-            FROM scores
-            WHERE score > COALESCE((SELECT score FROM scores WHERE username = :username ORDER BY played_at DESC LIMIT 1), 0)
-        """
-        logger.info(f"Executing rank query: {rank_query}")
-        rank = await database.fetch_val(rank_query, {"username": data['username']})
-        logger.info(f"Rank query executed successfully, rank: {rank}")
-        
-        total_games_query = "SELECT COUNT(*) FROM scores WHERE played_at >= NOW() - INTERVAL '30 days'"
-        logger.info(f"Executing total players query: {total_games_query}")
-        total_games = await database.fetch_val(total_games_query)
-        logger.info(f"Total players query executed successfully, total_games: {total_games}")
+        async with db_manager.connection() as db:
+            rank_query = """
+                SELECT COUNT(*) + 1
+                FROM scores
+                WHERE score > COALESCE((SELECT score FROM scores WHERE username = :username ORDER BY played_at DESC LIMIT 1), 0)
+            """
+            rank = await db.fetch_val(rank_query, {"username": data['username']})
+            
+            total_games_query = "SELECT COUNT(*) FROM scores WHERE played_at >= NOW() - INTERVAL '30 days'"
+            total_games = await db.fetch_val(total_games_query)
+            
+            leaderboard = await db_manager.get_leaderboard()
 
-        leaderboard_query = """
-            SELECT 
-                username,
-                MAX(score) as score,
-                MAX(max_value) as max_value,
-                COUNT(*) as total_games
-            FROM scores 
-            WHERE played_at >= NOW() - INTERVAL '30 days'
-            GROUP BY username
-            ORDER BY score DESC
-            LIMIT 5
-        """
-        logger.info(f"Executing leaderboard query: {leaderboard_query}")
-        leaderboard = await database.fetch_all(leaderboard_query)
-        logger.info(f"Leaderboard query executed successfully")
-
-        await database.disconnect()
-        logger.info("Database disconnected after save_score")
-
-        return {"status": "success", "rank": rank, "total_games": total_games, "leaderboard": leaderboard}
+        return {
+            "status": "success", 
+            "rank": rank, 
+            "total_games": total_games, 
+            "leaderboard": leaderboard
+        }
     except Exception as e:
         logger.error(f"Error saving score: {e}")
-        await database.disconnect()
-        logger.info("Database disconnected after error in save_score")
         return {"status": "error", "error": str(e)}
 
 VITE_DEV_SERVER = os.getenv('VITE_DEV_SERVER')
@@ -362,18 +259,3 @@ async def serve_root_files(file_path: str):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-async def get_full_leaderboard():
-    leaderboard_query = """
-        SELECT 
-            username,
-            MAX(score) as score,
-            MAX(max_value) as max_value,
-            COUNT(*) as total_games,
-            RANK() OVER (ORDER BY MAX(score) DESC) as rank
-        FROM scores 
-        WHERE played_at >= NOW() - INTERVAL '30 days'
-        GROUP BY username
-        ORDER BY score DESC
-    """
-    return await database.fetch_all(leaderboard_query)
