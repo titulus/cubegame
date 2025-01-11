@@ -68,7 +68,8 @@ async def handle_message(message):
         reply_markup = telegram.InlineKeyboardMarkup([[keyboard]])
         await bot.send_message(
             chat_id=message.chat.id,
-            text="Welcome to Cube Game! Click the button below to start playing. Or type /leaderboard to see the leaderboard, /stats to see your results.",
+            # text="Welcome to Cube Game! Click the button below to start playing. Or type /leaderboard to see the leaderboard, /stats to see your results.",
+            text="Welcome to Cube Game! Click the button below to start playing.",
             reply_markup=reply_markup
         )
     elif message.text == "/leaderboard":
