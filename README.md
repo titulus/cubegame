@@ -164,7 +164,7 @@ Commands:
 - [x] The leaderboard should be deduced by players, and your position should be shown not by game but by position in the leaderboard.
 - [x] In the info box with the number 5, add text indicating that you should press the spacebar or tap the screen to continue.
 - [x] On the third step of the tutorial, which explains the "plus one" button, add an arrow pointing to where you need to click.
-- [ ] The full leaderboard in chat.
+- [x] The full leaderboard in chat.
 - [ ] My results in chat.
 - [ ] Analytics.
 - [ ] Paid actions.

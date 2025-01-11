@@ -68,9 +68,18 @@ async def handle_message(message):
         reply_markup = telegram.InlineKeyboardMarkup([[keyboard]])
         await bot.send_message(
             chat_id=message.chat.id,
-            text="Welcome to Cube Game! Click the button below to start playing:",
+            text="Welcome to Cube Game! Click the button below to start playing. Or type /leaderboard to see the leaderboard.",
             reply_markup=reply_markup
         )
+    elif message.text == "/leaderboard":
+        leaderboard = await get_full_leaderboard()
+        text = "🏆 <b>Monthly Leaderboard</b> 🏆\n"
+        for idx, entry in enumerate(leaderboard):
+            medal = "🏆" if idx == 0 else "🥈" if idx == 1 else "🥉" if idx == 2 else "🎮"
+            text += f"\n{medal} <code>{entry['rank']:>2} {entry['username']:<20} {entry['score']:>4}</code> 🎲 <code>{entry['max_value']:>3}</code> (<code>{entry['total_games']:>3}</code> games)"
+            if entry['username'] == message.from_user.username:
+                text += f" 😎"
+        await bot.send_message(chat_id=message.chat.id, text=text, parse_mode='HTML')
 
 async def polling():
     """Poll for new messages."""
@@ -277,3 +286,18 @@ async def serve_root_files(file_path: str):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+async def get_full_leaderboard():
+    leaderboard_query = """
+        SELECT 
+            username,
+            MAX(score) as score,
+            MAX(max_value) as max_value,
+            COUNT(*) as total_games,
+            RANK() OVER (ORDER BY MAX(score) DESC) as rank
+        FROM scores 
+        WHERE played_at >= NOW() - INTERVAL '30 days'
+        GROUP BY username
+        ORDER BY score DESC
+    """
+    return await database.fetch_all(leaderboard_query)
