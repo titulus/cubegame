@@ -14,7 +14,22 @@
             ],
             "jinja": true,
             "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "IS_PRODUCTION": "false"
+            },
             "preLaunchTask": "npm: build"
+        },
+        {
+            "name": "Dev Bot",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/api/dev_bot.py",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "IS_PRODUCTION": "false",
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "console": "integratedTerminal"
         },
         {
             "name": "FastAPI Server with Vite Proxy",
@@ -31,7 +46,8 @@
             "envFile": "${workspaceFolder}/.env",
             "justMyCode": false,
             "env": {
-                "VITE_DEV_SERVER": "http://localhost:5173"
+                "VITE_DEV_SERVER": "http://localhost:5173",
+                "IS_PRODUCTION": "false"
             }
         },
         {
@@ -60,7 +76,7 @@
     "compounds": [
         {
             "name": "Full Stack Debug",
-            "configurations": ["Frontend Dev Server", "FastAPI Server with Vite Proxy"]
+            "configurations": ["Frontend Dev Server", "FastAPI Server with Vite Proxy", "Dev Bot"]
         }
     ]
 }

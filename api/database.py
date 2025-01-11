@@ -44,8 +44,8 @@ class DatabaseManager:
         """Создает таблицы в базе данных"""
         metadata.create_all(self._engine)
 
-    async def get_leaderboard(self, database):
-        """Получает полный список лидеров"""
+    async def get_leaderboard(self, database, limit=None):
+        """Получает список лидеров с опциональным лимитом"""
         query = """
             SELECT 
                 username,
@@ -57,8 +57,9 @@ class DatabaseManager:
             WHERE played_at >= NOW() - INTERVAL '30 days'
             GROUP BY username
             ORDER BY score DESC
-            LIMIT 5
         """
+        if limit:
+            query += f" LIMIT {limit}"
         return await database.fetch_all(query)
 
     async def save_score(self, database, username: str, max_value: int, score: int):

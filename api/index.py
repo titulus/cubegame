@@ -1,16 +1,15 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse, Response
 from httpx import AsyncClient
 import os
 from dotenv import load_dotenv
 import telegram
 import logging
-import asyncio
 from telegram.error import NetworkError
-from .database import db_manager, scores
+import asyncio
+from api.database import db_manager, scores
 
 # Enable logging
 logging.basicConfig(
@@ -26,8 +25,6 @@ try:
     WEBAPP_URL = os.getenv('WEBAPP_URL')
     IS_PRODUCTION = os.getenv('IS_PRODUCTION', '').lower() == 'true'
 
-    # Initialize bot
-    bot = telegram.Bot(token=BOT_TOKEN)
 except Exception as e:
     logger.error(f"Error during initialization: {e}")
     raise
@@ -41,62 +38,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-async def handle_message(message):
-    """Handle incoming message."""
-    if message.text == "/start":
-        keyboard = telegram.InlineKeyboardButton(
-            text="Play Cube Game!",
-            web_app=telegram.WebAppInfo(url=WEBAPP_URL)
-        )
-        reply_markup = telegram.InlineKeyboardMarkup([[keyboard]])
-        await bot.send_message(
-            chat_id=message.chat.id,
-            # text="Welcome to Cube Game! Click the button below to start playing. Or type /leaderboard to see the leaderboard, /stats to see your results.",
-            text="Welcome to Cube Game! Click the button below to start playing.",
-            reply_markup=reply_markup
-        )
-    elif message.text == "/leaderboard":
-        try:
-            leaderboard = await db_manager.get_leaderboard()
-            text = "🏆 <b>Monthly Leaderboard</b> 🏆\n\n"
-            for idx, entry in enumerate(leaderboard):
-                medal = "🏆" if idx == 0 else "🥈" if idx == 1 else "🥉" if idx == 2 else "🎮"
-                formatted_username = entry['username']
-                if entry['username'] == message.from_user.username:
-                    formatted_username = f"<b>{formatted_username}</b>"
-                text += f"{medal} <code>{entry['rank']}. {formatted_username:<20} {entry['score']:>4}</code> 🎲 <code>{entry['max_value']:>2}</code> (<code>{entry['total_games']}</code> games)\n"
-            await bot.send_message(chat_id=message.chat.id, text=text, parse_mode='HTML')
-        except Exception as e:
-            logger.error(f"Error in /leaderboard: {e}")
-    elif message.text == "/stats":
-        try:
-            stats = await db_manager.get_user_stats(message.from_user.username)
-            if stats:
-                stats_text = f"📊 <b>Your Monthly Stats</b>\n\n"
-                stats_text += f"🏆 Rank: <code>{stats['rank']}</code>\n"
-                stats_text += f"🎯 Best Score: <code>{stats['best_score']}</code>\n"
-                stats_text += f"🎲 Best Value: <code>{stats['best_max_value']}</code>\n"
-                stats_text += f"📈 Average Score: <code>{int(stats['avg_score'])}</code>\n"
-                stats_text += f"🎮 Games Played: <code>{stats['total_games']}</code>"
-                
-                await bot.send_message(chat_id=message.chat.id, text=stats_text, parse_mode='HTML')
-                
-                history = await db_manager.get_user_history(message.from_user.username)
-                history_text = "📜 <b>Your Recent Games</b>\n\n"
-                history_text += "<code>   Date    Score  Max</code>\n"
-                for game in history:
-                    date = game['played_at'].strftime("%Y-%m-%d")
-                    history_text += f"<code>{date} {game['score']:>6} {game['max_value']:>4}</code>\n"
-                    
-                await bot.send_message(chat_id=message.chat.id, text=history_text, parse_mode='HTML')
-            else:
-                await bot.send_message(chat_id=message.chat.id, text="You haven't played any games in the last 30 days!")
-        except Exception as e:
-            logger.error(f"Error in /stats: {e}")
-
-async def handle_message_with_db(message):
-    """Handle message with database connection"""
-    database = await db_manager.get_connection()
+async def handle_telegram_message(message, bot, database):
+    """Handle telegram message with provided bot instance and database connection"""
     try:
         if message.text == "/start":
             keyboard = telegram.InlineKeyboardButton(
@@ -141,77 +84,30 @@ async def handle_message_with_db(message):
                 await bot.send_message(chat_id=message.chat.id, text=history_text, parse_mode='HTML')
             else:
                 await bot.send_message(chat_id=message.chat.id, text="You haven't played any games in the last 30 days!")
-    finally:
-        await database.disconnect()
-        logger.info("Database disconnected successfully")
-
-async def polling():
-    """Poll for new messages in development mode."""
-    if IS_PRODUCTION:
-        logger.info("Polling disabled in production")
-        return
-        
-    logger.info("Starting bot polling...")
-    offset = 0
-    while True:
-        try:
-            updates = await bot.get_updates(offset=offset, timeout=30)
-            for update in updates:
-                offset = update.update_id + 1
-                if update.message:
-                    await handle_message_with_db(update.message)
-        except NetworkError:
-            await asyncio.sleep(1)
-        except Exception as e:
-            logger.error(f"Error in polling: {e}")
-            await asyncio.sleep(1)
-
-@app.on_event("startup")
-async def startup_event():
-    """Start the bot when the FastAPI server starts."""
-    try:
-        # Database setup
-        db_manager.create_tables()
-        
-        # Bot setup
-        if not IS_PRODUCTION:
-            await bot.delete_webhook()
-            logger.info("Development mode: Webhook deleted")
-            asyncio.create_task(polling())
-        else:
-            webhook_url = f"{WEBAPP_URL.rstrip('/')}/telegram-webhook/{BOT_TOKEN}"
-            await bot.set_webhook(webhook_url)
-            logger.info(f"Webhook set to {webhook_url}")
-            await bot.set_chat_menu_button(
-                menu_button=telegram.MenuButton(
-                    type="web_app",
-                    text="Play Cube Game",
-                    web_app=telegram.WebAppInfo(url=WEBAPP_URL)
-                )
-            )
-            logger.info(f"Menu button set with webapp URL: {WEBAPP_URL}")
     except Exception as e:
-        logger.error(f"Error during startup: {e}")
+        logger.error(f"Error handling message: {e}")
         raise
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Cleanup when server shuts down."""
-    await db_manager.disconnect()
-    if IS_PRODUCTION:
-        await bot.delete_webhook()
-        logger.info("Webhook deleted")
 
 @app.post("/telegram-webhook/{bot_token}")
 async def telegram_webhook(bot_token: str, request: Request):
     """Handle incoming Telegram updates."""
     try:
+        # Создаем новый инстанс бота для каждого запроса
+        bot = telegram.Bot(token=BOT_TOKEN)
+        
         data = await request.json()
         logger.info(f"Received webhook data: {data}")
         
         if "message" in data:
             message = telegram.Message.de_json(data["message"], bot)
-            await handle_message_with_db(message)
+            
+            # Создаем новое подключение к БД для этого запроса
+            database = await db_manager.get_connection()
+            try:
+                await handle_telegram_message(message, bot, database)
+            finally:
+                await database.disconnect()
+                logger.info("Database disconnected successfully")
                 
         return {"ok": True}
     except Exception as e:
@@ -224,7 +120,6 @@ async def save_score(request: Request):
         data = await request.json()
         logger.info(f"Saving score for user: {data['username']}")
         
-        # Создаем новое подключение к БД для этого запроса
         database = await db_manager.get_connection()
         try:
             await db_manager.save_score(
@@ -244,7 +139,7 @@ async def save_score(request: Request):
             total_games_query = "SELECT COUNT(*) FROM scores WHERE played_at >= NOW() - INTERVAL '30 days'"
             total_games = await database.fetch_val(total_games_query)
             
-            leaderboard = await db_manager.get_leaderboard(database)
+            leaderboard = await db_manager.get_leaderboard(database, limit=5)
 
             return {
                 "status": "success", 
