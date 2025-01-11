@@ -235,6 +235,12 @@ body {
   margin-left: -57px;
   margin-bottom: -32px;
 }
+#tutorial-3 .helper {
+  bottom: 4.8em;
+  right: 3.2em;
+  left: auto;
+  width: 15vw;
+}
 #tutorial-4 .helper {
   margin-left: -32px;
   margin-bottom: -57px;
