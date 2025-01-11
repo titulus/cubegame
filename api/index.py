@@ -2,6 +2,8 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, JSONResponse, Response
+from httpx import AsyncClient
 import os
 from dotenv import load_dotenv
 import telegram
@@ -217,8 +219,25 @@ async def save_score(request: Request):
         logger.info("Database disconnected after error in save_score")
         return {"status": "error", "error": str(e)}
 
-# Static file serving
-app.mount("/assets", StaticFiles(directory="dist/assets"), name="assets")
+VITE_DEV_SERVER = os.getenv('VITE_DEV_SERVER')
+
+if VITE_DEV_SERVER:
+    http_client = AsyncClient()
+    
+    @app.get("/{path:path}")
+    async def proxy_to_vite(path: str, request: Request):
+        target_url = f"{VITE_DEV_SERVER}/{path}"
+        
+        # Проксируем запрос
+        response = await http_client.get(target_url)
+        return Response(
+            content=response.content,
+            status_code=response.status_code,
+            headers=dict(response.headers)
+        )
+else:
+    app.mount("/assets", StaticFiles(directory="dist/assets"), name="assets")
+
 
 @app.get("/")
 async def root():
