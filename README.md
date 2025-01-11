@@ -85,6 +85,10 @@ npm i -g vercel
         - `WEBAPP_URL`: Your Vercel app URL
         - `IS_PRODUCTION`: true
         - `DATABASE_URL`: Your database URL
+   - Register a webhook:
+      ```bash
+      curl -X POST https://api.telegram.org/bot<BOT_TOKEN>/setWebhook -d "url=<WEBAPP_URL>/telegram-webhook/<BOT_TOKEN>"
+      ```
 
 3. After deployment, set up your Telegram Mini App:
    1. Go to @BotFather
