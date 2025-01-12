@@ -1,10 +1,13 @@
 import { cube } from './game';
 import { toggle_info } from './utils/ui';
 import { setStatus } from './store';
+import { Analytics } from './utils/analytics';
 
 export function tutorial(state: number): void {
     switch (state) {
         case 0: {
+            Analytics.tutorialStart();
+            Analytics.tutorialStep(0, 'welcome_screen');
             toggle_info({
                 top: '',
                 header: 'hello',
@@ -19,6 +22,7 @@ export function tutorial(state: number): void {
             setStatus('tutorial-0');
         }; break;
         case 1: {
+            Analytics.tutorialStep(1, 'combine_same_numbers');
             cube.init([1,0,0,0,0,0]);
             toggle_info();
             const tutorial1 = document.getElementById('tutorial-1') as HTMLElement;
@@ -29,6 +33,7 @@ export function tutorial(state: number): void {
             setStatus('tutorial-1');
         }; break;
         case 2: {
+            Analytics.tutorialStep(2, 'first_combination');
             cube.make('up', 0);
             const tutorial1 = document.getElementById('tutorial-1') as HTMLElement;
             const tutorial2 = document.getElementById('tutorial-2') as HTMLElement;
@@ -45,6 +50,7 @@ export function tutorial(state: number): void {
             setStatus('tutorial-2');
         }; break;
         case 3: {
+            Analytics.tutorialStep(3, 'rotation_explained');
             cube.make('right', 0);
             const tutorial2 = document.getElementById('tutorial-2') as HTMLElement;
             tutorial2.style.opacity = '0';
@@ -67,6 +73,7 @@ export function tutorial(state: number): void {
             setStatus('tutorial-3');
         }; break;
         case 4: {
+            Analytics.tutorialStep(4, 'increment_explained');
             cube.incrementFrontValue();
             const tutorial3 = document.getElementById('tutorial-3') as HTMLElement;
             const tutorial4 = document.getElementById('tutorial-4') as HTMLElement;
@@ -83,6 +90,8 @@ export function tutorial(state: number): void {
             setStatus('tutorial-4');
         }; break;
         case 5: {
+            Analytics.tutorialStep(5, 'scoring_explained');
+            Analytics.tutorialComplete();
             cube.make('up');
             const tutorial4 = document.getElementById('tutorial-4') as HTMLElement;
             tutorial4.style.opacity = '0';

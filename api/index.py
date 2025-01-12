@@ -10,6 +10,7 @@ import logging
 from telegram.error import NetworkError
 import asyncio
 from api.database import db_manager, scores
+from api.analytics import analytics
 
 # Enable logging
 logging.basicConfig(
@@ -42,6 +43,11 @@ async def handle_telegram_message(message, bot, database):
     """Handle telegram message with provided bot instance and database connection"""
     try:
         if message.text == "/start":
+            await analytics.track_event(
+                category='bot_command',
+                action='start',
+                label=message.from_user.username
+            )
             keyboard = telegram.InlineKeyboardButton(
                 text="Play Cube Game!",
                 web_app=telegram.WebAppInfo(url=WEBAPP_URL)
@@ -56,6 +62,11 @@ async def handle_telegram_message(message, bot, database):
                                 "/leaderboard - 🏆 Check the monthly leaderboard",                reply_markup=reply_markup
             )
         elif message.text == "/leaderboard":
+            await analytics.track_event(
+                category='bot_command',
+                action='leaderboard',
+                label=message.from_user.username
+            )
             leaderboard = await db_manager.get_leaderboard(database)
             text = "🏆 <b>Monthly Leaderboard</b> 🏆\n\n"
             for idx, entry in enumerate(leaderboard):
@@ -66,6 +77,11 @@ async def handle_telegram_message(message, bot, database):
                 text += f"{medal} <code>{entry['rank']}. {formatted_username:<20} {entry['score']:>4}</code> 🎲 <code>{entry['max_value']:>2}</code> (<code>{entry['total_games']}</code> games)\n"
             await bot.send_message(chat_id=message.chat.id, text=text, parse_mode='HTML')
         elif message.text == "/stats":
+            await analytics.track_event(
+                category='bot_command',
+                action='stats',
+                label=message.from_user.username
+            )
             stats = await db_manager.get_user_stats(database, message.from_user.username)
             if stats:
                 stats_text = f"📊 <b>Your Monthly Stats</b>\n\n"
@@ -123,6 +139,13 @@ async def save_score(request: Request):
         data = await request.json()
         logger.info(f"Saving score for user: {data['username']}")
         
+        await analytics.track_event(
+            category='game_result',
+            action='save_score',
+            label=data['username'],
+            value=data['score']
+        )
+
         database = await db_manager.get_connection()
         try:
             await db_manager.save_score(
@@ -211,6 +234,12 @@ async def serve_root_files(file_path: str):
     elif os.path.exists(f"dist/{file_path}"):
         return FileResponse(f"dist/{file_path}")
     return JSONResponse({"error": "File not found"}, status_code=404)
+
+@app.on_event("startup")
+async def startup_event():
+    # Проверяем конфигурацию аналитики
+    if not await analytics.validate_config():
+        logger.warning("Analytics configuration is invalid or incomplete")
 
 if __name__ == "__main__":
     import uvicorn

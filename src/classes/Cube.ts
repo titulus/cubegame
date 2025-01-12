@@ -3,6 +3,7 @@ import { get_color } from '../utils/colors';
 import { unique } from '../utils/helpers';
 import { toggle_info } from '../utils/ui';
 import { setStatus } from '../store';
+import { Analytics } from '../utils/analytics';
 
 declare class WebKitCSSMatrix {
     constructor(matrix?: string);
@@ -51,6 +52,16 @@ export class Cube {
         this.winSound = new Audio('sounds/win.mp3');
         this.failSound = new Audio('sounds/fail.mp3');
         this.increaseSound = new Audio('sounds/increase.mp3');
+
+        // Track game start
+        Analytics.gameStart();
+        
+        // Set initial user properties
+        Analytics.setUserProperties({
+            platform: window.Telegram.WebApp.platform,
+            language: window.navigator.language,
+            is_telegram_user: !!window.Telegram.WebApp.initDataUnsafe.user
+        });
 
         this.init();
     }
@@ -114,8 +125,10 @@ export class Cube {
         const compare_value = this.side[current_sides[direction]];
 
         if (front_value != compare_value) {
+            Analytics.rotateCube(direction);
             this.rotate(direction);
         } else {
+            Analytics.combineSides(front_value as number);
             const max_value_changed = this.increase(direction, current_sides, value);
 
             this.end = this.check_fail();
@@ -137,6 +150,7 @@ export class Cube {
         const top = tops[Math.floor(Math.random()*tops.length)];
         let text = `... and <b>${this.score}</b> points.<br/>but there are no other moves...`
         if (total_games) {
+            Analytics.sendEvent('game_flow', 'view_leaderboard');
             text += `<br/>Your score is <b>${rank}</b> out of <b>${total_games}</b> games.<br/>`
             leaderboard.forEach((item: { username: string, score: number, max_value: number, total_games: number }, index: number) => {
                 const medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🎮';
@@ -150,6 +164,10 @@ export class Cube {
         setTimeout(() => { setStatus('infobox'); }, 0);
     }
     private handle_max_value_changed(): void {
+        Analytics.sendEvent('game_action', 'value_reached', {
+            value: this.max_value,
+        });
+
         if (this.max_value < 5) return;
 
         if (this.max_value === 5) {
@@ -172,9 +190,7 @@ export class Cube {
                 this.DOM.increment.style.cursor = 'pointer';
             }
         }
-
     }
-
     private get_new_value(): number {
         const values = unique([
             this.side['x'],
@@ -465,6 +481,7 @@ export class Cube {
             return;
         }
     
+        Analytics.useIncrement();
         this.remainingIncrements--;
         this.DOM.increment.innerHTML = `x${this.remainingIncrements}`;
         
@@ -504,6 +521,9 @@ export class Cube {
             score: this.score
         };
 
+        // Track game end
+        Analytics.gameEnd(this.score, this.max_value);
+        
         try {
             const response = await fetch('/save-score', {
                 method: 'POST',

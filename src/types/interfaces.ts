@@ -17,4 +17,12 @@ export interface InfoParams {
     header: string | number;
     text: string;
     color?: number[];
+}
+
+export interface Environment {
+    BOT_TOKEN: string;
+    WEBAPP_URL: string;
+    IS_PRODUCTION: boolean;
+    DATABASE_URL: string;
+    GA_MEASUREMENT_ID: string;
 } 
