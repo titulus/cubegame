@@ -170,7 +170,7 @@ Commands:
 - [x] On the third step of the tutorial, which explains the "plus one" button, add an arrow pointing to where you need to click.
 - [x] The full leaderboard in chat.
 - [x] My results in chat.
-- [ ] Analytics.
+- [x] Analytics.
 - [ ] Paid actions.
 - - [ ] Star
 - - [ ] Card
