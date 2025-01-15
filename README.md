@@ -174,6 +174,8 @@ Commands:
 - [ ] Paid actions.
 - - [ ] Star
 - - [ ] Card
+- [ ] Translations.
+
 
 ## Contributing
 
