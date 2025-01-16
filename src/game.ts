@@ -4,17 +4,9 @@ import { update_fontsize, toggle_info } from './utils/ui';
 import { setStatus } from './store';
 import { getCookie, setCookie } from './utils/cookies';
 
+import { t } from './i18n';
 export const cube = new Cube('cube3d');
 
-const GAME_TEXT = {
-    welcome: {
-        header: 'hello',
-        text: 'press <span class="key">&larr;</span>,<span class="key">&uarr;</span>,<span class="key">&rarr;</span>,<span class="key">&darr;</span><br/>'
-            + 'or<br/>swipe <span class="touch">&larr;</span>,<span class="touch">&uarr;</span>,<span class="touch">&rarr;</span>,<span class="touch">&darr;</span>.<br/>'
-            + 'Chosen side will increased, if it equal to front, cube will rotate otherwise.<br/>'
-            + 'Press <span class="key">space</span> or <span class="touch">tap</span> to close info'
-    }
-};
 
 export function init(state: string): void {
     switch (state) {
@@ -22,8 +14,8 @@ export function init(state: string): void {
             cube.init();
             toggle_info({
                 top: '',
-                header: GAME_TEXT.welcome.header,
-                text: GAME_TEXT.welcome.text,
+                header: t('game.welcome.header'),
+                text: t('game.welcome.text'),
                 color: [125, 125, 255],
             });
             setStatus('infobox');
