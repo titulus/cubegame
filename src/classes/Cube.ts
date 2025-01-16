@@ -5,6 +5,21 @@ import { toggle_info } from '../utils/ui';
 import { setStatus } from '../store';
 import { Analytics } from '../utils/analytics';
 
+const CUBE_TEXT = {
+    fail: {
+        tops: ['At least you tried!','Not bad! But you can do better!', 'You\'re almost there!', 'You can do better!', 'Try harder!'],
+        text1: (score: number) => `... and <b>${score}</b> points.<br/>but there are no other moves...`,
+        text2: (rank: number, total_games: number) => `<br/>Your score is <b>${rank}</b> out of <b>${total_games}</b> games.<br/>`,
+        text3: (medal: string, index: number, username: string, score: number, max_value: number, total_games: number) => `<br/>${medal} ${index + 1}. ${username}: <b>${score}</b> 🎲 ${max_value} (${total_games} games)`,
+        text4: `<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>`
+    },
+    win: {
+        tops: ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'],
+        text1: `You've got +1<br/>You'll get it each time you increase the max value.`,
+        text2: `<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>continue</b>`
+    }
+};
+
 declare class WebKitCSSMatrix {
     constructor(matrix?: string);
     rotateAxisAngle(x: number, y: number, z: number, angle: number): WebKitCSSMatrix;
@@ -146,19 +161,18 @@ export class Cube {
 
     private handle_fail(rank: number, total_games: number, leaderboard: Array<{username: string, score: number, played_at: string, max_value: number, total_games: number}> ): void {
         const header = this.max_value;
-        const tops = ['At least you tried!','Not bad! But you can do better!', 'You\'re almost there!', 'You can do better!', 'Try harder!'];
-        const top = tops[Math.floor(Math.random()*tops.length)];
-        let text = `... and <b>${this.score}</b> points.<br/>but there are no other moves...`
+        const top = CUBE_TEXT.fail.tops[Math.floor(Math.random()*CUBE_TEXT.fail.tops.length)];
+        let text = CUBE_TEXT.fail.text1(this.score);
         if (total_games) {
             Analytics.sendEvent('game_flow', 'view_leaderboard');
-            text += `<br/>Your score is <b>${rank}</b> out of <b>${total_games}</b> games.<br/>`
+            text += CUBE_TEXT.fail.text2(rank, total_games);
             leaderboard.forEach((item: { username: string, score: number, max_value: number, total_games: number }, index: number) => {
                 const medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🎮';
                 const username = item.username === window.Telegram.WebApp.initDataUnsafe.user?.username ? `<b>${item.username}</b>` : item.username;
-                text += `<br/>${medal} ${index + 1}. ${username}: <b>${item.score}</b> 🎲 ${item.max_value} (${item.total_games} games)`;
+                text += CUBE_TEXT.fail.text3(medal, index, username, item.score, item.max_value, item.total_games);
             });
         }
-        text += `<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>restart</b><br/>See source on <a href="//github.com/titulus/cubegame">github</a>`;
+        text += CUBE_TEXT.fail.text4;
         this.playSound('fail');
         toggle_info({top, header, text, color: get_color(header)});
         setTimeout(() => { setStatus('infobox'); }, 0);
@@ -172,10 +186,9 @@ export class Cube {
 
         if (this.max_value === 5) {
             const header = this.max_value;
-            const tops = ['CONGRATULATIONS!','UNBELIEVABLE!','What a wonder!','Is that real?'];
-            const top = tops[Math.floor(Math.random()*tops.length)];
-            let text = 'You\'ve got +1<br/>You\'ll get it each time you increase the max value.';
-            text += `<br/><br/><span class="touch">tap</span> or press <span class="key">space</span> to <b>continue</b>`;
+            const top = CUBE_TEXT.win.tops[Math.floor(Math.random()*CUBE_TEXT.win.tops.length)];
+            let text = CUBE_TEXT.win.text1;
+            text += CUBE_TEXT.win.text2;
             this.playSound('win');
             toggle_info({top, header, text, color: get_color(header)});
             setStatus('infobox');
