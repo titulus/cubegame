@@ -155,7 +155,7 @@ export class Cube {
             leaderboard.forEach((item: { username: string, score: number, max_value: number, total_games: number }, index: number) => {
                 const medal = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🎮';
                 const username = item.username === window.Telegram.WebApp.initDataUnsafe.user?.username ? `<b>${item.username}</b>` : item.username;
-                text += t('cube.fail.text3', { medal, index, username, score: item.score, max_value: item.max_value, total_games: item.total_games });
+                text += t('cube.fail.text3', { medal, index_plus_one: index + 1, username, score: item.score, max_value: item.max_value, total_games: item.total_games });
             });
         }
         text += t('cube.fail.text4');
