@@ -17,14 +17,14 @@ export function touchMove(_e: TouchEvent): void {}
 export function touchCancel(_e: TouchEvent): void {}
 
 export function touchEnd(e: TouchEvent): void {
-    if ((e.target as HTMLElement).nodeName != 'A') {
+    if ((e.target as HTMLElement).nodeName != 'A' && (e.target as HTMLElement).nodeName != 'BUTTON') {
         e.preventDefault();
         touch.end.x = e.changedTouches[0].clientX;
         touch.end.y = e.changedTouches[0].clientY;
         touch_handler();
     } else {
         console.log(e);
-        (e.target as HTMLAnchorElement).click();
+        (e.target as HTMLElement).click();
     }
 }
 
@@ -47,4 +47,4 @@ export function touch_handler(): void {
         if (d < 20) evnt = 'tap';
     }
     event_handler(evnt);
-} 
+}

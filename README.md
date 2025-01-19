@@ -108,10 +108,17 @@ cubegame/
 │   │   └── touch.ts  # Touch gesture handling
 │   ├── types/        # TypeScript type definitions
 │   │   └── interfaces.ts # Type interfaces
-│   └── utils/        # Utility functions
-│       ├── colors.ts # Color generation
-│       ├── helpers.ts # Common helper functions
-│       └── ui.ts     # UI management
+│   ├── utils/        # Utility functions
+│   │   ├── colors.ts # Color generation
+│   │   ├── helpers.ts # Common helper functions
+│   │   └── ui.ts     # UI management
+│   ├── game.ts   # Main game logic
+│   ├── i18n.ts   # Internationalization
+│   ├── store.ts  # Game state management
+│   ├── tutorial.ts # Tutorial logic
+│   └── translations/ # Translation files
+│       ├── en.json   # English translations
+│       └── ru.json   # Russian translations
 ├── public/           # Static assets
 │   ├── img/         # Images and icons
 │   │   ├── cubes.png     # Background pattern
@@ -174,8 +181,24 @@ Commands:
 - [ ] Paid actions.
 - - [ ] Star
 - - [ ] Card
-- [ ] Translations.
+- [x] Translations.
 
+## Translations
+
+The game supports translations for multiple languages. Currently, the following languages are supported:
+
+- English
+- Russian
+
+Translations are managed using a key-based system. Each string in the game is associated with a unique key. The `src/i18n.ts` file handles the loading of translations and provides a `t()` function to retrieve translated strings based on the current language.
+
+The current language is determined by the `lang` cookie. If the cookie is not set, the default language is English.
+
+To add a new language, you need to:
+1. Create a new JSON file in the `src/translations` directory with the language code as the filename (e.g., `fr.json` for French).
+2. Add the translations to the JSON file, using the same keys as the English translation file.
+3. Import the new translation file in `src/i18n.ts`.
+4. Add the new language to the `translations` object in `src/i18n.ts`.
 
 ## Contributing
 

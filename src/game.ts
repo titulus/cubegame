@@ -63,5 +63,9 @@ function switchLanguage() {
 langSwitchButton.addEventListener('click', () => {
     switchLanguage();
 });
+langSwitchButton.addEventListener('touchend', (event) => {
+    event.stopPropagation();
+    switchLanguage();
+});
 
 setCookie('hasVisited', 'true', 365);
