@@ -17,6 +17,7 @@ export interface InfoParams {
     header: string | number;
     text: string;
     color?: number[];
+    showLangSwitch?: boolean | undefined;
 }
 
 export interface Environment {

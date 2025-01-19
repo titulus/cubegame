@@ -7,7 +7,8 @@ export function toggle_info(params?: InfoParams): void {
         info: document.getElementById('info') as HTMLElement,
         top: document.getElementById('info_top') as HTMLElement,
         h1: document.getElementById('info_h1') as HTMLElement,
-        p: document.getElementById('info_p') as HTMLElement
+        p: document.getElementById('info_p') as HTMLElement,
+        lang: document.getElementById('lang-switch') as HTMLElement
     };
 
     if (params) {
@@ -16,6 +17,7 @@ export function toggle_info(params?: InfoParams): void {
         DOM.p.innerHTML = params.text;
         DOM.info.style.backgroundColor = `rgba(${(params.color || get_color(params.header)).join(',')},0.5)`;
         DOM.info.style.display = 'block';
+        DOM.lang.style.display = params.showLangSwitch ? 'block' : 'none';
         setTimeout(() => { DOM.info.style.opacity = '1'; }, 0);
     } else {
         DOM.info.style.backgroundColor = '';

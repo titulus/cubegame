@@ -10,10 +10,14 @@ export function tutorial(state: number): void {
     const tutorial2 = document.getElementById('tutorial-2') as HTMLElement;
     const tutorial3 = document.getElementById('tutorial-3') as HTMLElement;
     const tutorial4 = document.getElementById('tutorial-4') as HTMLElement;
-    if (tutorial1) tutorial1.innerHTML = t('tutorial.step1');
-    if (tutorial2) tutorial2.innerHTML = t('tutorial.step2');
-    if (tutorial3) tutorial3.innerHTML = t('tutorial.step3');
-    if (tutorial4) tutorial4.innerHTML = t('tutorial.step4');
+    
+    function updateTutorialText() {
+        if (tutorial1) tutorial1.innerHTML = t('tutorial.step1');
+        if (tutorial2) tutorial2.innerHTML = t('tutorial.step2');
+        if (tutorial3) tutorial3.innerHTML = t('tutorial.step3');
+        if (tutorial4) tutorial4.innerHTML = t('tutorial.step4');
+    }
+    updateTutorialText();
 
     switch (state) {
         case 0: {
@@ -23,7 +27,8 @@ export function tutorial(state: number): void {
                 top: '',
                 header: t('tutorial.welcome.header'),
                 text: t('tutorial.welcome.text'),
-                color: [125,125,255]
+                color: [125,125,255],
+                showLangSwitch: true,
             });
             setStatus('tutorial-0');
         }; break;

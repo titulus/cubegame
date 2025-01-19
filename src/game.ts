@@ -1,7 +1,7 @@
 import { Cube } from './classes/Cube';
 import { tutorial } from './tutorial';
 import { update_fontsize, toggle_info } from './utils/ui';
-import { setStatus } from './store';
+import { setStatus, getStatus } from './store';
 import { getCookie, setCookie } from './utils/cookies';
 import { setLanguage, t, getLanguage } from './i18n';
 
@@ -17,6 +17,7 @@ export function init(state: string): void {
                 header: t('game.welcome.header'),
                 text: t('game.welcome.text'),
                 color: [125, 125, 255],
+                showLangSwitch: true,
             });
             setStatus('infobox');
         } break;
@@ -42,12 +43,25 @@ const langSwitchButton = document.getElementById('lang-switch') as HTMLButtonEle
 let currentLang = getLanguage() || 'en';
 langSwitchButton.textContent = currentLang;
 
-langSwitchButton.addEventListener('click', () => {
+function switchLanguage() {
     const newLang = currentLang === 'en' ? 'ru' : 'en';
     setLanguage(newLang);
     langSwitchButton.textContent = newLang;
     setCookie('lang', newLang, 365);
     currentLang = newLang;
+    const status = getStatus();
+    switch (status) {
+        case 'infobox':
+            init('game');
+            break;
+        case 'tutorial-0':
+            tutorial(0);
+            break;
+    }
+}
+
+langSwitchButton.addEventListener('click', () => {
+    switchLanguage();
 });
 
 setCookie('hasVisited', 'true', 365);
