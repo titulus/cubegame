@@ -32,25 +32,6 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "FastAPI Server with Vite Proxy",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "api.index:app",
-                "--reload",
-                "--port",
-                "8000"
-            ],
-            "jinja": true,
-            "envFile": "${workspaceFolder}/.env",
-            "justMyCode": false,
-            "env": {
-                "VITE_DEV_SERVER": "http://localhost:5173",
-                "IS_PRODUCTION": "false"
-            }
-        },
-        {
             "name": "Frontend Dev Server",
             "type": "node",
             "request": "launch",
@@ -76,7 +57,7 @@
     "compounds": [
         {
             "name": "Full Stack Debug",
-            "configurations": ["Frontend Dev Server", "FastAPI Server with Vite Proxy", "Dev Bot"]
+            "configurations": ["Frontend Dev Server", "FastAPI Server", "Dev Bot"]
         }
     ]
 }
