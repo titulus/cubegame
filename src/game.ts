@@ -3,8 +3,8 @@ import { tutorial } from './tutorial';
 import { update_fontsize, toggle_info } from './utils/ui';
 import { setStatus } from './store';
 import { getCookie, setCookie } from './utils/cookies';
+import { setLanguage, t, getLanguage } from './i18n';
 
-import { t } from './i18n';
 export const cube = new Cube('cube3d');
 
 
@@ -38,4 +38,16 @@ if (hasVisited) {
 } else {
     init('tutorial');
 }
+const langSwitchButton = document.getElementById('lang-switch') as HTMLButtonElement;
+let currentLang = getLanguage() || 'en';
+langSwitchButton.textContent = currentLang;
+
+langSwitchButton.addEventListener('click', () => {
+    const newLang = currentLang === 'en' ? 'ru' : 'en';
+    setLanguage(newLang);
+    langSwitchButton.textContent = newLang;
+    setCookie('lang', newLang, 365);
+    currentLang = newLang;
+});
+
 setCookie('hasVisited', 'true', 365);

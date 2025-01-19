@@ -1,19 +1,25 @@
 // @ts-ignore
-import enTranslations from './translations/en.json?raw';
+import enTranslations from './translations/en.json';
+// @ts-ignore
+import ruTranslations from './translations/ru.json';
+import { getCookie } from './utils/cookies';
 
 type TranslationData = Record<string, any>;
 
 const translations: Record<string, TranslationData> = {
-    en: JSON.parse(enTranslations)
+    en: enTranslations,
+    ru: ruTranslations
 };
 
-let currentLanguage: string = 'en';
+let currentLanguage: string = getCookie('lang') || 'en';
 
 export function setLanguage(lang: string) {
     if (!translations[lang]) {
         console.warn(`Translation for language ${lang} not loaded`);
+        return;
     }
     currentLanguage = lang;
+    document.documentElement.lang = lang;
 }
 
 export function getLanguage(): string {

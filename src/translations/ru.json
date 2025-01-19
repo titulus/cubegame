@@ -1,0 +1,50 @@
+{
+    "game": {
+        "welcome": {
+            "header": "привет",
+            "text": "нажмите <span class=\"key\">&larr;</span>,<span class=\"key\">&uarr;</span>,<span class=\"key\">&rarr;</span>,<span class=\"key\">&darr;</span><br/>или<br/>свайпните <span class=\"touch\">&larr;</span>,<span class=\"touch\">&uarr;</span>,<span class=\"touch\">&rarr;</span>,<span class=\"touch\">&darr;</span>.<br/>Выбранная сторона увеличится, если она равна передней, иначе куб повернется.<br/>Нажмите <span class=\"key\">space</span> или <span class=\"touch\">тап</span> чтобы закрыть инфо"
+        }
+    },
+    "tutorial": {
+        "welcome": {
+            "header": "привет",
+            "text": "Используйте стрелки <span class=\"key\">←</span>,<span class=\"key\">↑</span>,<span class=\"key\">→</span>,<span class=\"key\">↓</span><br/>или свайпы <span class=\"touch\">←</span>,<span class=\"touch\">↑</span>,<span class=\"touch\">→</span>,<span class=\"touch\">↓</span> чтобы увеличить выбранную сторону, если она равна передней, или повернуть куб в противном случае.<br/><b>Цель:</b> получить <span class=\"sside\" style=\"background-color: rgba(247, 72, 54, 0.8); padding:0;\">10</span> на одной стороне.<br/>Нажмите <span class=\"key\">space</span> или <span class=\"touch\">тап</span> чтобы посмотреть <b>обучение</b>.<br/>Нажмите <span class=\"key\">esc</span> или свайпните <span class=\"touch\">↑</span> чтобы пропустить его"
+        },
+        "step1": "<img src=\"/img/arrow_u.gif\" class=\"helper\"><div class=\"content\"><b>передняя</b> <span class=\"sside\" style=\"background-color: rgba(75, 0, 125, 0.8);\">0</span> = <b>верхняя</b> <span class=\"sside\" style=\"background-color: rgba(75, 0, 125, 0.8);\">0</span><br/>сделайте <span class=\"key\">↑</span> или <span class=\"touch\">↑</span> чтобы объединить их.<br/><b>верхняя</b> увеличится <span class=\"sside\" style=\"background-color: rgba(75, 0, 125, 0.8);\">0</span> → <span class=\"sside\" style=\"background-color: rgba(49, 59, 136, 0.8);\">1</span><br/>и <b>передняя</b> получит случайное <span class=\"sside\" style=\"background-color: rgba(75, 0, 125, 0.8);\">0</span> → <span class=\"sside\" style=\"background-color: rgba(255, 75, 75, 0.8);\">?</span></div>",
+        "step2": "<img src=\"/img/arrow_r.gif\" class=\"helper\"><div class=\"content\"><b>передняя</b> <span class=\"sside\" style=\"background-color: rgba(75, 0, 125, 0.8);\">0</span> ≠ <b>правая</b> <span class=\"sside\" style=\"background-color: rgba(49, 59, 136, 0.8);\">1</span><br/>сделайте <span class=\"key\">→</span> или <span class=\"touch\">→</span> чтобы повернуть куб.<br/>Они <b>не изменятся</b>, но куб повернется</div>",
+        "step3": "<div class=\"content\">Теперь вы можете использовать кнопку <span style=\"display: inline-block; background-color: rgba(255, 255, 125, 0.5); box-shadow: 0 0 0.5em rgb(255, 255, 125); color: rgb(0,0,0); padding: 0 0.2em; border-radius: 0.2em;\">+1</span> чтобы увеличить<br/>значение <b>передней</b> стороны: <span class=\"sside\" style=\"background-color: rgba(75, 0, 125, 0.8);\">0</span> → <span class=\"sside\" style=\"background-color: rgba(49, 59, 136, 0.8);\">1</span><br/>Нажмите на нее!</div><img src=\"/img/arrow_down.gif\" class=\"helper\"><div id=\"increment-btn-tutorial\" style=\"position: absolute; bottom: .3em; right: .3em; font-weight: 700; font-size: 400%; color: white; text-shadow: 0 0 .3em #014; cursor: pointer; transition: all .1s linear; padding: 0 0.3em; border-radius: 0.2em; background: rgba(0,10,40,0.1);\">+1</div>",
+        "step4": "<img src=\"/img/arrow_u.gif\" class=\"helper\"><div class=\"content\">Как только вы объединяете стороны, вы получаете <b>очки</b><br/>столько, сколько вы получаете на увеличенной стороне<br/>верхняя <span class=\"sside\" style=\"background-color: rgba(49, 59, 136, 0.8);\">1</span> станет <span class=\"sside\" style=\"background-color: rgba(105, 31, 31, 0.8);\">2</span> и ваш счет увеличится на значение <span class=\"sside\" style=\"background-color: rgba(255, 252, 100, 0.8);\">2</span> → <span class=\"sside\" style=\"background-color: rgba(255, 252, 100, 0.8);\">4</span></div>",
+        "complete": {
+            "top": "круто! ты получил",
+            "header": "2",
+            "text": "Теперь попробуй получить <span class=\"sside\" style=\"background-color: rgba(229, 25, 244, 0.8);\">5</span> где-нибудь<br/><br/><span class=\"touch\">тап</span> или нажмите <span class=\"key\">space</span> чтобы <b>продолжить</b>.<br/>"
+        }
+    },
+    "cube": {
+        "fail": {
+            "tops": [
+                "По крайней мере, вы попытались!",
+                "Неплохо! Но вы можете лучше!",
+                "Вы почти у цели!",
+                "Вы можете лучше!",
+                "Постарайтесь сильнее!"
+            ],
+            "text1": "... и {score} очков.<br/>но других ходов нет...",
+            "text2": "<br/>Ваш счет {rank} из {total_games} игр.<br/>",
+            "text3": "<br/>{medal} {index_plus_one}. {username}: {score} 🎲 {max_value} ({total_games} игр)",
+            "text4": "<br/><br/><span class=\"touch\">тап</span> или нажмите <span class=\"key\">space</span> чтобы <b>перезапустить</b><br/>Смотрите исходный код на <a href=\"//github.com/titulus/cubegame\">github</a>"
+        },
+        "win": {
+            "tops": [
+                "ПОЗДРАВЛЯЕМ!",
+                "НЕВЕРОЯТНО!",
+                "Какое чудо!",
+                "Это реально?"
+            ],
+            "text1": "Вы получили +1<br/>Вы будете получать его каждый раз, когда увеличиваете максимальное значение.",
+            "text2": "<br/><br/><span class=\"touch\">тап</span> или нажмите <span class=\"key\">space</span> чтобы <b>продолжить</b>"
+        }
+    },
+    "sides": "<div id=\"side_-y\" class=\"side\"><span></span></div><div id=\"side_z\" class=\"side front\"><span></span></div><div id=\"side_x\" class=\"side\"><span></span></div><div id=\"side_y\" class=\"side\"><span></span></div><div id=\"side_-z\" class=\"side\"><span></span></div><div id=\"side_-x\" class=\"side\"><span></span></div>",
+    "increment": "x{remaining_increments}"
+}
